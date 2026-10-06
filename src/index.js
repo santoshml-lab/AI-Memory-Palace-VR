@@ -16,6 +16,10 @@ if (!(sceneContainer instanceof HTMLDivElement)) {
 World.create(sceneContainer, projectOptions).then((world) => {
   console.log("AI Memory Palace VR started");
 
+  // Set a clear browser camera position for the desktop preview.
+  world.camera.position.set(0, 1.7, 4);
+  world.camera.lookAt(0, 1, 0);
+
   const cube = new Mesh(
     new BoxGeometry(0.5, 0.5, 0.5),
     new MeshBasicMaterial({
@@ -23,7 +27,7 @@ World.create(sceneContainer, projectOptions).then((world) => {
     })
   );
 
-  cube.position.set(0, 0.75, -2);
+  cube.position.set(0, 1, -2);
 
   world.createTransformEntity(cube);
 

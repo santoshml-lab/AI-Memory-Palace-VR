@@ -56,9 +56,14 @@ World.create(sceneContainer, projectOptions).then((world) => {
 
   world.createTransformEntity(backWall);
 
-  // ---------- LABEL ----------
+  // ---------- TEXT LABEL ----------
 
-  function createLabel(text, position) {
+  function createLabel(
+    text,
+    position,
+    width = 1.2,
+    height = 0.3
+  ) {
     const canvas = document.createElement("canvas");
 
     canvas.width = 512;
@@ -70,8 +75,13 @@ World.create(sceneContainer, projectOptions).then((world) => {
       throw new Error("Unable to create label canvas");
     }
 
-    context.fillStyle = "rgba(10, 15, 30, 0.9)";
-    context.fillRect(0, 0, canvas.width, canvas.height);
+    context.fillStyle = "rgba(10, 15, 30, 0.95)";
+    context.fillRect(
+      0,
+      0,
+      canvas.width,
+      canvas.height
+    );
 
     context.fillStyle = "#ffffff";
     context.font = "bold 42px Arial";
@@ -86,13 +96,13 @@ World.create(sceneContainer, projectOptions).then((world) => {
 
     const texture = new THREE.CanvasTexture(canvas);
 
-    const material = new THREE.MeshBasicMaterial({
+    const material = new MeshBasicMaterial({
       map: texture,
       transparent: true
     });
 
-    const label = new THREE.Mesh(
-      new THREE.PlaneGeometry(1.2, 0.3),
+    const label = new Mesh(
+      new THREE.PlaneGeometry(width, height),
       material
     );
 
@@ -103,6 +113,8 @@ World.create(sceneContainer, projectOptions).then((world) => {
     );
 
     world.createTransformEntity(label);
+
+    return label;
   }
 
   // ---------- RECALL DATA ----------
@@ -117,7 +129,7 @@ World.create(sceneContainer, projectOptions).then((world) => {
     "Oxygen"
   ];
 
-  // ---------- GRABBABLE OBJECT ----------
+  // ---------- MEMORY OBJECT ----------
 
   function createRecallObject(
     color,
@@ -179,7 +191,7 @@ World.create(sceneContainer, projectOptions).then((world) => {
     return entity;
   }
 
-  // ---------- RECALL OBJECTS ----------
+  // ---------- MEMORY OBJECTS ----------
 
   createRecallObject(
     0x36d399,
@@ -220,7 +232,9 @@ World.create(sceneContainer, projectOptions).then((world) => {
 
   function calculateRecallScore() {
     const sortedObjects = [...recallObjects].sort(
-      (a, b) => a.object.position.x - b.object.position.x
+      (a, b) =>
+        a.object.position.x -
+        b.object.position.x
     );
 
     let correct = 0;
@@ -231,28 +245,71 @@ World.create(sceneContainer, projectOptions).then((world) => {
       }
     });
 
-    const score = Math.round(
+    return Math.round(
       (correct / correctOrder.length) * 100
     );
+  }
 
-    console.log("Recall order:");
+  // ---------- CHECK RECALL PANEL ----------
 
-    sortedObjects.forEach((item, index) => {
-      console.log(`${index + 1}. ${item.label}`);
-    });
+  const panel = new Mesh(
+    new BoxGeometry(1.8, 0.55, 0.08),
+    new MeshBasicMaterial({
+      color: 0x3159a6
+    })
+  );
+
+  panel.position.set(
+    0,
+    0.35,
+    -2.3
+  );
+
+  const panelEntity =
+    world.createTransformEntity(panel);
+
+  panelEntity.addComponent(RayInteractable);
+
+  createLabel(
+    "CHECK RECALL",
+    [0, 0.35, -2.35],
+    1.5,
+    0.28
+  );
+
+  // ---------- SCORE DISPLAY ----------
+
+  const scoreLabel = createLabel(
+    "Score: --",
+    [0, 2.25, -2.3],
+    1.8,
+    0.35
+  );
+
+  // ---------- RECALL CHECK ----------
+
+  function checkRecall() {
+    const score = calculateRecallScore();
+
+    const canvas =
+      scoreLabel.children[0]?.material?.map?.image;
 
     console.log(`Recall Score: ${score}%`);
 
-    return score;
+    if (score === 100) {
+      console.log("Excellent recall!");
+    } else if (score >= 60) {
+      console.log("Good recall. Review the weak concepts.");
+    } else {
+      console.log("More revision recommended.");
+    }
   }
 
-  // ---------- TEST RECALL ----------
+  panel.addEventListener("pointerdown", () => {
+    checkRecall();
+  });
 
-  window.calculateRecallScore = calculateRecallScore;
+  window.checkRecall = checkRecall;
 
   console.log("Recall Challenge ready");
-  console.log("Correct order:", correctOrder);
-  console.log(
-    "Run calculateRecallScore() in the browser console to test the score."
-  );
 });

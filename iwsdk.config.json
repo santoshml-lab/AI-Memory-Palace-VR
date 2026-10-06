@@ -19,8 +19,7 @@
     },
     "features": {
       "grabbing": true,
-      "spatialUI": true,
-      "gaze": true
+      "spatialUI": true
     }
   },
   "dev": {

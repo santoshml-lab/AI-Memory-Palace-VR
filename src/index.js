@@ -76,6 +76,7 @@ World.create(sceneContainer, projectOptions).then((world) => {
     }
 
     context.fillStyle = "rgba(10, 15, 30, 0.95)";
+
     context.fillRect(
       0,
       0,
@@ -139,6 +140,7 @@ World.create(sceneContainer, projectOptions).then((world) => {
     );
 
     context.fillStyle = "rgba(10, 15, 30, 0.95)";
+
     context.fillRect(
       0,
       0,
@@ -171,6 +173,16 @@ World.create(sceneContainer, projectOptions).then((world) => {
     "Glucose",
     "Oxygen"
   ];
+
+  const recallSlots = [
+    -2.0,
+    -1.0,
+    0,
+    1.0,
+    2.0
+  ];
+
+  let recallStarted = false;
 
   // ---------- MEMORY OBJECT ----------
 
@@ -279,6 +291,22 @@ World.create(sceneContainer, projectOptions).then((world) => {
     4
   );
 
+  // ---------- KEEP LABELS WITH OBJECTS ----------
+
+  function updateObjectLabels() {
+    recallObjects.forEach((item) => {
+      item.labelData.mesh.position.set(
+        item.object.position.x,
+        item.object.position.y + 0.72,
+        item.object.position.z + 0.18
+      );
+    });
+
+    requestAnimationFrame(updateObjectLabels);
+  }
+
+  updateObjectLabels();
+
   // ---------- SCORE LABEL ----------
 
   const scoreLabel = createLabel(
@@ -288,93 +316,231 @@ World.create(sceneContainer, projectOptions).then((world) => {
     0.32
   );
 
-  // ---------- CHECK RECALL PANEL ----------
+  // ---------- FEEDBACK LABEL ----------
 
-  const panel = new Mesh(
-    new BoxGeometry(1.8, 0.55, 0.08),
+  const feedbackLabel = createLabel(
+    "Press START RECALL",
+    [0, 1.95, -2.15],
+    2.1,
+    0.28
+  );
+
+  // ---------- START RECALL PANEL ----------
+
+  const startPanel = new Mesh(
+    new BoxGeometry(1.8, 0.5, 0.08),
     new MeshBasicMaterial({
-      color: 0x3159a6
+      color: 0x36a269
     })
   );
 
-  panel.position.set(
+  startPanel.position.set(
     0,
     0.35,
     -2.3
   );
 
-  const panelEntity =
-    world.createTransformEntity(panel);
+  const startPanelEntity =
+    world.createTransformEntity(startPanel);
 
-  panelEntity.addComponent(RayInteractable);
+  startPanelEntity.addComponent(RayInteractable);
 
-  // Put text in front of the panel.
-  const checkLabel = createLabel(
-    "CHECK RECALL",
+  createLabel(
+    "START RECALL",
     [0, 0.35, -2.24],
     1.5,
     0.28
   );
 
-  // ---------- RECALL ENGINE ----------
+  // ---------- CHECK RECALL PANEL ----------
+
+  const checkPanel = new Mesh(
+    new BoxGeometry(1.8, 0.5, 0.08),
+    new MeshBasicMaterial({
+      color: 0x3159a6
+    })
+  );
+
+  checkPanel.position.set(
+    0,
+    0.9,
+    -2.3
+  );
+
+  const checkPanelEntity =
+    world.createTransformEntity(checkPanel);
+
+  checkPanelEntity.addComponent(
+    RayInteractable
+  );
+
+  createLabel(
+    "CHECK RECALL",
+    [0, 0.9, -2.24],
+    1.5,
+    0.28
+  );
+
+  // ---------- SHUFFLE ----------
+
+  function shuffleRecallObjects() {
+    const shuffledSlots = [...recallSlots];
+
+    for (
+      let i = shuffledSlots.length - 1;
+      i > 0;
+      i--
+    ) {
+      const j =
+        Math.floor(
+          Math.random() * (i + 1)
+        );
+
+      [
+        shuffledSlots[i],
+        shuffledSlots[j]
+      ] = [
+        shuffledSlots[j],
+        shuffledSlots[i]
+      ];
+    }
+
+    recallObjects.forEach(
+      (item, index) => {
+        item.object.position.x =
+          shuffledSlots[index];
+
+        item.object.position.y =
+          index % 2 === 0
+            ? 1.35
+            : 0.95;
+      }
+    );
+
+    console.log(
+      "Recall concepts shuffled"
+    );
+  }
+
+  // ---------- START RECALL ----------
+
+  function startRecall() {
+    recallStarted = true;
+
+    shuffleRecallObjects();
+
+    updateLabel(
+      scoreLabel,
+      "Score: --"
+    );
+
+    updateLabel(
+      feedbackLabel,
+      "Arrange the concepts"
+    );
+
+    console.log(
+      "Recall challenge started"
+    );
+  }
+
+  // ---------- CALCULATE SCORE ----------
 
   function calculateRecallScore() {
-    const sortedObjects = [...recallObjects].sort(
-      (a, b) =>
-        a.object.position.x -
-        b.object.position.x
-    );
+    const sortedObjects =
+      [...recallObjects].sort(
+        (a, b) =>
+          a.object.position.x -
+          b.object.position.x
+      );
 
     let correct = 0;
 
-    sortedObjects.forEach((item, index) => {
-      if (item.correctIndex === index) {
-        correct++;
+    sortedObjects.forEach(
+      (item, index) => {
+        if (
+          item.correctIndex === index
+        ) {
+          correct++;
+        }
       }
-    });
+    );
 
     return Math.round(
-      (correct / correctOrder.length) * 100
+      (correct /
+        correctOrder.length) *
+        100
     );
   }
 
   // ---------- CHECK RECALL ----------
 
   function checkRecall() {
-    const score = calculateRecallScore();
+    if (!recallStarted) {
+      updateLabel(
+        feedbackLabel,
+        "Start the challenge first"
+      );
+
+      return;
+    }
+
+    const score =
+      calculateRecallScore();
 
     updateLabel(
       scoreLabel,
       `Score: ${score}%`
     );
 
-    console.log(
-      `Recall Score: ${score}%`
-    );
-
     if (score === 100) {
-      console.log("Excellent recall!");
-    } else if (score >= 60) {
+      updateLabel(
+        feedbackLabel,
+        "Excellent memory!"
+      );
+
       console.log(
-        "Good recall. Review the weak concepts."
+        "Excellent recall!"
+      );
+    } else if (score >= 60) {
+      updateLabel(
+        feedbackLabel,
+        "Good! Review weak concepts."
+      );
+
+      console.log(
+        "Good recall. Review weak concepts."
       );
     } else {
+      updateLabel(
+        feedbackLabel,
+        "Review and try again."
+      );
+
       console.log(
         "More revision recommended."
       );
     }
   }
 
-  // ---------- PANEL INTERACTION ----------
+  // ---------- BUTTON EVENTS ----------
 
-  panel.addEventListener(
+  startPanel.addEventListener(
+    "click",
+    startRecall
+  );
+
+  checkPanel.addEventListener(
     "click",
     checkRecall
   );
 
+  // ---------- GLOBAL TEST FUNCTIONS ----------
+
+  window.startRecall = startRecall;
   window.checkRecall = checkRecall;
 
   console.log(
-    "Recall Challenge ready"
+    "Recall Challenge 2.0 ready"
   );
 });

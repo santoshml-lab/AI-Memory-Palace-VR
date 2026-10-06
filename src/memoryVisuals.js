@@ -17,50 +17,62 @@ function createMaterial(color) {
 
 export function createMemoryVisual(
   conceptName,
-  color
+  color,
+  memoryHint = ""
 ) {
 
   const name =
     conceptName.toLowerCase();
 
+  const hint =
+    memoryHint.toLowerCase();
 
-  // Light / sunlight concepts
+
+  let mesh;
+
+
+  // ---------- LIGHT / SUN / CHLOROPHYLL ----------
+
   if (
     name.includes("light") ||
     name.includes("chlorophyll") ||
-    name.includes("sun")
+    name.includes("sun") ||
+    hint.includes("sun") ||
+    hint.includes("glowing")
   ) {
 
-    const geometry =
-      new SphereGeometry(
-        0.38,
-        24,
-        24
+    mesh =
+      new Mesh(
+        new SphereGeometry(
+          0.38,
+          24,
+          24
+        ),
+        createMaterial(color)
       );
 
-    return new Mesh(
-      geometry,
-      createMaterial(color)
-    );
+    mesh.userData.memoryType =
+      "light";
+
   }
 
 
-  // Water concepts
-  if (
+  // ---------- WATER ----------
+
+  else if (
     name.includes("water") ||
-    name.includes("droplet")
+    name.includes("droplet") ||
+    hint.includes("water") ||
+    hint.includes("droplet")
   ) {
 
-    const geometry =
-      new SphereGeometry(
-        0.32,
-        20,
-        20
-      );
-
-    const mesh =
+    mesh =
       new Mesh(
-        geometry,
+        new SphereGeometry(
+          0.32,
+          20,
+          20
+        ),
         createMaterial(color)
       );
 
@@ -70,64 +82,95 @@ export function createMemoryVisual(
       0.8
     );
 
-    return mesh;
+    mesh.userData.memoryType =
+      "water";
+
   }
 
 
-  // Energy / ATP concepts
-  if (
+  // ---------- ENERGY ----------
+
+  else if (
     name.includes("atp") ||
     name.includes("energy") ||
-    name.includes("electron")
+    name.includes("electron") ||
+    name.includes("nadph") ||
+    hint.includes("battery") ||
+    hint.includes("energy")
   ) {
 
-    const geometry =
-      new TorusGeometry(
-        0.28,
-        0.10,
-        16,
-        32
+    mesh =
+      new Mesh(
+        new TorusGeometry(
+          0.28,
+          0.10,
+          16,
+          32
+        ),
+        createMaterial(color)
       );
 
-    return new Mesh(
-      geometry,
-      createMaterial(color)
-    );
+    mesh.userData.memoryType =
+      "energy";
+
   }
 
 
-  // Process / cycle concepts
-  if (
+  // ---------- CYCLE / PROCESS ----------
+
+  else if (
     name.includes("cycle") ||
     name.includes("process") ||
-    name.includes("transport")
+    name.includes("transport") ||
+    hint.includes("cycle") ||
+    hint.includes("chain")
   ) {
 
-    const geometry =
-      new CylinderGeometry(
-        0.34,
-        0.34,
-        0.55,
-        6
+    mesh =
+      new Mesh(
+        new CylinderGeometry(
+          0.34,
+          0.34,
+          0.55,
+          6
+        ),
+        createMaterial(color)
       );
 
-    return new Mesh(
-      geometry,
-      createMaterial(color)
-    );
+    mesh.userData.memoryType =
+      "process";
+
   }
 
 
-  // Default memory object
-  const geometry =
-    new BoxGeometry(
-      0.6,
-      0.6,
-      0.6
-    );
+  // ---------- DEFAULT ----------
 
-  return new Mesh(
-    geometry,
-    createMaterial(color)
-  );
+  else {
+
+    mesh =
+      new Mesh(
+        new BoxGeometry(
+          0.6,
+          0.6,
+          0.6
+        ),
+        createMaterial(color)
+      );
+
+    mesh.userData.memoryType =
+      "general";
+
+  }
+
+
+  // Store the AI memory hint
+  // for the spatial memory system.
+  mesh.userData.memoryHint =
+    memoryHint;
+
+  mesh.userData.conceptName =
+    conceptName;
+
+
+  return mesh;
 }

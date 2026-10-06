@@ -150,14 +150,35 @@ World.create(sceneContainer, projectOptions).then((world) => {
 
     const entity = world.createTransformEntity(object);
 
-    // Makes the object selectable by the interaction system.
-    entity.addComponent(RayInteractable);
+// Makes the object selectable by the interaction system.
+entity.addComponent(RayInteractable);
 
-    // Enables direct one-hand manipulation.
-    entity.addComponent(OneHandGrabbable, {
-      translate: true,
-      rotate: false
-    });
+// Enables direct one-hand manipulation.
+entity.addComponent(OneHandGrabbable, {
+  translate: true,
+  rotate: false
+});
+
+// Visual interaction feedback.
+const originalScale = object.scale.clone();
+
+object.addEventListener("pointerenter", () => {
+  object.scale.set(
+    originalScale.x * 1.15,
+    originalScale.y * 1.15,
+    originalScale.z * 1.15
+  );
+
+  console.log(`${label} highlighted`);
+});
+
+object.addEventListener("pointerleave", () => {
+  object.scale.copy(originalScale);
+
+  console.log(`${label} highlight removed`);
+});
+
+    
 
     createLabel(
       label,

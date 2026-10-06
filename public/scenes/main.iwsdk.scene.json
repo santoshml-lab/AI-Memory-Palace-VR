@@ -1,16 +1,16 @@
 {
   "version": "iwsdk.scene.v1",
   "units": "meters",
-  "components": {},
   "resources": {},
   "nodes": [
     {
-      "id": "memory-palace-room",
+      "id": "memory-cube",
       "content": {
-        "type": "group"
+        "type": "asset",
+        "asset": "memoryCube"
       },
       "transform": {
-        "position": [0, 0, -2]
+        "position": [0, 1.2, -2]
       }
     }
   ]

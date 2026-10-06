@@ -61,8 +61,8 @@ World.create(sceneContainer, projectOptions).then((world) => {
   function createLabel(
     text,
     position,
-    width = 1.2,
-    height = 0.3
+    width = 1.05,
+    height = 0.26
   ) {
     const canvas = document.createElement("canvas");
 
@@ -84,7 +84,7 @@ World.create(sceneContainer, projectOptions).then((world) => {
     );
 
     context.fillStyle = "#ffffff";
-    context.font = "bold 42px Arial";
+    context.font = "bold 38px Arial";
     context.textAlign = "center";
     context.textBaseline = "middle";
 
@@ -147,7 +147,7 @@ World.create(sceneContainer, projectOptions).then((world) => {
     );
 
     context.fillStyle = "#ffffff";
-    context.font = "bold 42px Arial";
+    context.font = "bold 38px Arial";
     context.textAlign = "center";
     context.textBaseline = "middle";
 
@@ -193,7 +193,8 @@ World.create(sceneContainer, projectOptions).then((world) => {
       position[2]
     );
 
-    const entity = world.createTransformEntity(object);
+    const entity =
+      world.createTransformEntity(object);
 
     entity.addComponent(RayInteractable);
 
@@ -201,6 +202,8 @@ World.create(sceneContainer, projectOptions).then((world) => {
       translate: true,
       rotate: false
     });
+
+    // ---------- HOVER EFFECT ----------
 
     const originalScale = object.scale.clone();
 
@@ -216,14 +219,17 @@ World.create(sceneContainer, projectOptions).then((world) => {
       object.scale.copy(originalScale);
     });
 
-    // Put label slightly in front of the object.
+    // ---------- LABEL ----------
+
     const labelData = createLabel(
       label,
       [
         position[0],
-        position[1] + 0.5,
-        position[2] + 0.15
-      ]
+        position[1] + 0.72,
+        position[2] + 0.18
+      ],
+      1.05,
+      0.26
     );
 
     recallObjects.push({
@@ -277,9 +283,9 @@ World.create(sceneContainer, projectOptions).then((world) => {
 
   const scoreLabel = createLabel(
     "Score: --",
-    [0, 2.25, -2.15],
-    1.8,
-    0.35
+    [0, 2.35, -2.15],
+    1.6,
+    0.32
   );
 
   // ---------- CHECK RECALL PANEL ----------
@@ -302,9 +308,10 @@ World.create(sceneContainer, projectOptions).then((world) => {
 
   panelEntity.addComponent(RayInteractable);
 
-  createLabel(
+  // Put text in front of the panel.
+  const checkLabel = createLabel(
     "CHECK RECALL",
-    [0, 0.35, -2.42],
+    [0, 0.35, -2.24],
     1.5,
     0.28
   );
@@ -341,18 +348,24 @@ World.create(sceneContainer, projectOptions).then((world) => {
       `Score: ${score}%`
     );
 
-    console.log(`Recall Score: ${score}%`);
+    console.log(
+      `Recall Score: ${score}%`
+    );
 
     if (score === 100) {
       console.log("Excellent recall!");
     } else if (score >= 60) {
-      console.log("Good recall. Review the weak concepts.");
+      console.log(
+        "Good recall. Review the weak concepts."
+      );
     } else {
-      console.log("More revision recommended.");
+      console.log(
+        "More revision recommended."
+      );
     }
   }
 
-  // ---------- INTERACTION ----------
+  // ---------- PANEL INTERACTION ----------
 
   panel.addEventListener(
     "click",
@@ -361,5 +374,7 @@ World.create(sceneContainer, projectOptions).then((world) => {
 
   window.checkRecall = checkRecall;
 
-  console.log("Recall Challenge ready");
+  console.log(
+    "Recall Challenge ready"
+  );
 });

@@ -9,6 +9,7 @@ import {
 
 import * as THREE from "three";
 import projectOptions from "virtual:iwsdk-project";
+import { createMemoryVisual } from "./memoryVisuals.js";
 
 import {
   checkBackendHealth,
@@ -304,17 +305,20 @@ World.create(sceneContainer, projectOptions).then((world) => {
     correctIndex
   ) {
 
-    const object =
-      new Mesh(
-        new BoxGeometry(
-          0.6,
-          0.6,
-          0.6
-        ),
-        new MeshBasicMaterial({
-          color
-        })
-      );
+    const object = createMemoryVisual(
+  label,
+  color
+);
+      
+        
+          
+          
+  
+        
+        
+          
+        
+      
 
     object.position.set(
       position[0],

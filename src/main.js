@@ -1,3 +1,4 @@
+import "./style.css";
 import * as THREE from "three";
 
 const app = document.getElementById("app");

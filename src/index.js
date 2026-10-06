@@ -2,6 +2,7 @@ import {
   BoxGeometry,
   Mesh,
   MeshBasicMaterial,
+  PlaneGeometry,
   World
 } from "@iwsdk/core";
 
@@ -16,20 +17,78 @@ if (!(sceneContainer instanceof HTMLDivElement)) {
 World.create(sceneContainer, projectOptions).then((world) => {
   console.log("AI Memory Palace VR started");
 
-  // Set a clear browser camera position for the desktop preview.
+  // Browser preview camera
   world.camera.position.set(0, 1.7, 4);
   world.camera.lookAt(0, 1, 0);
 
-  const cube = new Mesh(
-    new BoxGeometry(0.5, 0.5, 0.5),
-    new MeshBasicMaterial({
-      color: 0x4f8cff
-    })
+  // ---------- MATERIALS ----------
+
+  const floorMaterial = new MeshBasicMaterial({
+    color: 0x20283d
+  });
+
+  const wallMaterial = new MeshBasicMaterial({
+    color: 0x151b2d
+  });
+
+  const accentMaterial = new MeshBasicMaterial({
+    color: 0x4f8cff
+  });
+
+  // ---------- FLOOR ----------
+
+  const floor = new Mesh(
+    new BoxGeometry(6, 0.1, 6),
+    floorMaterial
   );
 
-  cube.position.set(0, 1, -2);
+  floor.position.set(0, -0.05, 0);
 
-  world.createTransformEntity(cube);
+  world.createTransformEntity(floor);
 
-  console.log("Memory Palace test cube created");
+  // ---------- BACK WALL ----------
+
+  const backWall = new Mesh(
+    new BoxGeometry(6, 3, 0.1),
+    wallMaterial
+  );
+
+  backWall.position.set(0, 1.5, -3);
+
+  world.createTransformEntity(backWall);
+
+  // ---------- LEFT WALL ----------
+
+  const leftWall = new Mesh(
+    new BoxGeometry(0.1, 3, 6),
+    wallMaterial
+  );
+
+  leftWall.position.set(-3, 1.5, 0);
+
+  world.createTransformEntity(leftWall);
+
+  // ---------- RIGHT WALL ----------
+
+  const rightWall = new Mesh(
+    new BoxGeometry(0.1, 3, 6),
+    wallMaterial
+  );
+
+  rightWall.position.set(3, 1.5, 0);
+
+  world.createTransformEntity(rightWall);
+
+  // ---------- MEMORY CUBE ----------
+
+  const memoryCube = new Mesh(
+    new BoxGeometry(0.7, 0.7, 0.7),
+    accentMaterial
+  );
+
+  memoryCube.position.set(0, 1, -2);
+
+  world.createTransformEntity(memoryCube);
+
+  console.log("Memory Palace room created");
 });

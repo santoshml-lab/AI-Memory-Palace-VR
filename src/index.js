@@ -2,7 +2,8 @@ import {
   BoxGeometry,
   Mesh,
   MeshBasicMaterial,
-  PlaneGeometry,
+  OneHandGrabbable,
+  RayInteractable,
   World
 } from "@iwsdk/core";
 
@@ -103,9 +104,9 @@ World.create(sceneContainer, projectOptions).then((world) => {
     world.createTransformEntity(label);
   }
 
-  // ---------- MEMORY OBJECT FUNCTION ----------
+  // ---------- STATIC MEMORY OBJECT ----------
 
-  function createMemoryObject(color, position, label) {
+  function createStaticMemoryObject(color, position, label) {
     const object = new Mesh(
       new BoxGeometry(0.55, 0.55, 0.55),
       new MeshBasicMaterial({
@@ -119,7 +120,7 @@ World.create(sceneContainer, projectOptions).then((world) => {
       position[2]
     );
 
-    const entity = world.createTransformEntity(object);
+    world.createTransformEntity(object);
 
     createLabel(
       label,
@@ -129,41 +130,81 @@ World.create(sceneContainer, projectOptions).then((world) => {
         position[2]
       ]
     );
+  }
+
+  // ---------- GRABBABLE MEMORY OBJECT ----------
+
+  function createGrabbableMemoryObject(color, position, label) {
+    const object = new Mesh(
+      new BoxGeometry(0.65, 0.65, 0.65),
+      new MeshBasicMaterial({
+        color
+      })
+    );
+
+    object.position.set(
+      position[0],
+      position[1],
+      position[2]
+    );
+
+    const entity = world.createTransformEntity(object);
+
+    // Makes the object selectable by the interaction system.
+    entity.addComponent(RayInteractable);
+
+    // Enables direct one-hand manipulation.
+    entity.addComponent(OneHandGrabbable, {
+      translate: true,
+      rotate: false
+    });
+
+    createLabel(
+      label,
+      [
+        position[0],
+        position[1] + 0.5,
+        position[2]
+      ]
+    );
 
     return entity;
   }
 
   // ---------- PHOTOSYNTHESIS MEMORY PALACE ----------
 
-  createMemoryObject(
+  // Main concept: GRABBABLE
+  createGrabbableMemoryObject(
     0x4f8cff,
     [0, 1.2, -2],
     "Photosynthesis"
   );
 
-  createMemoryObject(
+  // Supporting concepts: STATIC
+  createStaticMemoryObject(
     0x36d399,
     [-1.3, 1.4, -2.2],
     "Light Energy"
   );
 
-  createMemoryObject(
+  createStaticMemoryObject(
     0xffc857,
     [1.3, 1.4, -2.2],
     "Glucose"
   );
 
-  createMemoryObject(
+  createStaticMemoryObject(
     0xff6b6b,
     [-1.8, 0.8, -2],
     "Water"
   );
 
-  createMemoryObject(
+  createStaticMemoryObject(
     0xb56cff,
     [1.8, 0.8, -2],
     "Oxygen"
   );
 
   console.log("Photosynthesis memory palace created");
+  console.log("Photosynthesis object is ready for one-hand grabbing");
 });

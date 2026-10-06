@@ -101,7 +101,7 @@ World.create(sceneContainer, projectOptions).then((world) => {
       transparent: true
     });
 
-    const label = new Mesh(
+    const label = new THREE.Mesh(
       new THREE.PlaneGeometry(width, height),
       material
     );
@@ -114,7 +114,50 @@ World.create(sceneContainer, projectOptions).then((world) => {
 
     world.createTransformEntity(label);
 
-    return label;
+    return {
+      mesh: label,
+      canvas,
+      context,
+      texture
+    };
+  }
+
+  // ---------- UPDATE LABEL ----------
+
+  function updateLabel(labelData, text) {
+    const {
+      canvas,
+      context,
+      texture
+    } = labelData;
+
+    context.clearRect(
+      0,
+      0,
+      canvas.width,
+      canvas.height
+    );
+
+    context.fillStyle = "rgba(10, 15, 30, 0.95)";
+    context.fillRect(
+      0,
+      0,
+      canvas.width,
+      canvas.height
+    );
+
+    context.fillStyle = "#ffffff";
+    context.font = "bold 42px Arial";
+    context.textAlign = "center";
+    context.textBaseline = "middle";
+
+    context.fillText(
+      text,
+      canvas.width / 2,
+      canvas.height / 2
+    );
+
+    texture.needsUpdate = true;
   }
 
   // ---------- RECALL DATA ----------
@@ -173,19 +216,21 @@ World.create(sceneContainer, projectOptions).then((world) => {
       object.scale.copy(originalScale);
     });
 
-    createLabel(
+    // Put label slightly in front of the object.
+    const labelData = createLabel(
       label,
       [
         position[0],
         position[1] + 0.5,
-        position[2]
+        position[2] + 0.15
       ]
     );
 
     recallObjects.push({
       object,
       label,
-      correctIndex
+      correctIndex,
+      labelData
     });
 
     return entity;
@@ -228,27 +273,14 @@ World.create(sceneContainer, projectOptions).then((world) => {
     4
   );
 
-  // ---------- RECALL ENGINE ----------
+  // ---------- SCORE LABEL ----------
 
-  function calculateRecallScore() {
-    const sortedObjects = [...recallObjects].sort(
-      (a, b) =>
-        a.object.position.x -
-        b.object.position.x
-    );
-
-    let correct = 0;
-
-    sortedObjects.forEach((item, index) => {
-      if (item.correctIndex === index) {
-        correct++;
-      }
-    });
-
-    return Math.round(
-      (correct / correctOrder.length) * 100
-    );
-  }
+  const scoreLabel = createLabel(
+    "Score: --",
+    [0, 2.25, -2.15],
+    1.8,
+    0.35
+  );
 
   // ---------- CHECK RECALL PANEL ----------
 
@@ -272,27 +304,42 @@ World.create(sceneContainer, projectOptions).then((world) => {
 
   createLabel(
     "CHECK RECALL",
-    [0, 0.35, -2.35],
+    [0, 0.35, -2.42],
     1.5,
     0.28
   );
 
-  // ---------- SCORE DISPLAY ----------
+  // ---------- RECALL ENGINE ----------
 
-  const scoreLabel = createLabel(
-    "Score: --",
-    [0, 2.25, -2.3],
-    1.8,
-    0.35
-  );
+  function calculateRecallScore() {
+    const sortedObjects = [...recallObjects].sort(
+      (a, b) =>
+        a.object.position.x -
+        b.object.position.x
+    );
 
-  // ---------- RECALL CHECK ----------
+    let correct = 0;
+
+    sortedObjects.forEach((item, index) => {
+      if (item.correctIndex === index) {
+        correct++;
+      }
+    });
+
+    return Math.round(
+      (correct / correctOrder.length) * 100
+    );
+  }
+
+  // ---------- CHECK RECALL ----------
 
   function checkRecall() {
     const score = calculateRecallScore();
 
-    const canvas =
-      scoreLabel.children[0]?.material?.map?.image;
+    updateLabel(
+      scoreLabel,
+      `Score: ${score}%`
+    );
 
     console.log(`Recall Score: ${score}%`);
 
@@ -305,9 +352,12 @@ World.create(sceneContainer, projectOptions).then((world) => {
     }
   }
 
-  panel.addEventListener("pointerdown", () => {
-    checkRecall();
-  });
+  // ---------- INTERACTION ----------
+
+  panel.addEventListener(
+    "click",
+    checkRecall
+  );
 
   window.checkRecall = checkRecall;
 

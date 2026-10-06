@@ -2,7 +2,9 @@ import {
   BoxGeometry,
   Mesh,
   MeshBasicMaterial,
-  PlaneGeometry,
+  RayInteractable,
+  DistanceGrabbable,
+  MovementMode,
   World
 } from "@iwsdk/core";
 
@@ -31,10 +33,6 @@ World.create(sceneContainer, projectOptions).then((world) => {
     color: 0x151b2d
   });
 
-  const accentMaterial = new MeshBasicMaterial({
-    color: 0x4f8cff
-  });
-
   // ---------- FLOOR ----------
 
   const floor = new Mesh(
@@ -57,38 +55,61 @@ World.create(sceneContainer, projectOptions).then((world) => {
 
   world.createTransformEntity(backWall);
 
-  // ---------- LEFT WALL ----------
+  // ---------- MEMORY OBJECT FUNCTION ----------
 
-  const leftWall = new Mesh(
-    new BoxGeometry(0.1, 3, 6),
-    wallMaterial
+  function createMemoryObject(color, position) {
+    const object = new Mesh(
+      new BoxGeometry(0.55, 0.55, 0.55),
+      new MeshBasicMaterial({
+        color
+      })
+    );
+
+    object.position.set(
+      position[0],
+      position[1],
+      position[2]
+    );
+
+    const entity = world.createTransformEntity(object);
+
+    entity.addComponent(RayInteractable);
+
+    entity.addComponent(DistanceGrabbable, {
+      movementMode: MovementMode.MoveTowardsTarget,
+      moveSpeedFactor: 0.15,
+      targetPositionOffset: [0, 0, -0.3]
+    });
+
+    return entity;
+  }
+
+  // ---------- MEMORY OBJECTS ----------
+
+  createMemoryObject(
+    0x4f8cff,
+    [0, 1.2, -2]
   );
 
-  leftWall.position.set(-3, 1.5, 0);
-
-  world.createTransformEntity(leftWall);
-
-  // ---------- RIGHT WALL ----------
-
-  const rightWall = new Mesh(
-    new BoxGeometry(0.1, 3, 6),
-    wallMaterial
+  createMemoryObject(
+    0x36d399,
+    [-1.3, 1.4, -2.2]
   );
 
-  rightWall.position.set(3, 1.5, 0);
-
-  world.createTransformEntity(rightWall);
-
-  // ---------- MEMORY CUBE ----------
-
-  const memoryCube = new Mesh(
-    new BoxGeometry(0.7, 0.7, 0.7),
-    accentMaterial
+  createMemoryObject(
+    0xffc857,
+    [1.3, 1.4, -2.2]
   );
 
-  memoryCube.position.set(0, 1, -2);
+  createMemoryObject(
+    0xff6b6b,
+    [-1.8, 0.8, -2]
+  );
 
-  world.createTransformEntity(memoryCube);
+  createMemoryObject(
+    0xb56cff,
+    [1.8, 0.8, -2]
+  );
 
-  console.log("Memory Palace room created");
+  console.log("Interactive memory objects created");
 });

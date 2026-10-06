@@ -13,5 +13,7 @@
     "three": "latest",
     "vite": "latest"
   },
-  "devDependencies": {}
+  "devDependencies": {
+    "@iwsdk/vite-plugin-dev": "latest"
+  }
 }

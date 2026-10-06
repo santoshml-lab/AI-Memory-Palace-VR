@@ -23,7 +23,7 @@
   },
   "dev": {
     "emulator": {
-      "enabled": true
+      "device": "metaQuest3"
     }
   }
 }

@@ -1,6 +1,17 @@
 {
   "version": "iwsdk.scene.v1",
   "units": "meters",
+  "components": {},
   "resources": {},
-  "nodes": []
+  "nodes": [
+    {
+      "id": "memory-palace-room",
+      "content": {
+        "type": "group"
+      },
+      "transform": {
+        "position": [0, 0, -2]
+      }
+    }
+  ]
 }

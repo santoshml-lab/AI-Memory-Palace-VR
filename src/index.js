@@ -19,7 +19,8 @@ if (!(sceneContainer instanceof HTMLDivElement)) {
 World.create(sceneContainer, projectOptions).then((world) => {
   console.log("AI Memory Palace VR started");
 
-  // Browser preview camera
+  // ---------- CAMERA ----------
+
   world.camera.position.set(0, 1.7, 4);
   world.camera.lookAt(0, 1, 0);
 
@@ -55,7 +56,7 @@ World.create(sceneContainer, projectOptions).then((world) => {
 
   world.createTransformEntity(backWall);
 
-  // ---------- LABEL FUNCTION ----------
+  // ---------- LABEL ----------
 
   function createLabel(text, position) {
     const canvas = document.createElement("canvas");
@@ -104,37 +105,26 @@ World.create(sceneContainer, projectOptions).then((world) => {
     world.createTransformEntity(label);
   }
 
-  // ---------- STATIC MEMORY OBJECT ----------
+  // ---------- RECALL DATA ----------
 
-  function createStaticMemoryObject(color, position, label) {
-    const object = new Mesh(
-      new BoxGeometry(0.55, 0.55, 0.55),
-      new MeshBasicMaterial({
-        color
-      })
-    );
+  const recallObjects = [];
 
-    object.position.set(
-      position[0],
-      position[1],
-      position[2]
-    );
+  const correctOrder = [
+    "Light Energy",
+    "Water",
+    "Photosynthesis",
+    "Glucose",
+    "Oxygen"
+  ];
 
-    world.createTransformEntity(object);
+  // ---------- GRABBABLE OBJECT ----------
 
-    createLabel(
-      label,
-      [
-        position[0],
-        position[1] + 0.45,
-        position[2]
-      ]
-    );
-  }
-
-  // ---------- GRABBABLE MEMORY OBJECT ----------
-
-  function createGrabbableMemoryObject(color, position, label) {
+  function createRecallObject(
+    color,
+    position,
+    label,
+    correctIndex
+  ) {
     const object = new Mesh(
       new BoxGeometry(0.65, 0.65, 0.65),
       new MeshBasicMaterial({
@@ -150,35 +140,26 @@ World.create(sceneContainer, projectOptions).then((world) => {
 
     const entity = world.createTransformEntity(object);
 
-// Makes the object selectable by the interaction system.
-entity.addComponent(RayInteractable);
+    entity.addComponent(RayInteractable);
 
-// Enables direct one-hand manipulation.
-entity.addComponent(OneHandGrabbable, {
-  translate: true,
-  rotate: false
-});
+    entity.addComponent(OneHandGrabbable, {
+      translate: true,
+      rotate: false
+    });
 
-// Visual interaction feedback.
-const originalScale = object.scale.clone();
+    const originalScale = object.scale.clone();
 
-object.addEventListener("pointerenter", () => {
-  object.scale.set(
-    originalScale.x * 1.15,
-    originalScale.y * 1.15,
-    originalScale.z * 1.15
-  );
+    object.addEventListener("pointerenter", () => {
+      object.scale.set(
+        originalScale.x * 1.15,
+        originalScale.y * 1.15,
+        originalScale.z * 1.15
+      );
+    });
 
-  console.log(`${label} highlighted`);
-});
-
-object.addEventListener("pointerleave", () => {
-  object.scale.copy(originalScale);
-
-  console.log(`${label} highlight removed`);
-});
-
-    
+    object.addEventListener("pointerleave", () => {
+      object.scale.copy(originalScale);
+    });
 
     createLabel(
       label,
@@ -189,43 +170,89 @@ object.addEventListener("pointerleave", () => {
       ]
     );
 
+    recallObjects.push({
+      object,
+      label,
+      correctIndex
+    });
+
     return entity;
   }
 
-  // ---------- PHOTOSYNTHESIS MEMORY PALACE ----------
+  // ---------- RECALL OBJECTS ----------
 
-  // Main concept: GRABBABLE
-  createGrabbableMemoryObject(
-    0x4f8cff,
-    [0, 1.2, -2],
-    "Photosynthesis"
-  );
-
-  // Supporting concepts: STATIC
-  createStaticMemoryObject(
+  createRecallObject(
     0x36d399,
     [-1.3, 1.4, -2.2],
-    "Light Energy"
+    "Light Energy",
+    0
   );
 
-  createStaticMemoryObject(
-    0xffc857,
-    [1.3, 1.4, -2.2],
-    "Glucose"
-  );
-
-  createStaticMemoryObject(
+  createRecallObject(
     0xff6b6b,
     [-1.8, 0.8, -2],
-    "Water"
+    "Water",
+    1
   );
 
-  createStaticMemoryObject(
+  createRecallObject(
+    0x4f8cff,
+    [0, 1.2, -2],
+    "Photosynthesis",
+    2
+  );
+
+  createRecallObject(
+    0xffc857,
+    [1.3, 1.4, -2.2],
+    "Glucose",
+    3
+  );
+
+  createRecallObject(
     0xb56cff,
     [1.8, 0.8, -2],
-    "Oxygen"
+    "Oxygen",
+    4
   );
 
-  console.log("Photosynthesis memory palace created");
-  console.log("Photosynthesis object is ready for one-hand grabbing");
+  // ---------- RECALL ENGINE ----------
+
+  function calculateRecallScore() {
+    const sortedObjects = [...recallObjects].sort(
+      (a, b) => a.object.position.x - b.object.position.x
+    );
+
+    let correct = 0;
+
+    sortedObjects.forEach((item, index) => {
+      if (item.correctIndex === index) {
+        correct++;
+      }
+    });
+
+    const score = Math.round(
+      (correct / correctOrder.length) * 100
+    );
+
+    console.log("Recall order:");
+
+    sortedObjects.forEach((item, index) => {
+      console.log(`${index + 1}. ${item.label}`);
+    });
+
+    console.log(`Recall Score: ${score}%`);
+
+    return score;
+  }
+
+  // ---------- TEST RECALL ----------
+
+  window.calculateRecallScore = calculateRecallScore;
+
+  console.log("Recall Challenge ready");
+  console.log("Correct order:", correctOrder);
+  console.log(
+    "Run calculateRecallScore() in the browser console to test the score."
+  );
 });

@@ -22,7 +22,7 @@ World.create(sceneContainer, projectOptions).then((world) => {
   // ---------- CAMERA ----------
 
   world.camera.position.set(0, 1.7, 4);
-  world.camera.lookAt(0, 1, 0);
+  world.camera.lookAt(0, 1.2, 0);
 
   // ---------- MATERIALS ----------
 
@@ -61,8 +61,8 @@ World.create(sceneContainer, projectOptions).then((world) => {
   function createLabel(
     text,
     position,
-    width = 1.05,
-    height = 0.26
+    width = 0.95,
+    height = 0.24
   ) {
     const canvas = document.createElement("canvas");
 
@@ -75,7 +75,7 @@ World.create(sceneContainer, projectOptions).then((world) => {
       throw new Error("Unable to create label canvas");
     }
 
-    context.fillStyle = "rgba(10, 15, 30, 0.95)";
+    context.fillStyle = "rgba(10, 15, 30, 0.96)";
 
     context.fillRect(
       0,
@@ -85,7 +85,7 @@ World.create(sceneContainer, projectOptions).then((world) => {
     );
 
     context.fillStyle = "#ffffff";
-    context.font = "bold 38px Arial";
+    context.font = "bold 34px Arial";
     context.textAlign = "center";
     context.textBaseline = "middle";
 
@@ -139,7 +139,7 @@ World.create(sceneContainer, projectOptions).then((world) => {
       canvas.height
     );
 
-    context.fillStyle = "rgba(10, 15, 30, 0.95)";
+    context.fillStyle = "rgba(10, 15, 30, 0.96)";
 
     context.fillRect(
       0,
@@ -149,7 +149,7 @@ World.create(sceneContainer, projectOptions).then((world) => {
     );
 
     context.fillStyle = "#ffffff";
-    context.font = "bold 38px Arial";
+    context.font = "bold 34px Arial";
     context.textAlign = "center";
     context.textBaseline = "middle";
 
@@ -175,11 +175,11 @@ World.create(sceneContainer, projectOptions).then((world) => {
   ];
 
   const recallSlots = [
-    -2.0,
-    -1.0,
+    -2,
+    -1,
     0,
-    1.0,
-    2.0
+    1,
+    2
   ];
 
   let recallStarted = false;
@@ -193,7 +193,7 @@ World.create(sceneContainer, projectOptions).then((world) => {
     correctIndex
   ) {
     const object = new Mesh(
-      new BoxGeometry(0.65, 0.65, 0.65),
+      new BoxGeometry(0.6, 0.6, 0.6),
       new MeshBasicMaterial({
         color
       })
@@ -221,9 +221,9 @@ World.create(sceneContainer, projectOptions).then((world) => {
 
     object.addEventListener("pointerenter", () => {
       object.scale.set(
-        originalScale.x * 1.15,
-        originalScale.y * 1.15,
-        originalScale.z * 1.15
+        originalScale.x * 1.12,
+        originalScale.y * 1.12,
+        originalScale.z * 1.12
       );
     });
 
@@ -237,11 +237,11 @@ World.create(sceneContainer, projectOptions).then((world) => {
       label,
       [
         position[0],
-        position[1] + 0.72,
+        position[1] + 0.48,
         position[2] + 0.18
       ],
-      1.05,
-      0.26
+      0.95,
+      0.24
     );
 
     recallObjects.push({
@@ -258,35 +258,35 @@ World.create(sceneContainer, projectOptions).then((world) => {
 
   createRecallObject(
     0x36d399,
-    [-1.3, 1.4, -2.2],
+    [-2, 1.25, -2.1],
     "Light Energy",
     0
   );
 
   createRecallObject(
     0xff6b6b,
-    [-1.8, 0.8, -2],
+    [-1, 1.25, -2.1],
     "Water",
     1
   );
 
   createRecallObject(
     0x4f8cff,
-    [0, 1.2, -2],
+    [0, 1.25, -2.1],
     "Photosynthesis",
     2
   );
 
   createRecallObject(
     0xffc857,
-    [1.3, 1.4, -2.2],
+    [1, 1.25, -2.1],
     "Glucose",
     3
   );
 
   createRecallObject(
     0xb56cff,
-    [1.8, 0.8, -2],
+    [2, 1.25, -2.1],
     "Oxygen",
     4
   );
@@ -297,7 +297,7 @@ World.create(sceneContainer, projectOptions).then((world) => {
     recallObjects.forEach((item) => {
       item.labelData.mesh.position.set(
         item.object.position.x,
-        item.object.position.y + 0.72,
+        item.object.position.y + 0.48,
         item.object.position.z + 0.18
       );
     });
@@ -307,55 +307,28 @@ World.create(sceneContainer, projectOptions).then((world) => {
 
   updateObjectLabels();
 
-  // ---------- SCORE LABEL ----------
+  // ---------- SCORE ----------
 
   const scoreLabel = createLabel(
     "Score: --",
-    [0, 2.35, -2.15],
-    1.6,
-    0.32
+    [0, 2.45, -2.15],
+    1.5,
+    0.3
   );
 
-  // ---------- FEEDBACK LABEL ----------
+  // ---------- FEEDBACK ----------
 
   const feedbackLabel = createLabel(
-    "Press START RECALL",
-    [0, 1.95, -2.15],
-    2.1,
-    0.28
-  );
-
-  // ---------- START RECALL PANEL ----------
-
-  const startPanel = new Mesh(
-    new BoxGeometry(1.8, 0.5, 0.08),
-    new MeshBasicMaterial({
-      color: 0x36a269
-    })
-  );
-
-  startPanel.position.set(
-    0,
-    0.35,
-    -2.3
-  );
-
-  const startPanelEntity =
-    world.createTransformEntity(startPanel);
-
-  startPanelEntity.addComponent(RayInteractable);
-
-  createLabel(
-    "START RECALL",
-    [0, 0.35, -2.24],
-    1.5,
-    0.28
+    "Ready for recall?",
+    [0, 2.05, -2.15],
+    2.0,
+    0.26
   );
 
   // ---------- CHECK RECALL PANEL ----------
 
   const checkPanel = new Mesh(
-    new BoxGeometry(1.8, 0.5, 0.08),
+    new BoxGeometry(1.7, 0.45, 0.08),
     new MeshBasicMaterial({
       color: 0x3159a6
     })
@@ -363,7 +336,7 @@ World.create(sceneContainer, projectOptions).then((world) => {
 
   checkPanel.position.set(
     0,
-    0.9,
+    0.62,
     -2.3
   );
 
@@ -376,15 +349,46 @@ World.create(sceneContainer, projectOptions).then((world) => {
 
   createLabel(
     "CHECK RECALL",
-    [0, 0.9, -2.24],
-    1.5,
-    0.28
+    [0, 0.62, -2.24],
+    1.45,
+    0.25
+  );
+
+  // ---------- START RECALL PANEL ----------
+
+  const startPanel = new Mesh(
+    new BoxGeometry(1.7, 0.45, 0.08),
+    new MeshBasicMaterial({
+      color: 0x36a269
+    })
+  );
+
+  startPanel.position.set(
+    0,
+    0.08,
+    -2.3
+  );
+
+  const startPanelEntity =
+    world.createTransformEntity(startPanel);
+
+  startPanelEntity.addComponent(
+    RayInteractable
+  );
+
+  createLabel(
+    "START RECALL",
+    [0, 0.08, -2.24],
+    1.45,
+    0.25
   );
 
   // ---------- SHUFFLE ----------
 
   function shuffleRecallObjects() {
-    const shuffledSlots = [...recallSlots];
+    const shuffledSlots = [
+      ...recallSlots
+    ];
 
     for (
       let i = shuffledSlots.length - 1;
@@ -411,9 +415,10 @@ World.create(sceneContainer, projectOptions).then((world) => {
           shuffledSlots[index];
 
         item.object.position.y =
-          index % 2 === 0
-            ? 1.35
-            : 0.95;
+          1.25;
+
+        item.object.position.z =
+          -2.1;
       }
     );
 
@@ -479,7 +484,7 @@ World.create(sceneContainer, projectOptions).then((world) => {
     if (!recallStarted) {
       updateLabel(
         feedbackLabel,
-        "Start the challenge first"
+        "Start recall first"
       );
 
       return;

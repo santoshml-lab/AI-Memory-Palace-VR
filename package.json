@@ -9,12 +9,13 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "@iwsdk/core": "latest",
-    "three": "latest",
-    "vite": "latest"
+    "@iwsdk/core": "1.0.1",
+    "elics": "0.1.0",
+    "three": "0.180.0",
+    "vite": "7.3.7"
   },
   "devDependencies": {
-    "@iwsdk/vite-plugin-dev": "latest"
+    "@iwsdk/vite-plugin-dev": "1.0.0-rc.2"
   }
 }
 

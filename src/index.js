@@ -299,16 +299,24 @@ World.create(sceneContainer, projectOptions).then((world) => {
   // =========================================================
 
   function createRecallObject(
-    color,
-    position,
-    label,
-    correctIndex
-  ) {
+  color,
+  position,
+  label,
+  correctIndex,
+  memoryHint = ""
+)
+    
+  
+  
 
     const object = createMemoryVisual(
   label,
-  color
+  color,
+  memoryHint
 );
+  
+  
+
       
         
           

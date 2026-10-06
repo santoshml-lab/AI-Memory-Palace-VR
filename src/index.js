@@ -9,6 +9,7 @@ import {
 
 import * as THREE from "three";
 import projectOptions from "virtual:iwsdk-project";
+import { checkBackendHealth } from "./api.js";
 
 const sceneContainer = document.getElementById("scene-container");
 
@@ -18,6 +19,19 @@ if (!(sceneContainer instanceof HTMLDivElement)) {
 
 World.create(sceneContainer, projectOptions).then((world) => {
   console.log("AI Memory Palace VR started");
+
+  // ---------- BACKEND CONNECTION ----------
+
+  checkBackendHealth()
+    .then((data) => {
+      console.log("Backend connected:", data);
+    })
+    .catch((error) => {
+      console.error(
+        "Backend connection failed:",
+        error
+      );
+    });
 
   // ---------- CAMERA ----------
 

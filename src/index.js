@@ -17,13 +17,13 @@ World.create(sceneContainer, projectOptions).then((world) => {
   console.log("AI Memory Palace VR started");
 
   const cube = new Mesh(
-    new BoxGeometry(1, 1, 1),
+    new BoxGeometry(0.5, 0.5, 0.5),
     new MeshBasicMaterial({
-      color: 0x6c63ff
+      color: 0x4f8cff
     })
   );
 
-  cube.position.set(0, 1.2, -2);
+  cube.position.set(0, 0.75, -2);
 
   world.createTransformEntity(cube);
 

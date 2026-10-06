@@ -9,6 +9,7 @@ import {
 
 import * as THREE from "three";
 import projectOptions from "virtual:iwsdk-project";
+
 import { createMemoryVisual } from "./memoryVisuals.js";
 
 import {
@@ -299,40 +300,27 @@ World.create(sceneContainer, projectOptions).then((world) => {
   // =========================================================
 
   function createRecallObject(
-  color,
-  position,
-  label,
-  correctIndex,
-  memoryHint = ""
-)
-    
-  
-  
+    color,
+    position,
+    label,
+    correctIndex,
+    memoryHint = ""
+  ) {
 
-    const object = createMemoryVisual(
-  label,
-  color,
-  memoryHint
-);
-  
-  
+    const object =
+      createMemoryVisual(
+        label,
+        color,
+        memoryHint
+      );
 
-      
-        
-          
-          
-  
-        
-        
-          
-        
-      
 
     object.position.set(
       position[0],
       position[1],
       position[2]
     );
+
 
     const entity =
       world.createTransformEntity(
@@ -401,11 +389,21 @@ World.create(sceneContainer, projectOptions).then((world) => {
       );
 
 
+    // ---------- MEMORY DATA ----------
+
+    object.userData.memoryHint =
+      memoryHint;
+
+    object.userData.conceptName =
+      label;
+
+
     recallObjects.push({
       object,
       label,
       correctIndex,
-      labelData
+      labelData,
+      memoryHint
     });
 
 
@@ -560,6 +558,7 @@ World.create(sceneContainer, projectOptions).then((world) => {
       })
     );
 
+
   checkPanel.position.set(
     0,
     0.62,
@@ -638,7 +637,7 @@ World.create(sceneContainer, projectOptions).then((world) => {
 
 
   // =========================================================
-  // AI CONCEPT GENERATION
+  // APPLY AI CONCEPTS
   // =========================================================
 
   function applyAIConcepts(
@@ -656,7 +655,6 @@ World.create(sceneContainer, projectOptions).then((world) => {
       );
 
       return;
-
     }
 
 
@@ -692,12 +690,29 @@ World.create(sceneContainer, projectOptions).then((world) => {
         }
 
 
+        // ---------- CONCEPT DATA ----------
+
         item.label =
           concept.name;
 
         item.correctIndex =
           index;
 
+        item.memoryHint =
+          concept.memory_hint || "";
+
+
+        item.object.userData.memoryHint =
+          concept.memory_hint || "";
+
+        item.object.userData.description =
+          concept.description || "";
+
+        item.object.userData.conceptName =
+          concept.name;
+
+
+        // ---------- LABEL ----------
 
         updateLabel(
           item.labelData,
@@ -705,15 +720,32 @@ World.create(sceneContainer, projectOptions).then((world) => {
         );
 
 
-        item.object.material.color.setHex(
-          colors[index]
-        );
+        // ---------- COLOR ----------
 
+        if (
+          item.object.material &&
+          item.object.material.color
+        ) {
+
+          item.object.material.color.setHex(
+            colors[index]
+          );
+
+        }
+
+
+        // ---------- POSITION ----------
 
         item.object.position.set(
           recallSlots[index],
           1.25,
           -2.1
+        );
+
+
+        console.log(
+          "Memory hint:",
+          concept.memory_hint
         );
 
       }
@@ -750,6 +782,10 @@ World.create(sceneContainer, projectOptions).then((world) => {
   }
 
 
+  // =========================================================
+  // GENERATE AI CONCEPTS
+  // =========================================================
+
   async function generateAIConcepts(
     topic
   ) {
@@ -766,7 +802,6 @@ World.create(sceneContainer, projectOptions).then((world) => {
       );
 
       return;
-
     }
 
 
@@ -1125,7 +1160,6 @@ World.create(sceneContainer, projectOptions).then((world) => {
       );
 
       return;
-
     }
 
 

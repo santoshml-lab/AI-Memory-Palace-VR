@@ -863,6 +863,8 @@ World.create(sceneContainer, projectOptions).then((world) => {
     // EVENTS
     // -------------------------------------------------------
 
+    canvas.style.touchAction = "none";
+
     canvas.addEventListener(
       "pointerdown",
       handlePointerDown

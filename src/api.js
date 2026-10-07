@@ -44,5 +44,32 @@ export async function generateConcepts(topic) {
   return response.json();
 }
 
+export async function generateRevision(topic, weakConcepts) {
+  const response = await fetch(
+    `${API_BASE_URL}/generate-revision`,
+    {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        topic,
+        weak_concepts: weakConcepts
+      })
+    }
+  );
+
+  if (!response.ok) {
+    const errorText = await response.text();
+
+    throw new Error(
+      `Revision generation failed: ${response.status} ${errorText}`
+    );
+  }
+
+  return response.json();
+}
+
+export { API_BASE_URL };
 
 export { API_BASE_URL };

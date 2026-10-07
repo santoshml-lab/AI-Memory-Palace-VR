@@ -14,7 +14,8 @@ import { createMemoryVisual } from "./memoryVisuals.js";
 
 import {
   checkBackendHealth,
-  generateConcepts
+  generateConcepts,
+  generateRevision
 } from "./api.js";
 
 
@@ -49,18 +50,22 @@ World.create(sceneContainer, projectOptions).then((world) => {
 
 
   // =========================================================
+  // CURRENT TOPIC
+  // =========================================================
+
+  let currentTopic =
+    "Photosynthesis";
+
+
+  // =========================================================
   // CAMERA
   // =========================================================
 
   world.camera.position.set(
-  0,
-  1.7,
-  5
-);
-    
-    
-    
-  
+    0,
+    1.7,
+    5
+  );
 
   world.camera.lookAt(
     0,
@@ -288,18 +293,12 @@ World.create(sceneContainer, projectOptions).then((world) => {
   let correctOrder = [];
 
   const recallSlots = [
-  -1.6,
-  -0.8,
-  0,
-  0.8,
-  1.6
-];
-    
-    
-  
-    
-    
-  
+    -1.6,
+    -0.8,
+    0,
+    0.8,
+    1.6
+  ];
 
   let recallStarted =
     false;
@@ -473,16 +472,9 @@ World.create(sceneContainer, projectOptions).then((world) => {
     }
   );
 
-    // =========================================================
-  // DESKTOP 3D DRAG ADAPTER
+
   // =========================================================
-  // Desktop testing only.
-  //
-  // Mouse:
-  //   Drag       -> X / Y movement
-  //   Wheel      -> Z movement
-  //
-  // XR / Meta Quest interaction is NOT modified here.
+  // DESKTOP 3D DRAG ADAPTER
   // =========================================================
 
   function setupDesktop3DDrag() {
@@ -503,55 +495,38 @@ World.create(sceneContainer, projectOptions).then((world) => {
     const raycaster =
       new THREE.Raycaster();
 
-
     const pointer =
       new THREE.Vector2();
-
 
     const dragPlane =
       new THREE.Plane();
 
-
-    const planePoint =
+    const intersection =
       new THREE.Vector3();
-
 
     const dragOffset =
       new THREE.Vector3();
 
-
-    const intersection =
-      new THREE.Vector3();
-
-
     let selectedObject =
       null;
-
 
     let isDragging =
       false;
 
-
     let dragDepth =
       0;
 
-
-    // -------------------------------------------------------
-    // POINTER -> NORMALIZED DEVICE COORDINATES
-    // -------------------------------------------------------
 
     function updatePointer(event) {
 
       const rect =
         canvas.getBoundingClientRect();
 
-
       pointer.x =
         (
           (event.clientX - rect.left) /
           rect.width
         ) * 2 - 1;
-
 
       pointer.y =
         -(
@@ -562,33 +537,25 @@ World.create(sceneContainer, projectOptions).then((world) => {
     }
 
 
-    // -------------------------------------------------------
-    // FIND MEMORY OBJECT UNDER MOUSE
-    // -------------------------------------------------------
-
     function findMemoryObject(event) {
 
       updatePointer(event);
-
 
       raycaster.setFromCamera(
         pointer,
         world.camera
       );
 
-
       const meshes =
         recallObjects.map(
           (item) => item.object
         );
-
 
       const intersections =
         raycaster.intersectObjects(
           meshes,
           true
         );
-
 
       if (
         intersections.length === 0
@@ -602,9 +569,6 @@ World.create(sceneContainer, projectOptions).then((world) => {
       let hit =
         intersections[0].object;
 
-
-      // Walk up until we reach
-      // one of our memory objects.
 
       while (
         hit &&
@@ -621,10 +585,6 @@ World.create(sceneContainer, projectOptions).then((world) => {
 
     }
 
-
-    // -------------------------------------------------------
-    // POINTER DOWN
-    // -------------------------------------------------------
 
     function handlePointerDown(event) {
 
@@ -651,7 +611,6 @@ World.create(sceneContainer, projectOptions).then((world) => {
       selectedObject =
         object;
 
-
       isDragging =
         true;
 
@@ -660,9 +619,6 @@ World.create(sceneContainer, projectOptions).then((world) => {
         event.pointerId
       );
 
-
-      // Create a horizontal/vertical
-      // screen-facing drag plane.
 
       const cameraDirection =
         new THREE.Vector3();
@@ -718,10 +674,6 @@ World.create(sceneContainer, projectOptions).then((world) => {
     }
 
 
-    // -------------------------------------------------------
-    // POINTER MOVE
-    // -------------------------------------------------------
-
     function handlePointerMove(event) {
 
       if (
@@ -735,7 +687,6 @@ World.create(sceneContainer, projectOptions).then((world) => {
 
 
       updatePointer(event);
-
 
       raycaster.setFromCamera(
         pointer,
@@ -754,16 +705,12 @@ World.create(sceneContainer, projectOptions).then((world) => {
           intersection.x +
           dragOffset.x;
 
-
         selectedObject.position.y =
           intersection.y +
           dragOffset.y;
 
       }
 
-
-      // Keep Z controlled separately
-      // through mouse wheel.
 
       selectedObject.position.z =
         dragDepth;
@@ -773,10 +720,6 @@ World.create(sceneContainer, projectOptions).then((world) => {
 
     }
 
-
-    // -------------------------------------------------------
-    // MOUSE WHEEL -> Z AXIS
-    // -------------------------------------------------------
 
     function handleWheel(event) {
 
@@ -806,10 +749,6 @@ World.create(sceneContainer, projectOptions).then((world) => {
 
     }
 
-
-    // -------------------------------------------------------
-    // POINTER UP
-    // -------------------------------------------------------
 
     function handlePointerUp(event) {
 
@@ -855,7 +794,6 @@ World.create(sceneContainer, projectOptions).then((world) => {
       selectedObject =
         null;
 
-
       isDragging =
         false;
 
@@ -869,35 +807,29 @@ World.create(sceneContainer, projectOptions).then((world) => {
     }
 
 
-    // -------------------------------------------------------
-    // EVENTS
-    // -------------------------------------------------------
+    canvas.style.touchAction =
+      "none";
 
-    canvas.style.touchAction = "none";
 
     canvas.addEventListener(
       "pointerdown",
       handlePointerDown
     );
 
-
     canvas.addEventListener(
       "pointermove",
       handlePointerMove
     );
-
 
     canvas.addEventListener(
       "pointerup",
       handlePointerUp
     );
 
-
     canvas.addEventListener(
       "pointercancel",
       handlePointerUp
     );
-
 
     canvas.addEventListener(
       "wheel",
@@ -1144,8 +1076,6 @@ World.create(sceneContainer, projectOptions).then((world) => {
         }
 
 
-        // ---------- CONCEPT DATA ----------
-
         item.label =
           concept.name;
 
@@ -1166,15 +1096,11 @@ World.create(sceneContainer, projectOptions).then((world) => {
           concept.name;
 
 
-        // ---------- LABEL ----------
-
         updateLabel(
           item.labelData,
           concept.name
         );
 
-
-        // ---------- COLOR ----------
 
         if (
           item.object.material &&
@@ -1187,8 +1113,6 @@ World.create(sceneContainer, projectOptions).then((world) => {
 
         }
 
-
-        // ---------- POSITION ----------
 
         item.object.position.set(
           recallSlots[index],
@@ -1257,6 +1181,10 @@ World.create(sceneContainer, projectOptions).then((world) => {
 
       return;
     }
+
+
+    currentTopic =
+      cleanTopic;
 
 
     updateLabel(
@@ -1601,10 +1529,203 @@ World.create(sceneContainer, projectOptions).then((world) => {
 
 
   // =========================================================
+  // GET WEAK CONCEPTS
+  // =========================================================
+
+  function getWeakConcepts() {
+
+    const sortedObjects =
+      [
+        ...recallObjects
+      ].sort(
+        (a, b) =>
+          a.object.position.x -
+          b.object.position.x
+      );
+
+
+    const weakConcepts = [];
+
+
+    sortedObjects.forEach(
+      (item, index) => {
+
+        if (
+          item.correctIndex !==
+          index
+        ) {
+
+          weakConcepts.push(
+            item.label
+          );
+
+        }
+
+      }
+    );
+
+
+    return [
+      ...new Set(
+        weakConcepts
+      )
+    ];
+
+  }
+
+
+  // =========================================================
+  // GENERATE ADAPTIVE REVISION
+  // =========================================================
+
+  async function generateAdaptiveRevision(
+    weakConcepts
+  ) {
+
+    if (
+      !weakConcepts.length
+    ) {
+
+      return;
+
+    }
+
+
+    updateLabel(
+      aiStatusLabel,
+      "AI Revision..."
+    );
+
+
+    updateLabel(
+      feedbackLabel,
+      "Finding weak concepts"
+    );
+
+
+    try {
+
+      const result =
+        await generateRevision(
+          currentTopic,
+          weakConcepts
+        );
+
+
+      console.log(
+        "Adaptive revision response:",
+        result
+      );
+
+
+      if (
+        !result.revision ||
+        !Array.isArray(result.revision) ||
+        result.revision.length === 0
+      ) {
+
+        updateLabel(
+          aiStatusLabel,
+          "AI Revision Ready"
+        );
+
+        updateLabel(
+          feedbackLabel,
+          "Review weak concepts"
+        );
+
+        return;
+
+      }
+
+
+      // -----------------------------------------------------
+      // SHOW FIRST REVISION RESULT IN VR FEEDBACK
+      // -----------------------------------------------------
+
+      const firstRevision =
+        result.revision[0];
+
+
+      const conceptName =
+        firstRevision.concept ||
+        weakConcepts[0];
+
+
+      const challenge =
+        firstRevision.challenge ||
+        "Try recalling this concept again.";
+
+
+      updateLabel(
+        aiStatusLabel,
+        `Revise: ${conceptName}`
+      );
+
+
+      updateLabel(
+        feedbackLabel,
+        challenge
+      );
+
+
+      console.log(
+        "AI Revision:",
+        result.revision
+      );
+
+
+      result.revision.forEach(
+        (revision) => {
+
+          console.log(
+            `Revision concept: ${revision.concept}`
+          );
+
+          console.log(
+            `Explanation: ${revision.explanation}`
+          );
+
+          console.log(
+            `Memory hint: ${revision.memory_hint}`
+          );
+
+          console.log(
+            `Challenge: ${revision.challenge}`
+          );
+
+        }
+      );
+
+    } catch (error) {
+
+      console.error(
+        "Adaptive revision failed:",
+        error
+      );
+
+
+      updateLabel(
+        aiStatusLabel,
+        "Revision unavailable"
+      );
+
+
+      updateLabel(
+        feedbackLabel,
+        "Review weak concepts manually"
+      );
+
+    }
+
+  }
+
+
+  // =========================================================
   // CHECK RECALL
   // =========================================================
 
-  function checkRecall() {
+  async function checkRecall() {
 
     if (!recallStarted) {
 
@@ -1627,6 +1748,16 @@ World.create(sceneContainer, projectOptions).then((world) => {
     );
 
 
+    const weakConcepts =
+      getWeakConcepts();
+
+
+    console.log(
+      "Weak concepts:",
+      weakConcepts
+    );
+
+
     if (
       score === 100
     ) {
@@ -1636,23 +1767,44 @@ World.create(sceneContainer, projectOptions).then((world) => {
         "Excellent memory!"
       );
 
-    } else if (
+
+      updateLabel(
+        aiStatusLabel,
+        "Memory mastered!"
+      );
+
+
+      return;
+
+    }
+
+
+    if (
       score >= 60
     ) {
 
       updateLabel(
         feedbackLabel,
-        "Good! Review weak concepts."
+        "Good! AI will review weak concepts."
       );
 
     } else {
 
       updateLabel(
         feedbackLabel,
-        "Review and try again."
+        "Let's revise your weak concepts."
       );
 
     }
+
+
+    // -------------------------------------------------------
+    // ADAPTIVE AI REVISION
+    // -------------------------------------------------------
+
+    await generateAdaptiveRevision(
+      weakConcepts
+    );
 
 
     console.log(

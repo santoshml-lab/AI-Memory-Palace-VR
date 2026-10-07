@@ -1728,6 +1728,12 @@ World.create(sceneContainer, projectOptions).then((world) => {
         memoryHint
       );
 
+      console.log(
+  "VISIBLE REVISION TEST:",
+  conceptName,
+  memoryHint
+);
+
 
       console.log(
         "Revision explanation:",

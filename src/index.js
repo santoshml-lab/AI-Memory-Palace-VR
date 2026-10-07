@@ -53,10 +53,14 @@ World.create(sceneContainer, projectOptions).then((world) => {
   // =========================================================
 
   world.camera.position.set(
-    0,
-    1.7,
-    4
-  );
+  0,
+  1.7,
+  5
+);
+    
+    
+    
+  
 
   world.camera.lookAt(
     0,
@@ -284,12 +288,18 @@ World.create(sceneContainer, projectOptions).then((world) => {
   let correctOrder = [];
 
   const recallSlots = [
-    -2,
-    -1,
-    0,
-    1,
-    2
-  ];
+  -1.6,
+  -0.8,
+  0,
+  0.8,
+  1.6
+];
+    
+    
+  
+    
+    
+  
 
   let recallStarted =
     false;

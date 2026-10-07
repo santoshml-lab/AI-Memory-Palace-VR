@@ -463,6 +463,448 @@ World.create(sceneContainer, projectOptions).then((world) => {
     }
   );
 
+    // =========================================================
+  // DESKTOP 3D DRAG ADAPTER
+  // =========================================================
+  // Desktop testing only.
+  //
+  // Mouse:
+  //   Drag       -> X / Y movement
+  //   Wheel      -> Z movement
+  //
+  // XR / Meta Quest interaction is NOT modified here.
+  // =========================================================
+
+  function setupDesktop3DDrag() {
+
+    const canvas =
+      sceneContainer.querySelector("canvas");
+
+    if (!(canvas instanceof HTMLCanvasElement)) {
+
+      console.warn(
+        "Desktop 3D Drag: canvas not found"
+      );
+
+      return;
+    }
+
+
+    const raycaster =
+      new THREE.Raycaster();
+
+
+    const pointer =
+      new THREE.Vector2();
+
+
+    const dragPlane =
+      new THREE.Plane();
+
+
+    const planePoint =
+      new THREE.Vector3();
+
+
+    const dragOffset =
+      new THREE.Vector3();
+
+
+    const intersection =
+      new THREE.Vector3();
+
+
+    let selectedObject =
+      null;
+
+
+    let isDragging =
+      false;
+
+
+    let dragDepth =
+      0;
+
+
+    // -------------------------------------------------------
+    // POINTER -> NORMALIZED DEVICE COORDINATES
+    // -------------------------------------------------------
+
+    function updatePointer(event) {
+
+      const rect =
+        canvas.getBoundingClientRect();
+
+
+      pointer.x =
+        (
+          (event.clientX - rect.left) /
+          rect.width
+        ) * 2 - 1;
+
+
+      pointer.y =
+        -(
+          (event.clientY - rect.top) /
+          rect.height
+        ) * 2 + 1;
+
+    }
+
+
+    // -------------------------------------------------------
+    // FIND MEMORY OBJECT UNDER MOUSE
+    // -------------------------------------------------------
+
+    function findMemoryObject(event) {
+
+      updatePointer(event);
+
+
+      raycaster.setFromCamera(
+        pointer,
+        world.camera
+      );
+
+
+      const meshes =
+        recallObjects.map(
+          (item) => item.object
+        );
+
+
+      const intersections =
+        raycaster.intersectObjects(
+          meshes,
+          true
+        );
+
+
+      if (
+        intersections.length === 0
+      ) {
+
+        return null;
+
+      }
+
+
+      let hit =
+        intersections[0].object;
+
+
+      // Walk up until we reach
+      // one of our memory objects.
+
+      while (
+        hit &&
+        !meshes.includes(hit)
+      ) {
+
+        hit =
+          hit.parent;
+
+      }
+
+
+      return hit || null;
+
+    }
+
+
+    // -------------------------------------------------------
+    // POINTER DOWN
+    // -------------------------------------------------------
+
+    function handlePointerDown(event) {
+
+      if (
+        event.button !== 0
+      ) {
+
+        return;
+
+      }
+
+
+      const object =
+        findMemoryObject(event);
+
+
+      if (!object) {
+
+        return;
+
+      }
+
+
+      selectedObject =
+        object;
+
+
+      isDragging =
+        true;
+
+
+      canvas.setPointerCapture(
+        event.pointerId
+      );
+
+
+      // Create a horizontal/vertical
+      // screen-facing drag plane.
+
+      const cameraDirection =
+        new THREE.Vector3();
+
+      world.camera.getWorldDirection(
+        cameraDirection
+      );
+
+
+      dragPlane.setFromNormalAndCoplanarPoint(
+        cameraDirection,
+        object.position
+      );
+
+
+      raycaster.setFromCamera(
+        pointer,
+        world.camera
+      );
+
+
+      if (
+        raycaster.ray.intersectPlane(
+          dragPlane,
+          intersection
+        )
+      ) {
+
+        dragOffset.subVectors(
+          object.position,
+          intersection
+        );
+
+      }
+
+
+      dragDepth =
+        object.position.z;
+
+
+      object.userData.desktopDragging =
+        true;
+
+
+      console.log(
+        "Desktop grab:",
+        object.userData.conceptName
+      );
+
+
+      event.preventDefault();
+
+    }
+
+
+    // -------------------------------------------------------
+    // POINTER MOVE
+    // -------------------------------------------------------
+
+    function handlePointerMove(event) {
+
+      if (
+        !isDragging ||
+        !selectedObject
+      ) {
+
+        return;
+
+      }
+
+
+      updatePointer(event);
+
+
+      raycaster.setFromCamera(
+        pointer,
+        world.camera
+      );
+
+
+      if (
+        raycaster.ray.intersectPlane(
+          dragPlane,
+          intersection
+        )
+      ) {
+
+        selectedObject.position.x =
+          intersection.x +
+          dragOffset.x;
+
+
+        selectedObject.position.y =
+          intersection.y +
+          dragOffset.y;
+
+      }
+
+
+      // Keep Z controlled separately
+      // through mouse wheel.
+
+      selectedObject.position.z =
+        dragDepth;
+
+
+      event.preventDefault();
+
+    }
+
+
+    // -------------------------------------------------------
+    // MOUSE WHEEL -> Z AXIS
+    // -------------------------------------------------------
+
+    function handleWheel(event) {
+
+      if (
+        !isDragging ||
+        !selectedObject
+      ) {
+
+        return;
+
+      }
+
+
+      const zStep =
+        event.deltaY * 0.002;
+
+
+      selectedObject.position.z +=
+        zStep;
+
+
+      dragDepth =
+        selectedObject.position.z;
+
+
+      event.preventDefault();
+
+    }
+
+
+    // -------------------------------------------------------
+    // POINTER UP
+    // -------------------------------------------------------
+
+    function handlePointerUp(event) {
+
+      if (!isDragging) {
+
+        return;
+
+      }
+
+
+      if (
+        canvas.hasPointerCapture(
+          event.pointerId
+        )
+      ) {
+
+        canvas.releasePointerCapture(
+          event.pointerId
+        );
+
+      }
+
+
+      if (selectedObject) {
+
+        selectedObject.userData.desktopDragging =
+          false;
+
+
+        console.log(
+          "Desktop release:",
+          selectedObject.userData.conceptName,
+          {
+            x: selectedObject.position.x.toFixed(2),
+            y: selectedObject.position.y.toFixed(2),
+            z: selectedObject.position.z.toFixed(2)
+          }
+        );
+
+      }
+
+
+      selectedObject =
+        null;
+
+
+      isDragging =
+        false;
+
+
+      dragOffset.set(
+        0,
+        0,
+        0
+      );
+
+    }
+
+
+    // -------------------------------------------------------
+    // EVENTS
+    // -------------------------------------------------------
+
+    canvas.addEventListener(
+      "pointerdown",
+      handlePointerDown
+    );
+
+
+    canvas.addEventListener(
+      "pointermove",
+      handlePointerMove
+    );
+
+
+    canvas.addEventListener(
+      "pointerup",
+      handlePointerUp
+    );
+
+
+    canvas.addEventListener(
+      "pointercancel",
+      handlePointerUp
+    );
+
+
+    canvas.addEventListener(
+      "wheel",
+      handleWheel,
+      {
+        passive: false
+      }
+    );
+
+
+    console.log(
+      "Desktop 3D Drag Adapter ready"
+    );
+
+  }
+
+
+  setupDesktop3DDrag();
+
 
   // =========================================================
   // KEEP LABELS WITH OBJECTS

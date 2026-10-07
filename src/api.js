@@ -70,6 +70,6 @@ export async function generateRevision(topic, weakConcepts) {
   return response.json();
 }
 
-export { API_BASE_URL };
+
 
 export { API_BASE_URL };

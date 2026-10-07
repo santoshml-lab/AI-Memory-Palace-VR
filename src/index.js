@@ -926,6 +926,18 @@ World.create(sceneContainer, projectOptions).then((world) => {
       2.2,
       0.28
     );
+  
+  const revisionLabel =
+  createLabel(
+    "AI Revision: Waiting...",
+    [
+      0,
+      1.68,
+      -2.15
+    ],
+    2.4,
+    0.26
+  );
 
 
   // =========================================================
@@ -1603,6 +1615,11 @@ World.create(sceneContainer, projectOptions).then((world) => {
       `AI Revision: ${weakConcepts.join(", ")}`
     );
 
+    updateLabel(
+  revisionLabel,
+  `Weak: ${weakConcepts.join(", ")}`
+);
+
 
     updateLabel(
       feedbackLabel,
@@ -1718,15 +1735,29 @@ World.create(sceneContainer, projectOptions).then((world) => {
       // -----------------------------------------------------
 
       updateLabel(
-        aiStatusLabel,
-        `Revise: ${conceptName}`
-      );
+  aiStatusLabel,
+  `Revise: ${conceptName}`
+);
+
+updateLabel(
+  revisionLabel,
+  `Hint: ${memoryHint}`
+);
+
+updateLabel(
+  feedbackLabel,
+  explanation
+);
+        
+        
 
 
-      updateLabel(
-        feedbackLabel,
-        memoryHint
-      );
+      
+        
+        
+      
+
+      
 
       console.log(
   "VISIBLE REVISION TEST:",

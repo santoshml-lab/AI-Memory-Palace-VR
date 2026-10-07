@@ -1474,6 +1474,12 @@ World.create(sceneContainer, projectOptions).then((world) => {
     );
 
 
+    updateLabel(
+      aiStatusLabel,
+      "Recall Challenge"
+    );
+
+
     console.log(
       "Recall challenge started"
     );
@@ -1583,7 +1589,8 @@ World.create(sceneContainer, projectOptions).then((world) => {
   ) {
 
     if (
-      !weakConcepts.length
+      !weakConcepts ||
+      weakConcepts.length === 0
     ) {
 
       return;
@@ -1593,13 +1600,13 @@ World.create(sceneContainer, projectOptions).then((world) => {
 
     updateLabel(
       aiStatusLabel,
-      "AI Revision..."
+      `AI Revision: ${weakConcepts.join(", ")}`
     );
 
 
     updateLabel(
       feedbackLabel,
-      "Finding weak concepts"
+      "Finding weak concepts..."
     );
 
 
@@ -1619,7 +1626,7 @@ World.create(sceneContainer, projectOptions).then((world) => {
 
 
       if (
-        !result.revision ||
+        !result ||
         !Array.isArray(result.revision) ||
         result.revision.length === 0
       ) {
@@ -1640,22 +1647,75 @@ World.create(sceneContainer, projectOptions).then((world) => {
 
 
       // -----------------------------------------------------
-      // SHOW FIRST REVISION RESULT IN VR FEEDBACK
+      // FIRST AI REVISION
       // -----------------------------------------------------
 
-      const firstRevision =
+      const revision =
         result.revision[0];
 
 
       const conceptName =
-        firstRevision.concept ||
+        revision.concept ||
         weakConcepts[0];
 
 
+      const explanation =
+        revision.explanation ||
+        "Review this concept again.";
+
+
+      const memoryHint =
+        revision.memory_hint ||
+        "Create a strong visual memory."
+
+
       const challenge =
-        firstRevision.challenge ||
+        revision.challenge ||
         "Try recalling this concept again.";
 
+
+      // -----------------------------------------------------
+      // FIND WEAK 3D OBJECT
+      // -----------------------------------------------------
+
+      const weakObject =
+        recallObjects.find(
+          (item) =>
+            item.label.toLowerCase() ===
+            conceptName.toLowerCase()
+        );
+
+
+      if (weakObject) {
+
+        weakObject.object.userData.revisionExplanation =
+          explanation;
+
+        weakObject.object.userData.memoryHint =
+          memoryHint;
+
+        weakObject.object.userData.challenge =
+          challenge;
+
+
+        console.log(
+          "Weak 3D object connected:",
+          conceptName
+        );
+
+      } else {
+
+        console.log(
+          "Weak 3D object not found:",
+          conceptName
+        );
+
+      }
+
+
+      // -----------------------------------------------------
+      // SHOW REVISION
+      // -----------------------------------------------------
 
       updateLabel(
         aiStatusLabel,
@@ -1665,33 +1725,47 @@ World.create(sceneContainer, projectOptions).then((world) => {
 
       updateLabel(
         feedbackLabel,
-        challenge
+        memoryHint
       );
 
 
       console.log(
-        "AI Revision:",
-        result.revision
+        "Revision explanation:",
+        explanation
+      );
+
+      console.log(
+        "Revision memory hint:",
+        memoryHint
+      );
+
+      console.log(
+        "Revision challenge:",
+        challenge
       );
 
 
+      // -----------------------------------------------------
+      // LOG ALL AI REVISIONS
+      // -----------------------------------------------------
+
       result.revision.forEach(
-        (revision) => {
+        (item) => {
 
           console.log(
-            `Revision concept: ${revision.concept}`
+            `Revision concept: ${item.concept}`
           );
 
           console.log(
-            `Explanation: ${revision.explanation}`
+            `Explanation: ${item.explanation}`
           );
 
           console.log(
-            `Memory hint: ${revision.memory_hint}`
+            `Memory hint: ${item.memory_hint}`
           );
 
           console.log(
-            `Challenge: ${revision.challenge}`
+            `Challenge: ${item.challenge}`
           );
 
         }
@@ -1735,6 +1809,7 @@ World.create(sceneContainer, projectOptions).then((world) => {
       );
 
       return;
+
     }
 
 
@@ -1802,110 +1877,11 @@ World.create(sceneContainer, projectOptions).then((world) => {
     // ADAPTIVE AI REVISION
     // -------------------------------------------------------
 
-    async function generateAdaptiveRevision(weakConcepts) {
-
-  if (!weakConcepts || weakConcepts.length === 0) {
-    return;
-  }
-
-  try {
-
-    aiStatusLabel.text =
-      `AI Revision: ${weakConcepts.join(", ")}`;
-
-    const result = await generateRevision(
-      currentTopic,
+    await generateAdaptiveRevision(
       weakConcepts
     );
 
-    console.log(
-      "Adaptive revision:",
-      result
-    );
-
-    if (
-      !result ||
-      !result.revision ||
-      result.revision.length === 0
-    ) {
-      feedbackLabel.text =
-        "No revision generated.";
-      return;
-    }
-
-    const revision = result.revision[0];
-
-    console.log(
-      "Revision concept:",
-      revision.concept
-    );
-
-    console.log(
-      "Explanation:",
-      revision.explanation
-    );
-
-    console.log(
-      "Memory hint:",
-      revision.memory_hint
-    );
-
-    console.log(
-      "Challenge:",
-      revision.challenge
-    );
-
-    const weakObject = recallObjects.find(
-      (item) =>
-        item.label.toLowerCase() ===
-        revision.concept.toLowerCase()
-    );
-
-    if (weakObject) {
-
-      weakObject.object.userData.revisionExplanation =
-        revision.explanation;
-
-      weakObject.object.userData.memoryHint =
-        revision.memory_hint;
-
-      weakObject.object.userData.challenge =
-        revision.challenge;
-
-      console.log(
-        "Weak 3D object connected:",
-        revision.concept
-      );
-    }
-
-    aiStatusLabel.text =
-      `Revise: ${revision.concept}`;
-
-    feedbackLabel.text =
-      `${revision.memory_hint} | ${revision.challenge}`;
-
-  } catch (error) {
-
-    console.error(
-      "Adaptive revision error:",
-      error
-    );
-
-    aiStatusLabel.text =
-      "AI revision failed.";
-
-    feedbackLabel.text =
-      "Please try the recall again.";
   }
-    }
-      
-    
-
-
-    
-    
-
-  
 
 
   // =========================================================

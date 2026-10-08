@@ -67,43 +67,18 @@ World.create(sceneContainer, projectOptions).then((world) => {
   world.camera.position.set(
     0,
     1.65,
-    5.2
+    5.4
   );
 
   world.camera.lookAt(
     0,
     1.35,
-    -1.2
+    -1.0
   );
 
 
   // =======================================================
-  // BASIC MATERIALS
-  // =======================================================
-
-  const floorMaterial =
-    new MeshBasicMaterial({
-      color: 0x252c3d
-    });
-
-  const wallMaterial =
-    new MeshBasicMaterial({
-      color: 0x182033
-    });
-
-  const sideWallMaterial =
-    new MeshBasicMaterial({
-      color: 0x202a43
-    });
-
-  const ceilingMaterial =
-    new MeshBasicMaterial({
-      color: 0x111827
-    });
-
-
-  // =======================================================
-  // CREATE BOX
+  // MATERIAL / BOX HELPERS
   // =======================================================
 
   function createBox(
@@ -114,7 +89,7 @@ World.create(sceneContainer, projectOptions).then((world) => {
     position
   ) {
 
-    const box =
+    const mesh =
       new Mesh(
         new BoxGeometry(
           width,
@@ -126,15 +101,15 @@ World.create(sceneContainer, projectOptions).then((world) => {
         })
       );
 
-    box.position.set(
+    mesh.position.set(
       position[0],
       position[1],
       position[2]
     );
 
-    world.createTransformEntity(box);
+    world.createTransformEntity(mesh);
 
-    return box;
+    return mesh;
   }
 
 
@@ -159,13 +134,11 @@ World.create(sceneContainer, projectOptions).then((world) => {
       canvas.getContext("2d");
 
     if (!context) {
-      throw new Error(
-        "Unable to create label canvas"
-      );
+      throw new Error("Unable to create label canvas");
     }
 
     context.fillStyle =
-      "rgba(7, 12, 24, 0.94)";
+      "rgba(5, 10, 20, 0.92)";
 
     context.fillRect(
       0,
@@ -178,7 +151,7 @@ World.create(sceneContainer, projectOptions).then((world) => {
       "#ffffff";
 
     context.font =
-      "bold 34px Arial";
+      "bold 32px Arial";
 
     context.textAlign =
       "center";
@@ -246,7 +219,7 @@ World.create(sceneContainer, projectOptions).then((world) => {
     );
 
     context.fillStyle =
-      "rgba(7, 12, 24, 0.94)";
+      "rgba(5, 10, 20, 0.92)";
 
     context.fillRect(
       0,
@@ -259,7 +232,7 @@ World.create(sceneContainer, projectOptions).then((world) => {
       "#ffffff";
 
     context.font =
-      "bold 34px Arial";
+      "bold 32px Arial";
 
     context.textAlign =
       "center";
@@ -278,136 +251,134 @@ World.create(sceneContainer, projectOptions).then((world) => {
 
 
   // =======================================================
-  // 1. FLOOR
+  // ROOM
   // =======================================================
 
-  const floor =
-    new Mesh(
-      new BoxGeometry(
-        6,
-        0.1,
-        6
-      ),
-      floorMaterial
-    );
+  // FLOOR
 
-  floor.position.set(
-    0,
-    -0.05,
-    0
+  createBox(
+    6,
+    0.12,
+    6,
+    0x29354a,
+    [0, -0.06, 0]
   );
 
-  world.createTransformEntity(floor);
 
-
-  // =======================================================
-  // 2. BACK WALL
-  // =======================================================
+  // BACK WALL
 
   createBox(
     6,
     3,
     0.12,
-    0x182033,
+    0x172235,
     [0, 1.5, -3]
   );
 
 
-  // =======================================================
-  // 3. SIDE WALLS
-  // =======================================================
+  // LEFT WALL
 
   createBox(
     0.12,
     3,
     6,
-    0x202a43,
+    0x202d43,
     [-3, 1.5, 0]
   );
 
+
+  // RIGHT WALL
+
   createBox(
     0.12,
     3,
     6,
-    0x202a43,
+    0x202d43,
     [3, 1.5, 0]
   );
 
 
-  // =======================================================
-  // 4. CEILING
-  // =======================================================
+  // CEILING
 
   createBox(
     6,
     0.1,
     6,
-    0x111827,
+    0x101827,
     [0, 3.05, 0]
   );
 
 
   // =======================================================
-  // 5. SIMPLE CEILING LIGHTS
+  // CEILING LIGHTS
   // =======================================================
 
-  createBox(
-    1.2,
-    0.08,
-    0.3,
-    0xf4d98a,
-    [-1.6, 2.9, -0.4]
-  );
+  const ceilingLightPositions = [
+    [-1.8, 2.92, 0.8],
+    [0, 2.92, 0.8],
+    [1.8, 2.92, 0.8]
+  ];
 
-  createBox(
-    1.2,
-    0.08,
-    0.3,
-    0xf4d98a,
-    [0, 2.9, -0.4]
-  );
+  ceilingLightPositions.forEach(
+    (position) => {
 
-  createBox(
-    1.2,
-    0.08,
-    0.3,
-    0xf4d98a,
-    [1.6, 2.9, -0.4]
+      createBox(
+        1.1,
+        0.08,
+        0.28,
+        0xf7dfa0,
+        position
+      );
+
+    }
   );
 
 
   // =======================================================
-  // 6. HALL TITLE
+  // HALL TITLE
   // =======================================================
 
   createLabel(
     "AI LEARNING HALL",
-    [0, 2.65, -2.88],
-    2.6,
-    0.34
+    [0, 2.72, -2.82],
+    2.8,
+    0.32
   );
 
 
   // =======================================================
-  // 7. CENTRAL AI BLACKBOARD
+  // SMALL DECORATIVE TOP STRIP
+  // =======================================================
+
+  createBox(
+    5.4,
+    0.06,
+    0.08,
+    0x536d9d,
+    [0, 2.52, -2.91]
+  );
+
+
+  // =======================================================
+  // CENTRAL BLACKBOARD
   // =======================================================
 
   const blackboard =
     new Mesh(
       new BoxGeometry(
-        4.4,
+        4.2,
         1.15,
         0.08
       ),
       new MeshBasicMaterial({
-        color: 0x08120f
+        color: 0x07140f
       })
     );
 
   blackboard.position.set(
     0,
-    1.9,
-    -2.78
+    1.88,
+    -2.82
   );
 
   world.createTransformEntity(
@@ -415,234 +386,383 @@ World.create(sceneContainer, projectOptions).then((world) => {
   );
 
 
-  // Blackboard wooden frame
+  // Blackboard frame
 
   createBox(
-    4.6,
+    4.35,
     0.08,
     0.12,
-    0x8b693f,
-    [0, 2.51, -2.84]
+    0x8d6b40,
+    [0, 2.48, -2.88]
   );
 
   createBox(
-    4.6,
+    4.35,
     0.08,
     0.12,
-    0x8b693f,
-    [0, 1.29, -2.84]
-  );
-
-  createBox(
-    0.08,
-    1.3,
-    0.12,
-    0x8b693f,
-    [-2.28, 1.9, -2.84]
+    0x8d6b40,
+    [0, 1.28, -2.88]
   );
 
   createBox(
     0.08,
-    1.3,
+    1.25,
     0.12,
-    0x8b693f,
-    [2.28, 1.9, -2.84]
+    0x8d6b40,
+    [-2.18, 1.88, -2.88]
+  );
+
+  createBox(
+    0.08,
+    1.25,
+    0.12,
+    0x8d6b40,
+    [2.18, 1.88, -2.88]
   );
 
 
   createLabel(
     "AI RESULT",
-    [0, 2.2, -2.70],
-    1.55,
-    0.27
+    [0, 2.15, -2.72],
+    1.5,
+    0.25
   );
 
 
   const resultText =
     createLabel(
       "Learning result will appear here",
-      [0, 1.75, -2.70],
-      3.4,
-      0.25
+      [0, 1.76, -2.72],
+      3.3,
+      0.23
     );
 
 
   // =======================================================
-  // 8. SMALL SIDE INFORMATION PANELS
+  // TEACHER DESK
   // =======================================================
-
-  // LEFT
 
   createBox(
     1.25,
-    0.62,
+    0.10,
+    0.55,
+    0x765438,
+    [0, 0.70, -2.05]
+  );
+
+
+  // Desk legs
+
+  const deskLegs = [
+    [-0.48, 0.35, -2.25],
+    [0.48, 0.35, -2.25],
+    [-0.48, 0.35, -1.85],
+    [0.48, 0.35, -1.85]
+  ];
+
+  deskLegs.forEach(
+    (position) => {
+
+      createBox(
+        0.08,
+        0.65,
+        0.08,
+        0x543b27,
+        position
+      );
+
+    }
+  );
+
+
+  createLabel(
+    "AI TEACHER",
+    [0, 0.91, -1.72],
+    1.25,
+    0.21
+  );
+
+
+  // =======================================================
+  // SIDE WINDOWS
+  // =======================================================
+
+  // LEFT WINDOW
+
+  createBox(
+    0.06,
+    0.72,
+    1.25,
+    0x3f789e,
+    [-2.92, 1.85, -0.7]
+  );
+
+
+  // LEFT WINDOW FRAME
+
+  createBox(
     0.08,
-    0x263b63,
-    [-2.05, 0.82, -2.72]
+    0.78,
+    0.06,
+    0xaab8c7,
+    [-2.96, 1.85, -0.7]
+  );
+
+
+  // RIGHT WINDOW
+
+  createBox(
+    0.06,
+    0.72,
+    1.25,
+    0x3f789e,
+    [2.92, 1.85, -0.7]
+  );
+
+
+  // RIGHT WINDOW FRAME
+
+  createBox(
+    0.08,
+    0.78,
+    0.06,
+    0xaab8c7,
+    [2.96, 1.85, -0.7]
+  );
+
+
+  // =======================================================
+  // SIDE DOOR
+  // =======================================================
+
+  createBox(
+    0.08,
+    1.7,
+    0.85,
+    0x513a4f,
+    [2.92, 0.86, 1.75]
+  );
+
+
+  createBox(
+    0.08,
+    0.07,
+    0.07,
+    0xe8c66c,
+    [2.84, 0.92, 1.48]
+  );
+
+
+  createLabel(
+    "EXIT",
+    [2.86, 1.85, 1.75],
+    0.7,
+    0.20
+  );
+
+
+  // =======================================================
+  // STUDENT TABLES
+  // =======================================================
+
+  function createStudentTable(
+    x,
+    z
+  ) {
+
+    // tabletop
+
+    createBox(
+      1.05,
+      0.08,
+      0.58,
+      0x6e5034,
+      [x, 0.70, z]
+    );
+
+
+    // legs
+
+    const legs = [
+      [x - 0.42, 0.35, z - 0.20],
+      [x + 0.42, 0.35, z - 0.20],
+      [x - 0.42, 0.35, z + 0.20],
+      [x + 0.42, 0.35, z + 0.20]
+    ];
+
+    legs.forEach(
+      (position) => {
+
+        createBox(
+          0.07,
+          0.65,
+          0.07,
+          0x513a29,
+          position
+        );
+
+      }
+    );
+
+
+    // small book
+
+    createBox(
+      0.28,
+      0.04,
+      0.18,
+      0xd7c59c,
+      [x - 0.18, 0.77, z]
+    );
+  }
+
+
+  // Three clean tables
+
+  createStudentTable(
+    -1.55,
+    0.85
+  );
+
+  createStudentTable(
+    0,
+    0.85
+  );
+
+  createStudentTable(
+    1.55,
+    0.85
+  );
+
+
+  // =======================================================
+  // STUDENT CHAIRS
+  // =======================================================
+
+  function createChair(
+    x,
+    z
+  ) {
+
+    // seat
+
+    createBox(
+      0.48,
+      0.08,
+      0.48,
+      0x465875,
+      [x, 0.43, z]
+    );
+
+
+    // back
+
+    createBox(
+      0.48,
+      0.55,
+      0.08,
+      0x465875,
+      [x, 0.68, z + 0.22]
+    );
+
+
+    // legs
+
+    createBox(
+      0.06,
+      0.40,
+      0.06,
+      0x303d54,
+      [x - 0.18, 0.20, z - 0.16]
+    );
+
+    createBox(
+      0.06,
+      0.40,
+      0.06,
+      0x303d54,
+      [x + 0.18, 0.20, z - 0.16]
+    );
+
+  }
+
+
+  createChair(
+    -1.55,
+    1.25
+  );
+
+  createChair(
+    0,
+    1.25
+  );
+
+  createChair(
+    1.55,
+    1.25
+  );
+
+
+  // =======================================================
+  // LEARNING CORNER
+  // =======================================================
+
+  createBox(
+    1.05,
+    0.55,
+    0.08,
+    0x29466f,
+    [-2.15, 0.95, -1.05]
   );
 
   createLabel(
     "LEARNING",
-    [-2.05, 0.82, -2.64],
-    1.1,
-    0.22
+    [-2.15, 0.95, -0.96],
+    0.95,
+    0.20
   );
 
 
-  // RIGHT
+  // =======================================================
+  // REVISION CORNER
+  // =======================================================
 
   createBox(
-    1.25,
-    0.62,
+    1.05,
+    0.55,
     0.08,
-    0x304a78,
-    [2.05, 0.82, -2.72]
+    0x365078,
+    [2.15, 0.95, -1.05]
   );
 
   createLabel(
     "AI REVISION",
-    [2.05, 0.82, -2.64],
-    1.15,
-    0.22
+    [2.15, 0.95, -0.96],
+    1.0,
+    0.20
   );
 
 
   // =======================================================
-  // 9. SIMPLE WINDOWS
-  // =======================================================
-
-  createBox(
-    0.85,
-    0.65,
-    0.06,
-    0x315d82,
-    [-2.35, 2.0, -2.92]
-  );
-
-  createBox(
-    0.85,
-    0.65,
-    0.06,
-    0x315d82,
-    [2.35, 2.0, -2.92]
-  );
-
-
-  // =======================================================
-  // 10. WINDOW FRAMES
-  // =======================================================
-
-  createBox(
-    0.06,
-    0.7,
-    0.08,
-    0x91a4b8,
-    [-2.35, 2.0, -2.98]
-  );
-
-  createBox(
-    0.06,
-    0.7,
-    0.08,
-    0x91a4b8,
-    [2.35, 2.0, -2.98]
-  );
-
-
-  // =======================================================
-  // 11. SIMPLE DOOR
-  // =======================================================
-
-  createBox(
-    0.72,
-    1.65,
-    0.08,
-    0x493654,
-    [2.45, 0.92, -2.91]
-  );
-
-  createBox(
-    0.07,
-    0.07,
-    0.07,
-    0xe5c36d,
-    [2.68, 0.95, -2.99]
-  );
-
-
-  // =======================================================
-  // 12. TEACHER DESK
-  // =======================================================
-
-  createBox(
-    1.25,
-    0.08,
-    0.55,
-    0x765538,
-    [0, 0.72, -2.0]
-  );
-
-  createBox(
-    0.08,
-    0.65,
-    0.08,
-    0x5a402c,
-    [-0.48, 0.38, -2.18]
-  );
-
-  createBox(
-    0.08,
-    0.65,
-    0.08,
-    0x5a402c,
-    [0.48, 0.38, -2.18]
-  );
-
-  createBox(
-    0.08,
-    0.65,
-    0.08,
-    0x5a402c,
-    [-0.48, 0.38, -1.82]
-  );
-
-  createBox(
-    0.08,
-    0.65,
-    0.08,
-    0x5a402c,
-    [0.48, 0.38, -1.82]
-  );
-
-
-  createLabel(
-    "AI TEACHER DESK",
-    [0, 0.9, -1.72],
-    1.45,
-    0.22
-  );
-
-
-  // =======================================================
-  // 13. MEMORY ZONE
+  // MEMORY ZONE
   // =======================================================
 
   const memoryZone =
     new Mesh(
       new BoxGeometry(
-        4.6,
+        4.4,
         0.04,
-        1.35
+        1.15
       ),
       new MeshBasicMaterial({
-        color: 0x18233d
+        color: 0x172844
       })
     );
 
   memoryZone.position.set(
     0,
     0.04,
-    -0.65
+    -0.35
   );
 
   world.createTransformEntity(
@@ -650,46 +770,46 @@ World.create(sceneContainer, projectOptions).then((world) => {
   );
 
 
-  // Zone border
+  // Memory zone border
 
   createBox(
-    4.6,
+    4.45,
     0.035,
     0.05,
-    0x4d6bb3,
-    [0, 0.07, -1.32]
+    0x5875b0,
+    [0, 0.07, -0.93]
   );
 
   createBox(
-    4.6,
+    4.45,
     0.035,
     0.05,
-    0x4d6bb3,
-    [0, 0.07, 0.02]
-  );
-
-  createBox(
-    0.05,
-    0.035,
-    1.35,
-    0x4d6bb3,
-    [-2.3, 0.07, -0.65]
+    0x5875b0,
+    [0, 0.07, 0.23]
   );
 
   createBox(
     0.05,
     0.035,
-    1.35,
-    0x4d6bb3,
-    [2.3, 0.07, -0.65]
+    1.15,
+    0x5875b0,
+    [-2.22, 0.07, -0.35]
+  );
+
+  createBox(
+    0.05,
+    0.035,
+    1.15,
+    0x5875b0,
+    [2.22, 0.07, -0.35]
   );
 
 
   createLabel(
-    "MEMORY ZONE",
-    [0, 0.34, -1.20],
-    1.5,
-    0.23
+    "MEMORY PALACE",
+    [0, 0.30, -0.88],
+    1.55,
+    0.21
   );
 
 
@@ -764,9 +884,9 @@ World.create(sceneContainer, projectOptions).then((world) => {
       () => {
 
         object.scale.set(
-          originalScale.x * 1.12,
-          originalScale.y * 1.12,
-          originalScale.z * 1.12
+          originalScale.x * 1.15,
+          originalScale.y * 1.15,
+          originalScale.z * 1.15
         );
 
       }
@@ -790,11 +910,11 @@ World.create(sceneContainer, projectOptions).then((world) => {
         label,
         [
           position[0],
-          position[1] + 0.5,
-          position[2] + 0.15
+          position[1] + 0.48,
+          position[2]
         ],
-        1.05,
-        0.22
+        1.0,
+        0.20
       );
 
 
@@ -860,7 +980,7 @@ World.create(sceneContainer, projectOptions).then((world) => {
         [
           recallSlots[index],
           0.82,
-          -0.65
+          -0.35
         ],
         concept.name,
         index
@@ -871,63 +991,63 @@ World.create(sceneContainer, projectOptions).then((world) => {
 
 
   // =======================================================
-  // STATUS PANELS
+  // STATUS
   // =======================================================
 
   const aiStatusLabel =
     createLabel(
       "AI Memory Palace Ready",
-      [0, 2.78, -2.45],
-      2.3,
-      0.25
+      [0, 2.55, -2.70],
+      2.25,
+      0.23
     );
 
 
   const scoreLabel =
     createLabel(
       "Score: --",
-      [-1.65, 0.32, -2.05],
-      1.15,
-      0.24
+      [-1.65, 0.28, -1.55],
+      1.05,
+      0.21
     );
 
 
   const feedbackLabel =
     createLabel(
       "Ready for recall",
-      [0, 0.32, -2.05],
-      1.8,
-      0.24
+      [0, 0.28, -1.55],
+      1.55,
+      0.21
     );
 
 
   const revisionLabel =
     createLabel(
       "AI Revision: Waiting...",
-      [1.65, 0.32, -2.05],
-      1.75,
-      0.24
+      [1.65, 0.28, -1.55],
+      1.65,
+      0.21
     );
 
 
   // =======================================================
-  // START RECALL BUTTON
+  // START RECALL
   // =======================================================
 
   const startPanel =
     new Mesh(
       new BoxGeometry(
-        1.55,
-        0.42,
+        1.35,
+        0.40,
         0.08
       ),
       new MeshBasicMaterial({
-        color: 0x36a269
+        color: 0x329568
       })
     );
 
   startPanel.position.set(
-    -0.9,
+    -0.78,
     0.14,
     -1.95
   );
@@ -944,21 +1064,21 @@ World.create(sceneContainer, projectOptions).then((world) => {
 
   createLabel(
     "START RECALL",
-    [-0.9, 0.14, -1.88],
-    1.3,
-    0.22
+    [-0.78, 0.14, -1.87],
+    1.20,
+    0.20
   );
 
 
   // =======================================================
-  // CHECK RECALL BUTTON
+  // CHECK RECALL
   // =======================================================
 
   const checkPanel =
     new Mesh(
       new BoxGeometry(
-        1.55,
-        0.42,
+        1.35,
+        0.40,
         0.08
       ),
       new MeshBasicMaterial({
@@ -967,7 +1087,7 @@ World.create(sceneContainer, projectOptions).then((world) => {
     );
 
   checkPanel.position.set(
-    0.9,
+    0.78,
     0.14,
     -1.95
   );
@@ -984,14 +1104,14 @@ World.create(sceneContainer, projectOptions).then((world) => {
 
   createLabel(
     "CHECK RECALL",
-    [0.9, 0.14, -1.88],
-    1.3,
-    0.22
+    [0.78, 0.14, -1.87],
+    1.20,
+    0.20
   );
 
 
   // =======================================================
-  // UPDATE OBJECT LABELS
+  // UPDATE MEMORY LABELS
   // =======================================================
 
   function updateObjectLabels() {
@@ -1001,8 +1121,8 @@ World.create(sceneContainer, projectOptions).then((world) => {
 
         item.labelData.mesh.position.set(
           item.object.position.x,
-          item.object.position.y + 0.5,
-          item.object.position.z + 0.15
+          item.object.position.y + 0.48,
+          item.object.position.z
         );
 
       }
@@ -1176,10 +1296,6 @@ World.create(sceneContainer, projectOptions).then((world) => {
       dragDepth =
         object.position.z;
 
-
-      object.userData.desktopDragging =
-        true;
-
       event.preventDefault();
     }
 
@@ -1259,12 +1375,6 @@ World.create(sceneContainer, projectOptions).then((world) => {
         canvas.releasePointerCapture(
           event.pointerId
         );
-      }
-
-      if (selectedObject) {
-
-        selectedObject.userData.desktopDragging =
-          false;
       }
 
       selectedObject = null;
@@ -1413,7 +1523,7 @@ World.create(sceneContainer, projectOptions).then((world) => {
         item.object.position.set(
           recallSlots[index],
           0.82,
-          -0.65
+          -0.35
         );
       }
     );
@@ -1626,14 +1736,13 @@ World.create(sceneContainer, projectOptions).then((world) => {
     "keydown",
     (event) => {
 
-      if (
-        event.key === "Enter"
-      ) {
+      if (event.key === "Enter") {
 
         generateAIConcepts(
           topicInput.value
         );
       }
+
     }
   );
 
@@ -1695,7 +1804,7 @@ World.create(sceneContainer, projectOptions).then((world) => {
           0.82;
 
         item.object.position.z =
-          -0.65;
+          -0.35;
       }
     );
   }
@@ -1752,7 +1861,6 @@ World.create(sceneContainer, projectOptions).then((world) => {
         if (
           item.correctIndex === index
         ) {
-
           correct++;
         }
       }

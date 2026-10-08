@@ -1889,12 +1889,19 @@ createLabel(
 
 
   const revisionLabel =
-    createLabel(
-      "AI Revision: Waiting",
-      [0, 0.55, -4.60],
-      2.7,
-      0.25
-    );
+  createLabel(
+    "AI Revision: Waiting",
+    [0, 0.45, 3.55],
+    2.7,
+    0.25
+  );
+  
+    
+      
+      
+      
+      
+    
 
 
   // =======================================================

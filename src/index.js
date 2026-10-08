@@ -19,128 +19,92 @@ import {
 } from "./api.js";
 
 
+// =========================================================
+// SCENE CONTAINER
+// =========================================================
+
 const sceneContainer =
   document.getElementById("scene-container");
-
 
 if (!(sceneContainer instanceof HTMLDivElement)) {
   throw new Error("Missing #scene-container");
 }
 
 
+// =========================================================
+// WORLD
+// =========================================================
+
 World.create(sceneContainer, projectOptions).then((world) => {
 
   console.log("AI Memory Palace VR started");
 
 
-  // =========================================================
-  // BACKEND CONNECTION
-  // =========================================================
+  // =======================================================
+  // BACKEND
+  // =======================================================
 
   checkBackendHealth()
     .then((data) => {
       console.log("Backend connected:", data);
     })
     .catch((error) => {
-      console.error(
-        "Backend connection failed:",
-        error
-      );
+      console.error("Backend connection failed:", error);
     });
 
 
-  // =========================================================
-  // CURRENT TOPIC
-  // =========================================================
+  // =======================================================
+  // TOPIC
+  // =======================================================
 
-  let currentTopic =
-    "Photosynthesis";
+  let currentTopic = "Photosynthesis";
 
 
-  // =========================================================
+  // =======================================================
   // CAMERA
-  // =========================================================
+  // =======================================================
 
   world.camera.position.set(
     0,
-    1.7,
-    5
+    1.65,
+    5.2
   );
 
   world.camera.lookAt(
     0,
     1.35,
-    -0.8
+    -1.2
   );
 
 
-  // =========================================================
-  // MATERIALS
-  // =========================================================
+  // =======================================================
+  // BASIC MATERIALS
+  // =======================================================
 
   const floorMaterial =
     new MeshBasicMaterial({
-      color: 0x20283d
+      color: 0x252c3d
     });
-
 
   const wallMaterial =
     new MeshBasicMaterial({
-      color: 0x151b2d
+      color: 0x182033
     });
-
 
   const sideWallMaterial =
     new MeshBasicMaterial({
-      color: 0x1b2440
+      color: 0x202a43
     });
-
 
   const ceilingMaterial =
     new MeshBasicMaterial({
-      color: 0x11182b
+      color: 0x111827
     });
 
 
-  const woodMaterial =
-    new MeshBasicMaterial({
-      color: 0x6b4f35
-    });
-
-
-  const chairMaterial =
-    new MeshBasicMaterial({
-      color: 0x34486e
-    });
-
-
-  const lightMaterial =
-    new MeshBasicMaterial({
-      color: 0xf7e7a8
-    });
-
-
-  const windowMaterial =
-    new MeshBasicMaterial({
-      color: 0x376a91
-    });
-
-
-  const doorMaterial =
-    new MeshBasicMaterial({
-      color: 0x4b365f
-    });
-
-
-  const plantMaterial =
-    new MeshBasicMaterial({
-      color: 0x26734d
-    });
-
-
-  // =========================================================
-  // HELPER — CREATE BOX
-  // =========================================================
+  // =======================================================
+  // CREATE BOX
+  // =======================================================
 
   function createBox(
     width,
@@ -162,840 +126,37 @@ World.create(sceneContainer, projectOptions).then((world) => {
         })
       );
 
-
     box.position.set(
       position[0],
       position[1],
       position[2]
     );
 
-
-    world.createTransformEntity(
-      box
-    );
-
+    world.createTransformEntity(box);
 
     return box;
   }
 
 
-  // =========================================================
-  // FLOOR
-  // =========================================================
-
-  const floor =
-    new Mesh(
-      new BoxGeometry(
-        6,
-        0.1,
-        6
-      ),
-      floorMaterial
-    );
-
-
-  floor.position.set(
-    0,
-    -0.05,
-    0
-  );
-
-
-  world.createTransformEntity(
-    floor
-  );
-
-
-  // =========================================================
-  // BACK WALL
-  // =========================================================
-
-  const backWall =
-    new Mesh(
-      new BoxGeometry(
-        6,
-        3,
-        0.1
-      ),
-      wallMaterial
-    );
-
-
-  backWall.position.set(
-    0,
-    1.5,
-    -3
-  );
-
-
-  world.createTransformEntity(
-    backWall
-  );
-
-
-  // =========================================================
-  // LEFT WALL
-  // =========================================================
-
-  createBox(
-    0.1,
-    3,
-    6,
-    0x182139,
-    [-3, 1.5, 0]
-  );
-
-
-  // =========================================================
-  // RIGHT WALL
-  // =========================================================
-
-  createBox(
-    0.1,
-    3,
-    6,
-    0x182139,
-    [3, 1.5, 0]
-  );
-
-
-  // =========================================================
-  // CEILING
-  // =========================================================
-
-  createBox(
-    6,
-    0.1,
-    6,
-    0x10172a,
-    [0, 3.05, 0]
-  );
-
-
-  // =========================================================
-  // CEILING DECORATIVE BEAMS
-  // =========================================================
-
-  createBox(
-    5.8,
-    0.12,
-    0.12,
-    0x38476b,
-    [0, 2.92, -1]
-  );
-
-
-  createBox(
-    5.8,
-    0.12,
-    0.12,
-    0x38476b,
-    [0, 2.92, 1]
-  );
-
-
-  createBox(
-    0.12,
-    0.12,
-    5.8,
-    0x38476b,
-    [-1.8, 2.91, 0]
-  );
-
-
-  createBox(
-    0.12,
-    0.12,
-    5.8,
-    0x38476b,
-    [1.8, 2.91, 0]
-  );
-
-
-  // =========================================================
-  // CEILING LIGHTS
-  // =========================================================
-
-  createBox(
-    1.1,
-    0.08,
-    0.28,
-    0xf4d98a,
-    [-1.7, 2.84, 0.8]
-  );
-
-
-  createBox(
-    1.1,
-    0.08,
-    0.28,
-    0xf4d98a,
-    [0, 2.84, 0.8]
-  );
-
-
-  createBox(
-    1.1,
-    0.08,
-    0.28,
-    0xf4d98a,
-    [1.7, 2.84, 0.8]
-  );
-
-
-  createBox(
-    1.1,
-    0.08,
-    0.28,
-    0xf4d98a,
-    [-1.7, 2.84, -1.4]
-  );
-
-
-  createBox(
-    1.1,
-    0.08,
-    0.28,
-    0xf4d98a,
-    [0, 2.84, -1.4]
-  );
-
-
-  createBox(
-    1.1,
-    0.08,
-    0.28,
-    0xf4d98a,
-    [1.7, 2.84, -1.4]
-  );
-
-
-  // =========================================================
-  // FRONT WALL DECORATIVE FRAME
-  // =========================================================
-
-  createBox(
-    5.7,
-    0.12,
-    0.12,
-    0x4e6090,
-    [0, 2.92, -2.88]
-  );
-
-
-  createBox(
-    5.7,
-    0.12,
-    0.12,
-    0x4e6090,
-    [0, 0.18, -2.88]
-  );
-
-
-  createBox(
-    0.12,
-    2.75,
-    0.12,
-    0x4e6090,
-    [-2.85, 1.55, -2.88]
-  );
-
-
-  createBox(
-    0.12,
-    2.75,
-    0.12,
-    0x4e6090,
-    [2.85, 1.55, -2.88]
-  );
-
-
-  // =========================================================
-  // FRONT WINDOWS
-  // =========================================================
-
-  createBox(
-    0.95,
-    0.85,
-    0.06,
-    0x376a91,
-    [-2.35, 2.0, -2.92]
-  );
-
-
-  createBox(
-    0.95,
-    0.85,
-    0.06,
-    0x376a91,
-    [2.35, 2.0, -2.92]
-  );
-
-
-  // Window frames
-  createBox(
-    0.08,
-    0.9,
-    0.08,
-    0x8ca5bd,
-    [-2.35, 2.0, -2.98]
-  );
-
-
-  createBox(
-    0.08,
-    0.9,
-    0.08,
-    0x8ca5bd,
-    [2.35, 2.0, -2.98]
-  );
-
-
-  createBox(
-    1.0,
-    0.08,
-    0.08,
-    0x8ca5bd,
-    [-2.35, 2.0, -2.98]
-  );
-
-
-  createBox(
-    1.0,
-    0.08,
-    0.08,
-    0x8ca5bd,
-    [2.35, 2.0, -2.98]
-  );
-
-
-  // =========================================================
-  // DOOR
-  // =========================================================
-
-  createBox(
-    0.8,
-    1.8,
-    0.08,
-    0x4b365f,
-    [2.45, 1.0, -2.91]
-  );
-
-
-  createBox(
-    0.08,
-    0.08,
-    0.08,
-    0xe5c36d,
-    [2.72, 1.05, -2.99]
-  );
-
-
-  // =========================================================
-  // FRONT PILLARS
-  // =========================================================
-
-  createBox(
-    0.22,
-    2.75,
-    0.22,
-    0x35456c,
-    [-2.72, 1.5, -2.75]
-  );
-
-
-  createBox(
-    0.22,
-    2.75,
-    0.22,
-    0x35456c,
-    [2.72, 1.5, -2.75]
-  );
-
-
-  // =========================================================
-  // AI LEARNING HALL TITLE
-  // =========================================================
-
-  createLabel(
-    "AI LEARNING HALL",
-    [0, 2.68, -2.80],
-    2.7,
-    0.34
-  );
-
-
-  // =========================================================
-  // MAIN AI RESULT BLACKBOARD
-  // =========================================================
-
-  const resultBoard =
-    new Mesh(
-      new BoxGeometry(
-        4.6,
-        1.15,
-        0.08
-      ),
-      new MeshBasicMaterial({
-        color: 0x0b121c
-      })
-    );
-
-
-  resultBoard.position.set(
-    0,
-    1.78,
-    -2.72
-  );
-
-
-  world.createTransformEntity(
-    resultBoard
-  );
-
-
-  // Blackboard frame
-  createBox(
-    4.8,
-    0.08,
-    0.12,
-    0x8b693f,
-    [0, 2.38, -2.78]
-  );
-
-
-  createBox(
-    4.8,
-    0.08,
-    0.12,
-    0x8b693f,
-    [0, 1.18, -2.78]
-  );
-
-
-  createBox(
-    0.08,
-    1.25,
-    0.12,
-    0x8b693f,
-    [-2.38, 1.78, -2.78]
-  );
-
-
-  createBox(
-    0.08,
-    1.25,
-    0.12,
-    0x8b693f,
-    [2.38, 1.78, -2.78]
-  );
-
-
-  createLabel(
-    "AI RESULT",
-    [0, 2.16, -2.64],
-    1.8,
-    0.28
-  );
-
-
-  createLabel(
-    "Your learning result will appear here",
-    [0, 1.68, -2.64],
-    2.8,
-    0.22
-  );
-
-
-  // =========================================================
-  // LEFT LEARNING BOARD
-  // =========================================================
-
-  const learningBoard =
-    new Mesh(
-      new BoxGeometry(
-        1.55,
-        0.72,
-        0.08
-      ),
-      new MeshBasicMaterial({
-        color: 0x263b63
-      })
-    );
-
-
-  learningBoard.position.set(
-    -2.05,
-    0.82,
-    -2.70
-  );
-
-
-  world.createTransformEntity(
-    learningBoard
-  );
-
-
-  createLabel(
-    "LEARNING",
-    [-2.05, 0.98, -2.63],
-    1.25,
-    0.23
-  );
-
-
-  // =========================================================
-  // RIGHT AI REVISION BOARD
-  // =========================================================
-
-  const aiBoard =
-    new Mesh(
-      new BoxGeometry(
-        1.55,
-        0.72,
-        0.08
-      ),
-      new MeshBasicMaterial({
-        color: 0x304a78
-      })
-    );
-
-
-  aiBoard.position.set(
-    1.25,
-    0.82,
-    -2.70
-  );
-
-
-  world.createTransformEntity(
-    aiBoard
-  );
-
-
-  createLabel(
-    "AI REVISION",
-    [1.25, 0.98, -2.63],
-    1.35,
-    0.23
-  );
-
-
-  // =========================================================
-  // DECORATIVE PLANTS — LEFT
-  // =========================================================
-
-  createBox(
-    0.38,
-    0.42,
-    0.38,
-    0x8a5a3b,
-    [-2.45, 0.35, -1.75]
-  );
-
-
-  createBox(
-    0.18,
-    0.55,
-    0.18,
-    0x4f9d68,
-    [-2.45, 0.82, -1.75]
-  );
-
-
-  createBox(
-    0.28,
-    0.18,
-    0.18,
-    0x26734d,
-    [-2.65, 1.0, -1.75]
-  );
-
-
-  createBox(
-    0.28,
-    0.18,
-    0.18,
-    0x26734d,
-    [-2.25, 1.05, -1.75]
-  );
-
-
-  // =========================================================
-  // DECORATIVE PLANTS — RIGHT
-  // =========================================================
-
-  createBox(
-    0.38,
-    0.42,
-    0.38,
-    0x8a5a3b,
-    [2.45, 0.35, -1.75]
-  );
-
-
-  createBox(
-    0.18,
-    0.55,
-    0.18,
-    0x4f9d68,
-    [2.45, 0.82, -1.75]
-  );
-
-
-  createBox(
-    0.28,
-    0.18,
-    0.18,
-    0x26734d,
-    [2.25, 1.0, -1.75]
-  );
-
-
-  createBox(
-    0.28,
-    0.18,
-    0.18,
-    0x26734d,
-    [2.65, 1.05, -1.75]
-  );
-
-
-  // =========================================================
-  // CLASSROOM DESKS — LEFT
-  // =========================================================
-
-  function createDesk(
-    x,
-    z
-  ) {
-
-    createBox(
-      0.9,
-      0.08,
-      0.55,
-      0x765538,
-      [x, 0.9, z]
-    );
-
-
-    createBox(
-      0.08,
-      0.75,
-      0.08,
-      0x5a402c,
-      [x - 0.34, 0.5, z - 0.18]
-    );
-
-
-    createBox(
-      0.08,
-      0.75,
-      0.08,
-      0x5a402c,
-      [x + 0.34, 0.5, z - 0.18]
-    );
-
-
-    createBox(
-      0.08,
-      0.75,
-      0.08,
-      0x5a402c,
-      [x - 0.34, 0.5, z + 0.18]
-    );
-
-
-    createBox(
-      0.08,
-      0.75,
-      0.08,
-      0x5a402c,
-      [x + 0.34, 0.5, z + 0.18]
-    );
-
-  }
-
-
-  function createChair(
-    x,
-    z
-  ) {
-
-    createBox(
-      0.55,
-      0.08,
-      0.5,
-      0x34486e,
-      [x, 0.48, z]
-    );
-
-
-    createBox(
-      0.55,
-      0.55,
-      0.08,
-      0x34486e,
-      [x, 0.75, z + 0.22]
-    );
-
-
-    createBox(
-      0.07,
-      0.48,
-      0.07,
-      0x263653,
-      [x - 0.2, 0.24, z]
-    );
-
-
-    createBox(
-      0.07,
-      0.48,
-      0.07,
-      0x263653,
-      [x + 0.2, 0.24, z]
-    );
-
-  }
-
-
-  // Left classroom row
-  createDesk(-2.0, 0.65);
-  createChair(-2.0, 1.08);
-
-
-  createDesk(-2.0, -0.35);
-  createChair(-2.0, 0.08);
-
-
-  // Right classroom row
-  createDesk(2.0, 0.65);
-  createChair(2.0, 1.08);
-
-
-  createDesk(2.0, -0.35);
-  createChair(2.0, 0.08);
-
-
-  // =========================================================
-  // FRONT SMALL DESKS
-  // =========================================================
-
-  createDesk(
-    -1.35,
-    0.15
-  );
-
-
-  createChair(
-    -1.35,
-    0.52
-  );
-
-
-  createDesk(
-    1.35,
-    0.15
-  );
-
-
-  createChair(
-    1.35,
-    0.52
-  );
-
-
-  // =========================================================
-  // CENTER MEMORY CARPET
-  // =========================================================
-
-  const memoryZone =
-    new Mesh(
-      new BoxGeometry(
-        4.8,
-        0.04,
-        1.15
-      ),
-      new MeshBasicMaterial({
-        color: 0x18233d
-      })
-    );
-
-
-  memoryZone.position.set(
-    0,
-    0.04,
-    -1.35
-  );
-
-
-  world.createTransformEntity(
-    memoryZone
-  );
-
-
-  createBox(
-    4.8,
-    0.04,
-    0.06,
-    0x4d6bb3,
-    [0, 0.08, -1.92]
-  );
-
-
-  createBox(
-    4.8,
-    0.04,
-    0.06,
-    0x4d6bb3,
-    [0, 0.08, -0.78]
-  );
-
-
-  createLabel(
-    "MEMORY ZONE",
-    [0, 0.34, -1.88],
-    1.7,
-    0.25
-  );
-
-
-  // =========================================================
-  // FLOOR DECORATIVE PATH
-  // =========================================================
-
-  createBox(
-    0.12,
-    0.025,
-    2.8,
-    0x34486e,
-    [0, 0.015, 0.8]
-  );
-
-
-  // =========================================================
+  // =======================================================
   // LABEL SYSTEM
-  // =========================================================
+  // =======================================================
 
   function createLabel(
     text,
     position,
-    width = 0.95,
+    width = 1,
     height = 0.24
   ) {
 
     const canvas =
       document.createElement("canvas");
 
-
     canvas.width = 512;
     canvas.height = 128;
 
-
     const context =
       canvas.getContext("2d");
-
 
     if (!context) {
       throw new Error(
@@ -1003,10 +164,8 @@ World.create(sceneContainer, projectOptions).then((world) => {
       );
     }
 
-
     context.fillStyle =
-      "rgba(10, 15, 30, 0.96)";
-
+      "rgba(7, 12, 24, 0.94)";
 
     context.fillRect(
       0,
@@ -1015,22 +174,17 @@ World.create(sceneContainer, projectOptions).then((world) => {
       canvas.height
     );
 
-
     context.fillStyle =
       "#ffffff";
-
 
     context.font =
       "bold 34px Arial";
 
-
     context.textAlign =
       "center";
 
-
     context.textBaseline =
       "middle";
-
 
     context.fillText(
       text,
@@ -1038,19 +192,14 @@ World.create(sceneContainer, projectOptions).then((world) => {
       canvas.height / 2
     );
 
-
     const texture =
-      new THREE.CanvasTexture(
-        canvas
-      );
-
+      new THREE.CanvasTexture(canvas);
 
     const material =
       new MeshBasicMaterial({
         map: texture,
         transparent: true
       });
-
 
     const label =
       new THREE.Mesh(
@@ -1061,18 +210,13 @@ World.create(sceneContainer, projectOptions).then((world) => {
         material
       );
 
-
     label.position.set(
       position[0],
       position[1],
       position[2]
     );
 
-
-    world.createTransformEntity(
-      label
-    );
-
+    world.createTransformEntity(label);
 
     return {
       mesh: label,
@@ -1094,7 +238,6 @@ World.create(sceneContainer, projectOptions).then((world) => {
       texture
     } = labelData;
 
-
     context.clearRect(
       0,
       0,
@@ -1102,10 +245,8 @@ World.create(sceneContainer, projectOptions).then((world) => {
       canvas.height
     );
 
-
     context.fillStyle =
-      "rgba(10, 15, 30, 0.96)";
-
+      "rgba(7, 12, 24, 0.94)";
 
     context.fillRect(
       0,
@@ -1114,22 +255,17 @@ World.create(sceneContainer, projectOptions).then((world) => {
       canvas.height
     );
 
-
     context.fillStyle =
       "#ffffff";
-
 
     context.font =
       "bold 34px Arial";
 
-
     context.textAlign =
       "center";
 
-
     context.textBaseline =
       "middle";
-
 
     context.fillText(
       text,
@@ -1137,15 +273,429 @@ World.create(sceneContainer, projectOptions).then((world) => {
       canvas.height / 2
     );
 
-
-    texture.needsUpdate =
-      true;
+    texture.needsUpdate = true;
   }
 
 
-  // =========================================================
+  // =======================================================
+  // 1. FLOOR
+  // =======================================================
+
+  const floor =
+    new Mesh(
+      new BoxGeometry(
+        6,
+        0.1,
+        6
+      ),
+      floorMaterial
+    );
+
+  floor.position.set(
+    0,
+    -0.05,
+    0
+  );
+
+  world.createTransformEntity(floor);
+
+
+  // =======================================================
+  // 2. BACK WALL
+  // =======================================================
+
+  createBox(
+    6,
+    3,
+    0.12,
+    0x182033,
+    [0, 1.5, -3]
+  );
+
+
+  // =======================================================
+  // 3. SIDE WALLS
+  // =======================================================
+
+  createBox(
+    0.12,
+    3,
+    6,
+    0x202a43,
+    [-3, 1.5, 0]
+  );
+
+  createBox(
+    0.12,
+    3,
+    6,
+    0x202a43,
+    [3, 1.5, 0]
+  );
+
+
+  // =======================================================
+  // 4. CEILING
+  // =======================================================
+
+  createBox(
+    6,
+    0.1,
+    6,
+    0x111827,
+    [0, 3.05, 0]
+  );
+
+
+  // =======================================================
+  // 5. SIMPLE CEILING LIGHTS
+  // =======================================================
+
+  createBox(
+    1.2,
+    0.08,
+    0.3,
+    0xf4d98a,
+    [-1.6, 2.9, -0.4]
+  );
+
+  createBox(
+    1.2,
+    0.08,
+    0.3,
+    0xf4d98a,
+    [0, 2.9, -0.4]
+  );
+
+  createBox(
+    1.2,
+    0.08,
+    0.3,
+    0xf4d98a,
+    [1.6, 2.9, -0.4]
+  );
+
+
+  // =======================================================
+  // 6. HALL TITLE
+  // =======================================================
+
+  createLabel(
+    "AI LEARNING HALL",
+    [0, 2.65, -2.88],
+    2.6,
+    0.34
+  );
+
+
+  // =======================================================
+  // 7. CENTRAL AI BLACKBOARD
+  // =======================================================
+
+  const blackboard =
+    new Mesh(
+      new BoxGeometry(
+        4.4,
+        1.15,
+        0.08
+      ),
+      new MeshBasicMaterial({
+        color: 0x08120f
+      })
+    );
+
+  blackboard.position.set(
+    0,
+    1.9,
+    -2.78
+  );
+
+  world.createTransformEntity(
+    blackboard
+  );
+
+
+  // Blackboard wooden frame
+
+  createBox(
+    4.6,
+    0.08,
+    0.12,
+    0x8b693f,
+    [0, 2.51, -2.84]
+  );
+
+  createBox(
+    4.6,
+    0.08,
+    0.12,
+    0x8b693f,
+    [0, 1.29, -2.84]
+  );
+
+  createBox(
+    0.08,
+    1.3,
+    0.12,
+    0x8b693f,
+    [-2.28, 1.9, -2.84]
+  );
+
+  createBox(
+    0.08,
+    1.3,
+    0.12,
+    0x8b693f,
+    [2.28, 1.9, -2.84]
+  );
+
+
+  createLabel(
+    "AI RESULT",
+    [0, 2.2, -2.70],
+    1.55,
+    0.27
+  );
+
+
+  const resultText =
+    createLabel(
+      "Learning result will appear here",
+      [0, 1.75, -2.70],
+      3.4,
+      0.25
+    );
+
+
+  // =======================================================
+  // 8. SMALL SIDE INFORMATION PANELS
+  // =======================================================
+
+  // LEFT
+
+  createBox(
+    1.25,
+    0.62,
+    0.08,
+    0x263b63,
+    [-2.05, 0.82, -2.72]
+  );
+
+  createLabel(
+    "LEARNING",
+    [-2.05, 0.82, -2.64],
+    1.1,
+    0.22
+  );
+
+
+  // RIGHT
+
+  createBox(
+    1.25,
+    0.62,
+    0.08,
+    0x304a78,
+    [2.05, 0.82, -2.72]
+  );
+
+  createLabel(
+    "AI REVISION",
+    [2.05, 0.82, -2.64],
+    1.15,
+    0.22
+  );
+
+
+  // =======================================================
+  // 9. SIMPLE WINDOWS
+  // =======================================================
+
+  createBox(
+    0.85,
+    0.65,
+    0.06,
+    0x315d82,
+    [-2.35, 2.0, -2.92]
+  );
+
+  createBox(
+    0.85,
+    0.65,
+    0.06,
+    0x315d82,
+    [2.35, 2.0, -2.92]
+  );
+
+
+  // =======================================================
+  // 10. WINDOW FRAMES
+  // =======================================================
+
+  createBox(
+    0.06,
+    0.7,
+    0.08,
+    0x91a4b8,
+    [-2.35, 2.0, -2.98]
+  );
+
+  createBox(
+    0.06,
+    0.7,
+    0.08,
+    0x91a4b8,
+    [2.35, 2.0, -2.98]
+  );
+
+
+  // =======================================================
+  // 11. SIMPLE DOOR
+  // =======================================================
+
+  createBox(
+    0.72,
+    1.65,
+    0.08,
+    0x493654,
+    [2.45, 0.92, -2.91]
+  );
+
+  createBox(
+    0.07,
+    0.07,
+    0.07,
+    0xe5c36d,
+    [2.68, 0.95, -2.99]
+  );
+
+
+  // =======================================================
+  // 12. TEACHER DESK
+  // =======================================================
+
+  createBox(
+    1.25,
+    0.08,
+    0.55,
+    0x765538,
+    [0, 0.72, -2.0]
+  );
+
+  createBox(
+    0.08,
+    0.65,
+    0.08,
+    0x5a402c,
+    [-0.48, 0.38, -2.18]
+  );
+
+  createBox(
+    0.08,
+    0.65,
+    0.08,
+    0x5a402c,
+    [0.48, 0.38, -2.18]
+  );
+
+  createBox(
+    0.08,
+    0.65,
+    0.08,
+    0x5a402c,
+    [-0.48, 0.38, -1.82]
+  );
+
+  createBox(
+    0.08,
+    0.65,
+    0.08,
+    0x5a402c,
+    [0.48, 0.38, -1.82]
+  );
+
+
+  createLabel(
+    "AI TEACHER DESK",
+    [0, 0.9, -1.72],
+    1.45,
+    0.22
+  );
+
+
+  // =======================================================
+  // 13. MEMORY ZONE
+  // =======================================================
+
+  const memoryZone =
+    new Mesh(
+      new BoxGeometry(
+        4.6,
+        0.04,
+        1.35
+      ),
+      new MeshBasicMaterial({
+        color: 0x18233d
+      })
+    );
+
+  memoryZone.position.set(
+    0,
+    0.04,
+    -0.65
+  );
+
+  world.createTransformEntity(
+    memoryZone
+  );
+
+
+  // Zone border
+
+  createBox(
+    4.6,
+    0.035,
+    0.05,
+    0x4d6bb3,
+    [0, 0.07, -1.32]
+  );
+
+  createBox(
+    4.6,
+    0.035,
+    0.05,
+    0x4d6bb3,
+    [0, 0.07, 0.02]
+  );
+
+  createBox(
+    0.05,
+    0.035,
+    1.35,
+    0x4d6bb3,
+    [-2.3, 0.07, -0.65]
+  );
+
+  createBox(
+    0.05,
+    0.035,
+    1.35,
+    0x4d6bb3,
+    [2.3, 0.07, -0.65]
+  );
+
+
+  createLabel(
+    "MEMORY ZONE",
+    [0, 0.34, -1.20],
+    1.5,
+    0.23
+  );
+
+
+  // =======================================================
   // RECALL DATA
-  // =========================================================
+  // =======================================================
 
   const recallObjects = [];
 
@@ -1159,13 +709,12 @@ World.create(sceneContainer, projectOptions).then((world) => {
     1.6
   ];
 
-  let recallStarted =
-    false;
+  let recallStarted = false;
 
 
-  // =========================================================
+  // =======================================================
   // MEMORY OBJECT
-  // =========================================================
+  // =======================================================
 
   function createRecallObject(
     color,
@@ -1182,24 +731,20 @@ World.create(sceneContainer, projectOptions).then((world) => {
         memoryHint
       );
 
-
     object.position.set(
       position[0],
       position[1],
       position[2]
     );
 
-
     const entity =
       world.createTransformEntity(
         object
       );
 
-
     entity.addComponent(
       RayInteractable
     );
-
 
     entity.addComponent(
       OneHandGrabbable,
@@ -1245,17 +790,16 @@ World.create(sceneContainer, projectOptions).then((world) => {
         label,
         [
           position[0],
-          position[1] + 0.48,
-          position[2] + 0.18
+          position[1] + 0.5,
+          position[2] + 0.15
         ],
-        1.1,
-        0.24
+        1.05,
+        0.22
       );
 
 
     object.userData.memoryHint =
       memoryHint;
-
 
     object.userData.conceptName =
       label;
@@ -1274,9 +818,9 @@ World.create(sceneContainer, projectOptions).then((world) => {
   }
 
 
-  // =========================================================
+  // =======================================================
   // INITIAL CONCEPTS
-  // =========================================================
+  // =======================================================
 
   const initialConcepts = [
     {
@@ -1304,8 +848,7 @@ World.create(sceneContainer, projectOptions).then((world) => {
 
   correctOrder =
     initialConcepts.map(
-      (concept) =>
-        concept.name
+      (concept) => concept.name
     );
 
 
@@ -1316,8 +859,8 @@ World.create(sceneContainer, projectOptions).then((world) => {
         concept.color,
         [
           recallSlots[index],
-          1.25,
-          -1.35
+          0.82,
+          -0.65
         ],
         concept.name,
         index
@@ -1327,20 +870,165 @@ World.create(sceneContainer, projectOptions).then((world) => {
   );
 
 
-  // =========================================================
-  // DESKTOP 3D DRAG ADAPTER
-  // =========================================================
+  // =======================================================
+  // STATUS PANELS
+  // =======================================================
+
+  const aiStatusLabel =
+    createLabel(
+      "AI Memory Palace Ready",
+      [0, 2.78, -2.45],
+      2.3,
+      0.25
+    );
+
+
+  const scoreLabel =
+    createLabel(
+      "Score: --",
+      [-1.65, 0.32, -2.05],
+      1.15,
+      0.24
+    );
+
+
+  const feedbackLabel =
+    createLabel(
+      "Ready for recall",
+      [0, 0.32, -2.05],
+      1.8,
+      0.24
+    );
+
+
+  const revisionLabel =
+    createLabel(
+      "AI Revision: Waiting...",
+      [1.65, 0.32, -2.05],
+      1.75,
+      0.24
+    );
+
+
+  // =======================================================
+  // START RECALL BUTTON
+  // =======================================================
+
+  const startPanel =
+    new Mesh(
+      new BoxGeometry(
+        1.55,
+        0.42,
+        0.08
+      ),
+      new MeshBasicMaterial({
+        color: 0x36a269
+      })
+    );
+
+  startPanel.position.set(
+    -0.9,
+    0.14,
+    -1.95
+  );
+
+  const startPanelEntity =
+    world.createTransformEntity(
+      startPanel
+    );
+
+  startPanelEntity.addComponent(
+    RayInteractable
+  );
+
+
+  createLabel(
+    "START RECALL",
+    [-0.9, 0.14, -1.88],
+    1.3,
+    0.22
+  );
+
+
+  // =======================================================
+  // CHECK RECALL BUTTON
+  // =======================================================
+
+  const checkPanel =
+    new Mesh(
+      new BoxGeometry(
+        1.55,
+        0.42,
+        0.08
+      ),
+      new MeshBasicMaterial({
+        color: 0x3159a6
+      })
+    );
+
+  checkPanel.position.set(
+    0.9,
+    0.14,
+    -1.95
+  );
+
+  const checkPanelEntity =
+    world.createTransformEntity(
+      checkPanel
+    );
+
+  checkPanelEntity.addComponent(
+    RayInteractable
+  );
+
+
+  createLabel(
+    "CHECK RECALL",
+    [0.9, 0.14, -1.88],
+    1.3,
+    0.22
+  );
+
+
+  // =======================================================
+  // UPDATE OBJECT LABELS
+  // =======================================================
+
+  function updateObjectLabels() {
+
+    recallObjects.forEach(
+      (item) => {
+
+        item.labelData.mesh.position.set(
+          item.object.position.x,
+          item.object.position.y + 0.5,
+          item.object.position.z + 0.15
+        );
+
+      }
+    );
+
+    requestAnimationFrame(
+      updateObjectLabels
+    );
+  }
+
+  updateObjectLabels();
+
+
+  // =======================================================
+  // DESKTOP DRAG
+  // =======================================================
 
   function setupDesktop3DDrag() {
 
     const canvas =
       sceneContainer.querySelector("canvas");
 
-
     if (!(canvas instanceof HTMLCanvasElement)) {
 
       console.warn(
-        "Desktop 3D Drag: canvas not found"
+        "Desktop drag: canvas not found"
       );
 
       return;
@@ -1350,33 +1038,23 @@ World.create(sceneContainer, projectOptions).then((world) => {
     const raycaster =
       new THREE.Raycaster();
 
-
     const pointer =
       new THREE.Vector2();
-
 
     const dragPlane =
       new THREE.Plane();
 
-
     const intersection =
       new THREE.Vector3();
-
 
     const dragOffset =
       new THREE.Vector3();
 
+    let selectedObject = null;
 
-    let selectedObject =
-      null;
+    let isDragging = false;
 
-
-    let isDragging =
-      false;
-
-
-    let dragDepth =
-      0;
+    let dragDepth = 0;
 
 
     function updatePointer(event) {
@@ -1384,20 +1062,17 @@ World.create(sceneContainer, projectOptions).then((world) => {
       const rect =
         canvas.getBoundingClientRect();
 
-
       pointer.x =
         (
           (event.clientX - rect.left) /
           rect.width
         ) * 2 - 1;
 
-
       pointer.y =
         -(
           (event.clientY - rect.top) /
           rect.height
         ) * 2 + 1;
-
     }
 
 
@@ -1405,18 +1080,15 @@ World.create(sceneContainer, projectOptions).then((world) => {
 
       updatePointer(event);
 
-
       raycaster.setFromCamera(
         pointer,
         world.camera
       );
 
-
       const meshes =
         recallObjects.map(
           (item) => item.object
         );
-
 
       const intersections =
         raycaster.intersectObjects(
@@ -1424,65 +1096,43 @@ World.create(sceneContainer, projectOptions).then((world) => {
           true
         );
 
-
       if (
         intersections.length === 0
       ) {
-
         return null;
-
       }
-
 
       let hit =
         intersections[0].object;
-
 
       while (
         hit &&
         !meshes.includes(hit)
       ) {
 
-        hit =
-          hit.parent;
-
+        hit = hit.parent;
       }
 
-
       return hit || null;
-
     }
 
 
     function handlePointerDown(event) {
 
-      if (
-        event.button !== 0
-      ) {
-
+      if (event.button !== 0) {
         return;
-
       }
-
 
       const object =
         findMemoryObject(event);
 
-
       if (!object) {
-
         return;
-
       }
 
+      selectedObject = object;
 
-      selectedObject =
-        object;
-
-
-      isDragging =
-        true;
-
+      isDragging = true;
 
       canvas.setPointerCapture(
         event.pointerId
@@ -1491,7 +1141,6 @@ World.create(sceneContainer, projectOptions).then((world) => {
 
       const cameraDirection =
         new THREE.Vector3();
-
 
       world.camera.getWorldDirection(
         cameraDirection
@@ -1521,7 +1170,6 @@ World.create(sceneContainer, projectOptions).then((world) => {
           object.position,
           intersection
         );
-
       }
 
 
@@ -1532,15 +1180,7 @@ World.create(sceneContainer, projectOptions).then((world) => {
       object.userData.desktopDragging =
         true;
 
-
-      console.log(
-        "Desktop grab:",
-        object.userData.conceptName
-      );
-
-
       event.preventDefault();
-
     }
 
 
@@ -1550,14 +1190,10 @@ World.create(sceneContainer, projectOptions).then((world) => {
         !isDragging ||
         !selectedObject
       ) {
-
         return;
-
       }
 
-
       updatePointer(event);
-
 
       raycaster.setFromCamera(
         pointer,
@@ -1576,20 +1212,16 @@ World.create(sceneContainer, projectOptions).then((world) => {
           intersection.x +
           dragOffset.x;
 
-
         selectedObject.position.y =
           intersection.y +
           dragOffset.y;
-
       }
 
 
       selectedObject.position.z =
         dragDepth;
 
-
       event.preventDefault();
-
     }
 
 
@@ -1599,37 +1231,24 @@ World.create(sceneContainer, projectOptions).then((world) => {
         !isDragging ||
         !selectedObject
       ) {
-
         return;
-
       }
 
-
-      const zStep =
-        event.deltaY * 0.002;
-
-
       selectedObject.position.z +=
-        zStep;
-
+        event.deltaY * 0.002;
 
       dragDepth =
         selectedObject.position.z;
 
-
       event.preventDefault();
-
     }
 
 
     function handlePointerUp(event) {
 
       if (!isDragging) {
-
         return;
-
       }
-
 
       if (
         canvas.hasPointerCapture(
@@ -1640,43 +1259,23 @@ World.create(sceneContainer, projectOptions).then((world) => {
         canvas.releasePointerCapture(
           event.pointerId
         );
-
       }
-
 
       if (selectedObject) {
 
         selectedObject.userData.desktopDragging =
           false;
-
-
-        console.log(
-          "Desktop release:",
-          selectedObject.userData.conceptName,
-          {
-            x: selectedObject.position.x.toFixed(2),
-            y: selectedObject.position.y.toFixed(2),
-            z: selectedObject.position.z.toFixed(2)
-          }
-        );
-
       }
 
+      selectedObject = null;
 
-      selectedObject =
-        null;
-
-
-      isDragging =
-        false;
-
+      isDragging = false;
 
       dragOffset.set(
         0,
         0,
         0
       );
-
     }
 
 
@@ -1689,24 +1288,20 @@ World.create(sceneContainer, projectOptions).then((world) => {
       handlePointerDown
     );
 
-
     canvas.addEventListener(
       "pointermove",
       handlePointerMove
     );
-
 
     canvas.addEventListener(
       "pointerup",
       handlePointerUp
     );
 
-
     canvas.addEventListener(
       "pointercancel",
       handlePointerUp
     );
-
 
     canvas.addEventListener(
       "wheel",
@@ -1720,203 +1315,15 @@ World.create(sceneContainer, projectOptions).then((world) => {
     console.log(
       "Desktop 3D Drag Adapter ready"
     );
-
   }
 
 
   setupDesktop3DDrag();
 
 
-  // =========================================================
-  // KEEP LABELS WITH OBJECTS
-  // =========================================================
-
-  function updateObjectLabels() {
-
-    recallObjects.forEach(
-      (item) => {
-
-        item.labelData.mesh.position.set(
-          item.object.position.x,
-          item.object.position.y + 0.48,
-          item.object.position.z + 0.18
-        );
-
-      }
-    );
-
-
-    requestAnimationFrame(
-      updateObjectLabels
-    );
-
-  }
-
-
-  updateObjectLabels();
-
-
-  // =========================================================
-  // SCORE
-  // =========================================================
-
-  const scoreLabel =
-    createLabel(
-      "Score: --",
-      [
-        0,
-        2.55,
-        -2.15
-      ],
-      1.5,
-      0.28
-    );
-
-
-  // =========================================================
-  // FEEDBACK
-  // =========================================================
-
-  const feedbackLabel =
-    createLabel(
-      "Ready for recall?",
-      [
-        0,
-        2.28,
-        -2.15
-      ],
-      2.0,
-      0.25
-    );
-
-
-  // =========================================================
-  // AI STATUS
-  // =========================================================
-
-  const aiStatusLabel =
-    createLabel(
-      "AI Memory Palace",
-      [
-        0,
-        2.82,
-        -2.15
-      ],
-      2.2,
-      0.28
-    );
-
-
-  const revisionLabel =
-    createLabel(
-      "AI Revision: Waiting...",
-      [
-        0,
-        0.92,
-        -1.95
-      ],
-      2.4,
-      0.26
-    );
-
-
-  // =========================================================
-  // CHECK RECALL PANEL
-  // =========================================================
-
-  const checkPanel =
-    new Mesh(
-      new BoxGeometry(
-        1.7,
-        0.45,
-        0.08
-      ),
-      new MeshBasicMaterial({
-        color: 0x3159a6
-      })
-    );
-
-
-  checkPanel.position.set(
-    0,
-    0.48,
-    -2.3
-  );
-
-
-  const checkPanelEntity =
-    world.createTransformEntity(
-      checkPanel
-    );
-
-
-  checkPanelEntity.addComponent(
-    RayInteractable
-  );
-
-
-  createLabel(
-    "CHECK RECALL",
-    [
-      0,
-      0.48,
-      -2.24
-    ],
-    1.45,
-    0.25
-  );
-
-
-  // =========================================================
-  // START RECALL PANEL
-  // =========================================================
-
-  const startPanel =
-    new Mesh(
-      new BoxGeometry(
-        1.7,
-        0.45,
-        0.08
-      ),
-      new MeshBasicMaterial({
-        color: 0x36a269
-      })
-    );
-
-
-  startPanel.position.set(
-    0,
-    0.02,
-    -2.3
-  );
-
-
-  const startPanelEntity =
-    world.createTransformEntity(
-      startPanel
-    );
-
-
-  startPanelEntity.addComponent(
-    RayInteractable
-  );
-
-
-  createLabel(
-    "START RECALL",
-    [
-      0,
-      0.02,
-      -2.24
-    ],
-    1.45,
-    0.25
-  );
-
-
-  // =========================================================
+  // =======================================================
   // APPLY AI CONCEPTS
-  // =========================================================
+  // =======================================================
 
   function applyAIConcepts(
     concepts
@@ -1942,8 +1349,7 @@ World.create(sceneContainer, projectOptions).then((world) => {
 
     correctOrder =
       usableConcepts.map(
-        (concept) =>
-          concept.name
+        (concept) => concept.name
       );
 
 
@@ -1962,7 +1368,6 @@ World.create(sceneContainer, projectOptions).then((world) => {
         const item =
           recallObjects[index];
 
-
         if (!item) {
           return;
         }
@@ -1971,10 +1376,8 @@ World.create(sceneContainer, projectOptions).then((world) => {
         item.label =
           concept.name;
 
-
         item.correctIndex =
           index;
-
 
         item.memoryHint =
           concept.memory_hint || "";
@@ -1983,10 +1386,8 @@ World.create(sceneContainer, projectOptions).then((world) => {
         item.object.userData.memoryHint =
           concept.memory_hint || "";
 
-
         item.object.userData.description =
           concept.description || "";
-
 
         item.object.userData.conceptName =
           concept.name;
@@ -2006,22 +1407,14 @@ World.create(sceneContainer, projectOptions).then((world) => {
           item.object.material.color.setHex(
             colors[index]
           );
-
         }
 
 
         item.object.position.set(
           recallSlots[index],
-          1.25,
-          -1.35
+          0.82,
+          -0.65
         );
-
-
-        console.log(
-          "Memory hint:",
-          concept.memory_hint
-        );
-
       }
     );
 
@@ -2031,12 +1424,10 @@ World.create(sceneContainer, projectOptions).then((world) => {
       "Score: --"
     );
 
-
     updateLabel(
       feedbackLabel,
       "AI concepts loaded"
     );
-
 
     updateLabel(
       aiStatusLabel,
@@ -2044,21 +1435,13 @@ World.create(sceneContainer, projectOptions).then((world) => {
     );
 
 
-    recallStarted =
-      false;
-
-
-    console.log(
-      "AI concepts loaded:",
-      usableConcepts
-    );
-
+    recallStarted = false;
   }
 
 
-  // =========================================================
+  // =======================================================
   // GENERATE AI CONCEPTS
-  // =========================================================
+  // =======================================================
 
   async function generateAIConcepts(
     topic
@@ -2087,7 +1470,6 @@ World.create(sceneContainer, projectOptions).then((world) => {
       aiStatusLabel,
       "AI is thinking..."
     );
-
 
     updateLabel(
       feedbackLabel,
@@ -2126,138 +1508,103 @@ World.create(sceneContainer, projectOptions).then((world) => {
         "AI connection failed"
       );
 
-
       updateLabel(
         feedbackLabel,
         "Try generating again"
       );
-
     }
-
   }
 
 
-  // =========================================================
+  // =======================================================
   // BROWSER TOPIC INPUT
-  // =========================================================
+  // =======================================================
 
   const topicPanel =
-    document.createElement(
-      "div"
-    );
-
+    document.createElement("div");
 
   topicPanel.style.position =
     "fixed";
 
-
   topicPanel.style.top =
     "20px";
-
 
   topicPanel.style.left =
     "50%";
 
-
   topicPanel.style.transform =
     "translateX(-50%)";
-
 
   topicPanel.style.zIndex =
     "9999";
 
-
   topicPanel.style.display =
     "flex";
-
 
   topicPanel.style.gap =
     "8px";
 
-
   topicPanel.style.padding =
     "10px";
 
-
   topicPanel.style.background =
-    "rgba(10, 15, 30, 0.94)";
-
+    "rgba(10,15,30,0.94)";
 
   topicPanel.style.borderRadius =
     "12px";
 
 
   const topicInput =
-    document.createElement(
-      "input"
-    );
-
+    document.createElement("input");
 
   topicInput.type =
     "text";
 
-
   topicInput.placeholder =
     "Enter a learning topic";
-
 
   topicInput.value =
     "Photosynthesis";
 
-
   topicInput.style.width =
     "240px";
-
 
   topicInput.style.padding =
     "10px";
 
-
   topicInput.style.borderRadius =
     "8px";
-
 
   topicInput.style.border =
     "1px solid #6c63ff";
 
-
   topicInput.style.background =
     "#151b2d";
-
 
   topicInput.style.color =
     "#ffffff";
 
 
   const generateButton =
-    document.createElement(
-      "button"
-    );
-
+    document.createElement("button");
 
   generateButton.textContent =
     "GENERATE AI";
 
-
   generateButton.style.padding =
     "10px 14px";
-
 
   generateButton.style.border =
     "none";
 
-
   generateButton.style.borderRadius =
     "8px";
-
 
   generateButton.style.cursor =
     "pointer";
 
-
   generateButton.style.background =
     "#6c63ff";
-
 
   generateButton.style.color =
     "#ffffff";
@@ -2286,9 +1633,7 @@ World.create(sceneContainer, projectOptions).then((world) => {
         generateAIConcepts(
           topicInput.value
         );
-
       }
-
     }
   );
 
@@ -2297,27 +1642,23 @@ World.create(sceneContainer, projectOptions).then((world) => {
     topicInput
   );
 
-
   topicPanel.appendChild(
     generateButton
   );
-
 
   document.body.appendChild(
     topicPanel
   );
 
 
-  // =========================================================
+  // =======================================================
   // SHUFFLE
-  // =========================================================
+  // =======================================================
 
   function shuffleRecallObjects() {
 
     const shuffledSlots =
-      [
-        ...recallSlots
-      ];
+      [...recallSlots];
 
 
     for (
@@ -2341,7 +1682,6 @@ World.create(sceneContainer, projectOptions).then((world) => {
         shuffledSlots[j],
         shuffledSlots[i]
       ];
-
     }
 
 
@@ -2351,34 +1691,23 @@ World.create(sceneContainer, projectOptions).then((world) => {
         item.object.position.x =
           shuffledSlots[index];
 
-
         item.object.position.y =
-          1.25;
-
+          0.82;
 
         item.object.position.z =
-          -1.35;
-
+          -0.65;
       }
     );
-
-
-    console.log(
-      "Recall concepts shuffled"
-    );
-
   }
 
 
-  // =========================================================
+  // =======================================================
   // START RECALL
-  // =========================================================
+  // =======================================================
 
   function startRecall() {
 
-    recallStarted =
-      true;
-
+    recallStarted = true;
 
     shuffleRecallObjects();
 
@@ -2388,58 +1717,44 @@ World.create(sceneContainer, projectOptions).then((world) => {
       "Score: --"
     );
 
-
     updateLabel(
       feedbackLabel,
       "Arrange the concepts"
     );
 
-
     updateLabel(
       aiStatusLabel,
       "Recall Challenge"
     );
-
-
-    console.log(
-      "Recall challenge started"
-    );
-
   }
 
 
-  // =========================================================
+  // =======================================================
   // CALCULATE SCORE
-  // =========================================================
+  // =======================================================
 
   function calculateRecallScore() {
 
     const sortedObjects =
-      [
-        ...recallObjects
-      ].sort(
+      [...recallObjects].sort(
         (a, b) =>
           a.object.position.x -
           b.object.position.x
       );
 
 
-    let correct =
-      0;
+    let correct = 0;
 
 
     sortedObjects.forEach(
       (item, index) => {
 
         if (
-          item.correctIndex ===
-          index
+          item.correctIndex === index
         ) {
 
           correct++;
-
         }
-
       }
     );
 
@@ -2448,23 +1763,19 @@ World.create(sceneContainer, projectOptions).then((world) => {
       (
         correct /
         correctOrder.length
-      ) *
-      100
+      ) * 100
     );
-
   }
 
 
-  // =========================================================
-  // GET WEAK CONCEPTS
-  // =========================================================
+  // =======================================================
+  // WEAK CONCEPTS
+  // =======================================================
 
   function getWeakConcepts() {
 
     const sortedObjects =
-      [
-        ...recallObjects
-      ].sort(
+      [...recallObjects].sort(
         (a, b) =>
           a.object.position.x -
           b.object.position.x
@@ -2478,16 +1789,13 @@ World.create(sceneContainer, projectOptions).then((world) => {
       (item, index) => {
 
         if (
-          item.correctIndex !==
-          index
+          item.correctIndex !== index
         ) {
 
           weakConcepts.push(
             item.label
           );
-
         }
-
       }
     );
 
@@ -2497,13 +1805,12 @@ World.create(sceneContainer, projectOptions).then((world) => {
         weakConcepts
       )
     ];
-
   }
 
 
-  // =========================================================
-  // GENERATE ADAPTIVE REVISION
-  // =========================================================
+  // =======================================================
+  // ADAPTIVE REVISION
+  // =======================================================
 
   async function generateAdaptiveRevision(
     weakConcepts
@@ -2513,15 +1820,13 @@ World.create(sceneContainer, projectOptions).then((world) => {
       !weakConcepts ||
       weakConcepts.length === 0
     ) {
-
       return;
-
     }
 
 
     updateLabel(
       aiStatusLabel,
-      `AI Revision: ${weakConcepts.join(", ")}`
+      "AI Revision"
     );
 
 
@@ -2546,12 +1851,6 @@ World.create(sceneContainer, projectOptions).then((world) => {
         );
 
 
-      console.log(
-        "Adaptive revision response:",
-        result
-      );
-
-
       if (
         !result ||
         !Array.isArray(result.revision) ||
@@ -2563,15 +1862,12 @@ World.create(sceneContainer, projectOptions).then((world) => {
           "AI Revision Ready"
         );
 
-
         updateLabel(
           feedbackLabel,
           "Review weak concepts"
         );
 
-
         return;
-
       }
 
 
@@ -2612,27 +1908,11 @@ World.create(sceneContainer, projectOptions).then((world) => {
         weakObject.object.userData.revisionExplanation =
           explanation;
 
-
         weakObject.object.userData.memoryHint =
           memoryHint;
 
-
         weakObject.object.userData.challenge =
           challenge;
-
-
-        console.log(
-          "Weak 3D object connected:",
-          conceptName
-        );
-
-      } else {
-
-        console.log(
-          "Weak 3D object not found:",
-          conceptName
-        );
-
       }
 
 
@@ -2655,52 +1935,12 @@ World.create(sceneContainer, projectOptions).then((world) => {
 
 
       console.log(
-        "VISIBLE REVISION TEST:",
-        conceptName,
-        memoryHint
-      );
-
-
-      console.log(
-        "Revision explanation:",
-        explanation
-      );
-
-
-      console.log(
-        "Revision memory hint:",
-        memoryHint
-      );
-
-
-      console.log(
-        "Revision challenge:",
-        challenge
-      );
-
-
-      result.revision.forEach(
-        (item) => {
-
-          console.log(
-            `Revision concept: ${item.concept}`
-          );
-
-
-          console.log(
-            `Explanation: ${item.explanation}`
-          );
-
-
-          console.log(
-            `Memory hint: ${item.memory_hint}`
-          );
-
-
-          console.log(
-            `Challenge: ${item.challenge}`
-          );
-
+        "Revision:",
+        {
+          conceptName,
+          explanation,
+          memoryHint,
+          challenge
         }
       );
 
@@ -2717,20 +1957,17 @@ World.create(sceneContainer, projectOptions).then((world) => {
         "Revision unavailable"
       );
 
-
       updateLabel(
         feedbackLabel,
         "Review weak concepts manually"
       );
-
     }
-
   }
 
 
-  // =========================================================
+  // =======================================================
   // CHECK RECALL
-  // =========================================================
+  // =======================================================
 
   async function checkRecall() {
 
@@ -2742,7 +1979,6 @@ World.create(sceneContainer, projectOptions).then((world) => {
       );
 
       return;
-
     }
 
 
@@ -2760,68 +1996,52 @@ World.create(sceneContainer, projectOptions).then((world) => {
       getWeakConcepts();
 
 
-    console.log(
-      "Weak concepts:",
-      weakConcepts
-    );
-
-
-    if (
-      score === 100
-    ) {
+    if (score === 100) {
 
       updateLabel(
         feedbackLabel,
         "Excellent memory!"
       );
 
-
       updateLabel(
         aiStatusLabel,
         "Memory mastered!"
       );
 
-
       return;
-
     }
 
 
-    if (
-      score >= 60
-    ) {
+    if (score >= 60) {
 
       updateLabel(
         feedbackLabel,
-        "Good! AI will review weak concepts."
+        "Good! AI reviewing weak concepts."
       );
 
     } else {
 
       updateLabel(
         feedbackLabel,
-        "Let's revise your weak concepts."
+        "Let's revise weak concepts."
       );
-
     }
 
 
     await generateAdaptiveRevision(
       weakConcepts
     );
-
   }
 
 
-  // =========================================================
+  // =======================================================
   // BUTTON EVENTS
-  // =========================================================
+  // =======================================================
 
   startPanel.addEventListener(
     "click",
     startRecall
   );
-
 
   checkPanel.addEventListener(
     "click",
@@ -2829,21 +2049,23 @@ World.create(sceneContainer, projectOptions).then((world) => {
   );
 
 
-  // =========================================================
-  // GLOBAL TEST FUNCTIONS
-  // =========================================================
+  // =======================================================
+  // GLOBAL FUNCTIONS
+  // =======================================================
 
   window.startRecall =
     startRecall;
 
-
   window.checkRecall =
     checkRecall;
-
 
   window.generateAIConcepts =
     generateAIConcepts;
 
+
+  // =======================================================
+  // FINAL
+  // =======================================================
 
   console.log(
     "AI Memory Palace VR ready"

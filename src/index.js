@@ -1144,8 +1144,9 @@ createStudentDesk(1.8, 2.05);
   );
 }
 
-createPlant(-4.15, -0.15);
-createPlant(4.15, 0.4);
+createPlant(-3.5,-2.5);
+createPlant(3.5,-2.5);
+
     
    
 

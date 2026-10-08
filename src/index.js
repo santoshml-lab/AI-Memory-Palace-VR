@@ -324,8 +324,9 @@ World.create(
         "canvas"
       );
 
-    canvas.width = 512;
-    canvas.height = 128;
+    canvas.width = 1024;
+    canvas.height = 160;
+    
 
     const ctx =
       canvas.getContext(

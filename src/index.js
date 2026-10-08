@@ -1199,31 +1199,42 @@ createStudentDesk(2.4, 0.45);
 
 
   // =======================================================
-  // MEMORY CARPET
-  // =======================================================
+// MEMORY CARPET
+// =======================================================
 
-  createCylinder(
-    2.4,
-    2.4,
-    0.06,
-    0x283d63,
-    [0, 0.04, 2.45]
-  );
+const memoryCenterX = 0;
+const memoryCenterZ = 3.55;
 
-  createCylinder(
-    2.05,
-    2.05,
-    0.065,
-    0x344f7d,
-    [0, 0.075, 2.45]
-  );
+createCylinder(
+  1.45,
+  1.45,
+  0.06,
+  0x283d63,
+  [memoryCenterX, 0.04, memoryCenterZ]
+);
 
-  createLabel(
-    "MEMORY ZONE",
-    [0, 0.28, 2.45],
-    1.5,
-    0.25
-  );
+createCylinder(
+  1.15,
+  1.15,
+  0.065,
+  0x344f7d,
+  [memoryCenterX, 0.075, memoryCenterZ]
+);
+
+createLabel(
+  "MEMORY ZONE",
+  [memoryCenterX, 0.28, memoryCenterZ],
+  1.5,
+  0.25
+);
+  
+  
+
+  
+  
+    
+    
+
 
 
   // =======================================================
@@ -1235,12 +1246,18 @@ createStudentDesk(2.4, 0.45);
   let correctOrder = [];
 
   const recallSlots = [
-    -1.6,
-    -0.8,
-    0,
-    0.8,
-    1.6
-  ];
+  -0.8,
+  -0.4,
+  0,
+  0.4,
+  0.8
+];
+    
+    
+    
+    
+    
+  
 
   let recallStarted = false;
 

@@ -69,8 +69,8 @@ World.create(sceneContainer, projectOptions).then((world) => {
 
   world.camera.lookAt(
     0,
-    1.2,
-    0
+    1.35,
+    -0.8
   );
 
 
@@ -90,6 +90,95 @@ World.create(sceneContainer, projectOptions).then((world) => {
     });
 
 
+  const sideWallMaterial =
+    new MeshBasicMaterial({
+      color: 0x1b2440
+    });
+
+
+  const ceilingMaterial =
+    new MeshBasicMaterial({
+      color: 0x11182b
+    });
+
+
+  const woodMaterial =
+    new MeshBasicMaterial({
+      color: 0x6b4f35
+    });
+
+
+  const chairMaterial =
+    new MeshBasicMaterial({
+      color: 0x34486e
+    });
+
+
+  const lightMaterial =
+    new MeshBasicMaterial({
+      color: 0xf7e7a8
+    });
+
+
+  const windowMaterial =
+    new MeshBasicMaterial({
+      color: 0x376a91
+    });
+
+
+  const doorMaterial =
+    new MeshBasicMaterial({
+      color: 0x4b365f
+    });
+
+
+  const plantMaterial =
+    new MeshBasicMaterial({
+      color: 0x26734d
+    });
+
+
+  // =========================================================
+  // HELPER — CREATE BOX
+  // =========================================================
+
+  function createBox(
+    width,
+    height,
+    depth,
+    color,
+    position
+  ) {
+
+    const box =
+      new Mesh(
+        new BoxGeometry(
+          width,
+          height,
+          depth
+        ),
+        new MeshBasicMaterial({
+          color
+        })
+      );
+
+
+    box.position.set(
+      position[0],
+      position[1],
+      position[2]
+    );
+
+
+    world.createTransformEntity(
+      box
+    );
+
+
+    return box;
+  }
+
+
   // =========================================================
   // FLOOR
   // =========================================================
@@ -104,11 +193,13 @@ World.create(sceneContainer, projectOptions).then((world) => {
       floorMaterial
     );
 
+
   floor.position.set(
     0,
     -0.05,
     0
   );
+
 
   world.createTransformEntity(
     floor
@@ -129,11 +220,13 @@ World.create(sceneContainer, projectOptions).then((world) => {
       wallMaterial
     );
 
+
   backWall.position.set(
     0,
     1.5,
     -3
   );
+
 
   world.createTransformEntity(
     backWall
@@ -141,30 +234,388 @@ World.create(sceneContainer, projectOptions).then((world) => {
 
 
   // =========================================================
-  // PHASE 1 — VISUAL LEARNING HALL
+  // LEFT WALL
   // =========================================================
 
-  // ---------------------------------------------------------
-  // LEARNING HALL TITLE
-  // ---------------------------------------------------------
-
-  createLabel(
-    "AI LEARNING HALL",
-    [0, 2.75, -2.85],
-    2.4,
-    0.32
+  createBox(
+    0.1,
+    3,
+    6,
+    0x182139,
+    [-3, 1.5, 0]
   );
 
 
-  // ---------------------------------------------------------
+  // =========================================================
+  // RIGHT WALL
+  // =========================================================
+
+  createBox(
+    0.1,
+    3,
+    6,
+    0x182139,
+    [3, 1.5, 0]
+  );
+
+
+  // =========================================================
+  // CEILING
+  // =========================================================
+
+  createBox(
+    6,
+    0.1,
+    6,
+    0x10172a,
+    [0, 3.05, 0]
+  );
+
+
+  // =========================================================
+  // CEILING DECORATIVE BEAMS
+  // =========================================================
+
+  createBox(
+    5.8,
+    0.12,
+    0.12,
+    0x38476b,
+    [0, 2.92, -1]
+  );
+
+
+  createBox(
+    5.8,
+    0.12,
+    0.12,
+    0x38476b,
+    [0, 2.92, 1]
+  );
+
+
+  createBox(
+    0.12,
+    0.12,
+    5.8,
+    0x38476b,
+    [-1.8, 2.91, 0]
+  );
+
+
+  createBox(
+    0.12,
+    0.12,
+    5.8,
+    0x38476b,
+    [1.8, 2.91, 0]
+  );
+
+
+  // =========================================================
+  // CEILING LIGHTS
+  // =========================================================
+
+  createBox(
+    1.1,
+    0.08,
+    0.28,
+    0xf4d98a,
+    [-1.7, 2.84, 0.8]
+  );
+
+
+  createBox(
+    1.1,
+    0.08,
+    0.28,
+    0xf4d98a,
+    [0, 2.84, 0.8]
+  );
+
+
+  createBox(
+    1.1,
+    0.08,
+    0.28,
+    0xf4d98a,
+    [1.7, 2.84, 0.8]
+  );
+
+
+  createBox(
+    1.1,
+    0.08,
+    0.28,
+    0xf4d98a,
+    [-1.7, 2.84, -1.4]
+  );
+
+
+  createBox(
+    1.1,
+    0.08,
+    0.28,
+    0xf4d98a,
+    [0, 2.84, -1.4]
+  );
+
+
+  createBox(
+    1.1,
+    0.08,
+    0.28,
+    0xf4d98a,
+    [1.7, 2.84, -1.4]
+  );
+
+
+  // =========================================================
+  // FRONT WALL DECORATIVE FRAME
+  // =========================================================
+
+  createBox(
+    5.7,
+    0.12,
+    0.12,
+    0x4e6090,
+    [0, 2.92, -2.88]
+  );
+
+
+  createBox(
+    5.7,
+    0.12,
+    0.12,
+    0x4e6090,
+    [0, 0.18, -2.88]
+  );
+
+
+  createBox(
+    0.12,
+    2.75,
+    0.12,
+    0x4e6090,
+    [-2.85, 1.55, -2.88]
+  );
+
+
+  createBox(
+    0.12,
+    2.75,
+    0.12,
+    0x4e6090,
+    [2.85, 1.55, -2.88]
+  );
+
+
+  // =========================================================
+  // FRONT WINDOWS
+  // =========================================================
+
+  createBox(
+    0.95,
+    0.85,
+    0.06,
+    0x376a91,
+    [-2.35, 2.0, -2.92]
+  );
+
+
+  createBox(
+    0.95,
+    0.85,
+    0.06,
+    0x376a91,
+    [2.35, 2.0, -2.92]
+  );
+
+
+  // Window frames
+  createBox(
+    0.08,
+    0.9,
+    0.08,
+    0x8ca5bd,
+    [-2.35, 2.0, -2.98]
+  );
+
+
+  createBox(
+    0.08,
+    0.9,
+    0.08,
+    0x8ca5bd,
+    [2.35, 2.0, -2.98]
+  );
+
+
+  createBox(
+    1.0,
+    0.08,
+    0.08,
+    0x8ca5bd,
+    [-2.35, 2.0, -2.98]
+  );
+
+
+  createBox(
+    1.0,
+    0.08,
+    0.08,
+    0x8ca5bd,
+    [2.35, 2.0, -2.98]
+  );
+
+
+  // =========================================================
+  // DOOR
+  // =========================================================
+
+  createBox(
+    0.8,
+    1.8,
+    0.08,
+    0x4b365f,
+    [2.45, 1.0, -2.91]
+  );
+
+
+  createBox(
+    0.08,
+    0.08,
+    0.08,
+    0xe5c36d,
+    [2.72, 1.05, -2.99]
+  );
+
+
+  // =========================================================
+  // FRONT PILLARS
+  // =========================================================
+
+  createBox(
+    0.22,
+    2.75,
+    0.22,
+    0x35456c,
+    [-2.72, 1.5, -2.75]
+  );
+
+
+  createBox(
+    0.22,
+    2.75,
+    0.22,
+    0x35456c,
+    [2.72, 1.5, -2.75]
+  );
+
+
+  // =========================================================
+  // AI LEARNING HALL TITLE
+  // =========================================================
+
+  createLabel(
+    "AI LEARNING HALL",
+    [0, 2.68, -2.80],
+    2.7,
+    0.34
+  );
+
+
+  // =========================================================
+  // MAIN AI RESULT BLACKBOARD
+  // =========================================================
+
+  const resultBoard =
+    new Mesh(
+      new BoxGeometry(
+        4.6,
+        1.15,
+        0.08
+      ),
+      new MeshBasicMaterial({
+        color: 0x0b121c
+      })
+    );
+
+
+  resultBoard.position.set(
+    0,
+    1.78,
+    -2.72
+  );
+
+
+  world.createTransformEntity(
+    resultBoard
+  );
+
+
+  // Blackboard frame
+  createBox(
+    4.8,
+    0.08,
+    0.12,
+    0x8b693f,
+    [0, 2.38, -2.78]
+  );
+
+
+  createBox(
+    4.8,
+    0.08,
+    0.12,
+    0x8b693f,
+    [0, 1.18, -2.78]
+  );
+
+
+  createBox(
+    0.08,
+    1.25,
+    0.12,
+    0x8b693f,
+    [-2.38, 1.78, -2.78]
+  );
+
+
+  createBox(
+    0.08,
+    1.25,
+    0.12,
+    0x8b693f,
+    [2.38, 1.78, -2.78]
+  );
+
+
+  createLabel(
+    "AI RESULT",
+    [0, 2.16, -2.64],
+    1.8,
+    0.28
+  );
+
+
+  createLabel(
+    "Your learning result will appear here",
+    [0, 1.68, -2.64],
+    2.8,
+    0.22
+  );
+
+
+  // =========================================================
   // LEFT LEARNING BOARD
-  // ---------------------------------------------------------
+  // =========================================================
 
   const learningBoard =
     new Mesh(
       new BoxGeometry(
-        2.2,
-        1.35,
+        1.55,
+        0.72,
         0.08
       ),
       new MeshBasicMaterial({
@@ -172,11 +623,13 @@ World.create(sceneContainer, projectOptions).then((world) => {
       })
     );
 
+
   learningBoard.position.set(
-    -1.75,
-    1.65,
-    -2.82
+    -2.05,
+    0.82,
+    -2.70
   );
+
 
   world.createTransformEntity(
     learningBoard
@@ -185,64 +638,21 @@ World.create(sceneContainer, projectOptions).then((world) => {
 
   createLabel(
     "LEARNING",
-    [-1.75, 2.05, -2.76],
-    1.5,
-    0.26
-  );
-
-
-  // ---------------------------------------------------------
-  // MAIN AI RESULT BLACKBOARD
-  // ---------------------------------------------------------
-
-  const resultBoard =
-    new Mesh(
-      new BoxGeometry(
-        4.8,
-        1.15,
-        0.08
-      ),
-      new MeshBasicMaterial({
-        color: 0x101820
-      })
-    );
-
-  resultBoard.position.set(
-    0,
-    1.15,
-    -2.72
-  );
-
-  world.createTransformEntity(
-    resultBoard
-  );
-
-
-  createLabel(
-    "AI RESULT",
-    [0, 1.52, -2.66],
-    1.7,
-    0.28
-  );
-
-
-  createLabel(
-    "Your learning result will appear here",
-    [0, 1.05, -2.66],
+    [-2.05, 0.98, -2.63],
     1.25,
-    0.20
+    0.23
   );
 
 
-  // ---------------------------------------------------------
-  // CENTER AI REVISION BOARD
-  // ---------------------------------------------------------
+  // =========================================================
+  // RIGHT AI REVISION BOARD
+  // =========================================================
 
   const aiBoard =
     new Mesh(
       new BoxGeometry(
-        2.2,
-        1.35,
+        1.55,
+        0.72,
         0.08
       ),
       new MeshBasicMaterial({
@@ -250,11 +660,13 @@ World.create(sceneContainer, projectOptions).then((world) => {
       })
     );
 
+
   aiBoard.position.set(
-    0.65,
-    1.65,
-    -2.82
+    1.25,
+    0.82,
+    -2.70
   );
+
 
   world.createTransformEntity(
     aiBoard
@@ -263,49 +675,302 @@ World.create(sceneContainer, projectOptions).then((world) => {
 
   createLabel(
     "AI REVISION",
-    [0.65, 2.05, -2.76],
-    1.6,
-    0.26
+    [1.25, 0.98, -2.63],
+    1.35,
+    0.23
   );
 
 
-  // ---------------------------------------------------------
-  // MEMORY ZONE
-  // ---------------------------------------------------------
+  // =========================================================
+  // DECORATIVE PLANTS — LEFT
+  // =========================================================
+
+  createBox(
+    0.38,
+    0.42,
+    0.38,
+    0x8a5a3b,
+    [-2.45, 0.35, -1.75]
+  );
+
+
+  createBox(
+    0.18,
+    0.55,
+    0.18,
+    0x4f9d68,
+    [-2.45, 0.82, -1.75]
+  );
+
+
+  createBox(
+    0.28,
+    0.18,
+    0.18,
+    0x26734d,
+    [-2.65, 1.0, -1.75]
+  );
+
+
+  createBox(
+    0.28,
+    0.18,
+    0.18,
+    0x26734d,
+    [-2.25, 1.05, -1.75]
+  );
+
+
+  // =========================================================
+  // DECORATIVE PLANTS — RIGHT
+  // =========================================================
+
+  createBox(
+    0.38,
+    0.42,
+    0.38,
+    0x8a5a3b,
+    [2.45, 0.35, -1.75]
+  );
+
+
+  createBox(
+    0.18,
+    0.55,
+    0.18,
+    0x4f9d68,
+    [2.45, 0.82, -1.75]
+  );
+
+
+  createBox(
+    0.28,
+    0.18,
+    0.18,
+    0x26734d,
+    [2.25, 1.0, -1.75]
+  );
+
+
+  createBox(
+    0.28,
+    0.18,
+    0.18,
+    0x26734d,
+    [2.65, 1.05, -1.75]
+  );
+
+
+  // =========================================================
+  // CLASSROOM DESKS — LEFT
+  // =========================================================
+
+  function createDesk(
+    x,
+    z
+  ) {
+
+    createBox(
+      0.9,
+      0.08,
+      0.55,
+      0x765538,
+      [x, 0.9, z]
+    );
+
+
+    createBox(
+      0.08,
+      0.75,
+      0.08,
+      0x5a402c,
+      [x - 0.34, 0.5, z - 0.18]
+    );
+
+
+    createBox(
+      0.08,
+      0.75,
+      0.08,
+      0x5a402c,
+      [x + 0.34, 0.5, z - 0.18]
+    );
+
+
+    createBox(
+      0.08,
+      0.75,
+      0.08,
+      0x5a402c,
+      [x - 0.34, 0.5, z + 0.18]
+    );
+
+
+    createBox(
+      0.08,
+      0.75,
+      0.08,
+      0x5a402c,
+      [x + 0.34, 0.5, z + 0.18]
+    );
+
+  }
+
+
+  function createChair(
+    x,
+    z
+  ) {
+
+    createBox(
+      0.55,
+      0.08,
+      0.5,
+      0x34486e,
+      [x, 0.48, z]
+    );
+
+
+    createBox(
+      0.55,
+      0.55,
+      0.08,
+      0x34486e,
+      [x, 0.75, z + 0.22]
+    );
+
+
+    createBox(
+      0.07,
+      0.48,
+      0.07,
+      0x263653,
+      [x - 0.2, 0.24, z]
+    );
+
+
+    createBox(
+      0.07,
+      0.48,
+      0.07,
+      0x263653,
+      [x + 0.2, 0.24, z]
+    );
+
+  }
+
+
+  // Left classroom row
+  createDesk(-2.0, 0.65);
+  createChair(-2.0, 1.08);
+
+
+  createDesk(-2.0, -0.35);
+  createChair(-2.0, 0.08);
+
+
+  // Right classroom row
+  createDesk(2.0, 0.65);
+  createChair(2.0, 1.08);
+
+
+  createDesk(2.0, -0.35);
+  createChair(2.0, 0.08);
+
+
+  // =========================================================
+  // FRONT SMALL DESKS
+  // =========================================================
+
+  createDesk(
+    -1.35,
+    0.15
+  );
+
+
+  createChair(
+    -1.35,
+    0.52
+  );
+
+
+  createDesk(
+    1.35,
+    0.15
+  );
+
+
+  createChair(
+    1.35,
+    0.52
+  );
+
+
+  // =========================================================
+  // CENTER MEMORY CARPET
+  // =========================================================
 
   const memoryZone =
     new Mesh(
       new BoxGeometry(
         4.8,
-        0.08,
-        1.0
+        0.04,
+        1.15
       ),
       new MeshBasicMaterial({
         color: 0x18233d
       })
     );
 
+
   memoryZone.position.set(
     0,
-    0.15,
-    -1.8
+    0.04,
+    -1.35
   );
+
 
   world.createTransformEntity(
     memoryZone
   );
 
 
+  createBox(
+    4.8,
+    0.04,
+    0.06,
+    0x4d6bb3,
+    [0, 0.08, -1.92]
+  );
+
+
+  createBox(
+    4.8,
+    0.04,
+    0.06,
+    0x4d6bb3,
+    [0, 0.08, -0.78]
+  );
+
+
   createLabel(
     "MEMORY ZONE",
-    [0, 0.48, -1.82],
+    [0, 0.34, -1.88],
     1.7,
     0.25
   );
 
 
-  console.log(
-    "Phase 1 Visual Learning Hall created"
+  // =========================================================
+  // FLOOR DECORATIVE PATH
+  // =========================================================
+
+  createBox(
+    0.12,
+    0.025,
+    2.8,
+    0x34486e,
+    [0, 0.015, 0.8]
   );
 
 
@@ -545,10 +1210,6 @@ World.create(sceneContainer, projectOptions).then((world) => {
     );
 
 
-    // -------------------------------------------------------
-    // HOVER
-    // -------------------------------------------------------
-
     const originalScale =
       object.scale.clone();
 
@@ -579,10 +1240,6 @@ World.create(sceneContainer, projectOptions).then((world) => {
     );
 
 
-    // -------------------------------------------------------
-    // LABEL
-    // -------------------------------------------------------
-
     const labelData =
       createLabel(
         label,
@@ -595,10 +1252,6 @@ World.create(sceneContainer, projectOptions).then((world) => {
         0.24
       );
 
-
-    // -------------------------------------------------------
-    // MEMORY DATA
-    // -------------------------------------------------------
 
     object.userData.memoryHint =
       memoryHint;
@@ -622,7 +1275,7 @@ World.create(sceneContainer, projectOptions).then((world) => {
 
 
   // =========================================================
-  // CREATE INITIAL CONCEPTS
+  // INITIAL CONCEPTS
   // =========================================================
 
   const initialConcepts = [
@@ -664,7 +1317,7 @@ World.create(sceneContainer, projectOptions).then((world) => {
         [
           recallSlots[index],
           1.25,
-          -2.1
+          -1.35
         ],
         concept.name,
         index
@@ -1112,11 +1765,11 @@ World.create(sceneContainer, projectOptions).then((world) => {
       "Score: --",
       [
         0,
-        2.45,
+        2.55,
         -2.15
       ],
       1.5,
-      0.3
+      0.28
     );
 
 
@@ -1129,11 +1782,11 @@ World.create(sceneContainer, projectOptions).then((world) => {
       "Ready for recall?",
       [
         0,
-        2.05,
+        2.28,
         -2.15
       ],
       2.0,
-      0.26
+      0.25
     );
 
 
@@ -1159,8 +1812,8 @@ World.create(sceneContainer, projectOptions).then((world) => {
       "AI Revision: Waiting...",
       [
         0,
-        1.68,
-        -2.15
+        0.92,
+        -1.95
       ],
       2.4,
       0.26
@@ -1186,7 +1839,7 @@ World.create(sceneContainer, projectOptions).then((world) => {
 
   checkPanel.position.set(
     0,
-    0.62,
+    0.48,
     -2.3
   );
 
@@ -1206,7 +1859,7 @@ World.create(sceneContainer, projectOptions).then((world) => {
     "CHECK RECALL",
     [
       0,
-      0.62,
+      0.48,
       -2.24
     ],
     1.45,
@@ -1233,7 +1886,7 @@ World.create(sceneContainer, projectOptions).then((world) => {
 
   startPanel.position.set(
     0,
-    0.08,
+    0.02,
     -2.3
   );
 
@@ -1253,7 +1906,7 @@ World.create(sceneContainer, projectOptions).then((world) => {
     "START RECALL",
     [
       0,
-      0.08,
+      0.02,
       -2.24
     ],
     1.45,
@@ -1360,7 +2013,7 @@ World.create(sceneContainer, projectOptions).then((world) => {
         item.object.position.set(
           recallSlots[index],
           1.25,
-          -2.1
+          -1.35
         );
 
 
@@ -1704,7 +2357,7 @@ World.create(sceneContainer, projectOptions).then((world) => {
 
 
         item.object.position.z =
-          -2.1;
+          -1.35;
 
       }
     );
@@ -1922,10 +2575,6 @@ World.create(sceneContainer, projectOptions).then((world) => {
       }
 
 
-      // -----------------------------------------------------
-      // FIRST AI REVISION
-      // -----------------------------------------------------
-
       const revision =
         result.revision[0];
 
@@ -1949,10 +2598,6 @@ World.create(sceneContainer, projectOptions).then((world) => {
         revision.challenge ||
         "Try recalling this concept again.";
 
-
-      // -----------------------------------------------------
-      // FIND WEAK 3D OBJECT
-      // -----------------------------------------------------
 
       const weakObject =
         recallObjects.find(
@@ -1990,10 +2635,6 @@ World.create(sceneContainer, projectOptions).then((world) => {
 
       }
 
-
-      // -----------------------------------------------------
-      // SHOW REVISION
-      // -----------------------------------------------------
 
       updateLabel(
         aiStatusLabel,
@@ -2037,10 +2678,6 @@ World.create(sceneContainer, projectOptions).then((world) => {
         challenge
       );
 
-
-      // -----------------------------------------------------
-      // LOG ALL AI REVISIONS
-      // -----------------------------------------------------
 
       result.revision.forEach(
         (item) => {
@@ -2168,10 +2805,6 @@ World.create(sceneContainer, projectOptions).then((world) => {
 
     }
 
-
-    // -------------------------------------------------------
-    // ADAPTIVE AI REVISION
-    // -------------------------------------------------------
 
     await generateAdaptiveRevision(
       weakConcepts

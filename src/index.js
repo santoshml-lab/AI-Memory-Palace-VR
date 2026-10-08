@@ -138,11 +138,16 @@ World.create(sceneContainer, projectOptions).then((world) => {
   world.createTransformEntity(
     backWall
   );
-    // =========================================================
+
+
+  // =========================================================
   // PHASE 1 — VISUAL LEARNING HALL
   // =========================================================
 
-  // Learning Hall title
+  // ---------------------------------------------------------
+  // LEARNING HALL TITLE
+  // ---------------------------------------------------------
+
   createLabel(
     "AI LEARNING HALL",
     [0, 2.75, -2.85],
@@ -184,55 +189,53 @@ World.create(sceneContainer, projectOptions).then((world) => {
     1.5,
     0.26
   );
-  
-// ---------------------------------------------------------
-  
-// MAIN AI RESULT BLACKBOARD
-// ---------------------------------------------------------
-
-const resultBoard =
-  new Mesh(
-    new BoxGeometry(
-      4.8,
-      1.15,
-      0.08
-    ),
-    new MeshBasicMaterial({
-      color: 0x101820
-    })
-  );
-
-resultBoard.position.set(
-  0,
-  1.15,
-  -2.72
-);
-
-world.createTransformEntity(
-  resultBoard
-);
-
-
-createLabel(
-  "AI RESULT",
-  [0, 1.52, -2.66],
-  1.7,
-  0.28
-);
-
-
-createLabel(
-  "Your learning result will appear here",
-  [0, 1.05, -2.66],
-  1.25,
-  0.20
-);
-
-  
 
 
   // ---------------------------------------------------------
-  // CENTER AI BOARD
+  // MAIN AI RESULT BLACKBOARD
+  // ---------------------------------------------------------
+
+  const resultBoard =
+    new Mesh(
+      new BoxGeometry(
+        4.8,
+        1.15,
+        0.08
+      ),
+      new MeshBasicMaterial({
+        color: 0x101820
+      })
+    );
+
+  resultBoard.position.set(
+    0,
+    1.15,
+    -2.72
+  );
+
+  world.createTransformEntity(
+    resultBoard
+  );
+
+
+  createLabel(
+    "AI RESULT",
+    [0, 1.52, -2.66],
+    1.7,
+    0.28
+  );
+
+
+  createLabel(
+    "Your learning result will appear here",
+    [0, 1.05, -2.66],
+    1.25,
+    0.20
+  );
+
+
+  // ---------------------------------------------------------
+  // CENTER AI REVISION BOARD
   // ---------------------------------------------------------
 
   const aiBoard =
@@ -264,56 +267,6 @@ createLabel(
     1.6,
     0.26
   );
-
-  // ---------------------------------------------------------
-// MAIN AI RESULT BLACKBOARD
-// ---------------------------------------------------------
-
-const resultBoard =
-  new Mesh(
-    new BoxGeometry(
-      4.8,
-      1.15,
-      0.08
-    ),
-    new MeshBasicMaterial({
-      color: 0x101820
-    })
-  );
-
-resultBoard.position.set(
-  0,
-  1.15,
-  -2.72
-);
-
-world.createTransformEntity(
-  resultBoard
-);
-
-
-createLabel(
-  "AI RESULT",
-  [0, 1.52, -2.66],
-  1.7,
-  0.28
-);
-
-
-createLabel(
-  "Your learning result will appear here",
-  [0, 1.05, -2.66],
-  1.25,
-  0.20
-);
-
-  
-
-
-
-
-  
-  
 
 
   // ---------------------------------------------------------
@@ -370,11 +323,14 @@ createLabel(
     const canvas =
       document.createElement("canvas");
 
+
     canvas.width = 512;
     canvas.height = 128;
 
+
     const context =
       canvas.getContext("2d");
+
 
     if (!context) {
       throw new Error(
@@ -382,8 +338,10 @@ createLabel(
       );
     }
 
+
     context.fillStyle =
       "rgba(10, 15, 30, 0.96)";
+
 
     context.fillRect(
       0,
@@ -392,17 +350,22 @@ createLabel(
       canvas.height
     );
 
+
     context.fillStyle =
       "#ffffff";
+
 
     context.font =
       "bold 34px Arial";
 
+
     context.textAlign =
       "center";
 
+
     context.textBaseline =
       "middle";
+
 
     context.fillText(
       text,
@@ -410,16 +373,19 @@ createLabel(
       canvas.height / 2
     );
 
+
     const texture =
       new THREE.CanvasTexture(
         canvas
       );
+
 
     const material =
       new MeshBasicMaterial({
         map: texture,
         transparent: true
       });
+
 
     const label =
       new THREE.Mesh(
@@ -430,15 +396,18 @@ createLabel(
         material
       );
 
+
     label.position.set(
       position[0],
       position[1],
       position[2]
     );
 
+
     world.createTransformEntity(
       label
     );
+
 
     return {
       mesh: label,
@@ -460,6 +429,7 @@ createLabel(
       texture
     } = labelData;
 
+
     context.clearRect(
       0,
       0,
@@ -467,8 +437,10 @@ createLabel(
       canvas.height
     );
 
+
     context.fillStyle =
       "rgba(10, 15, 30, 0.96)";
+
 
     context.fillRect(
       0,
@@ -477,23 +449,29 @@ createLabel(
       canvas.height
     );
 
+
     context.fillStyle =
       "#ffffff";
+
 
     context.font =
       "bold 34px Arial";
 
+
     context.textAlign =
       "center";
 
+
     context.textBaseline =
       "middle";
+
 
     context.fillText(
       text,
       canvas.width / 2,
       canvas.height / 2
     );
+
 
     texture.needsUpdate =
       true;
@@ -567,7 +545,9 @@ createLabel(
     );
 
 
-    // ---------- HOVER ----------
+    // -------------------------------------------------------
+    // HOVER
+    // -------------------------------------------------------
 
     const originalScale =
       object.scale.clone();
@@ -599,7 +579,9 @@ createLabel(
     );
 
 
-    // ---------- LABEL ----------
+    // -------------------------------------------------------
+    // LABEL
+    // -------------------------------------------------------
 
     const labelData =
       createLabel(
@@ -614,10 +596,13 @@ createLabel(
       );
 
 
-    // ---------- MEMORY DATA ----------
+    // -------------------------------------------------------
+    // MEMORY DATA
+    // -------------------------------------------------------
 
     object.userData.memoryHint =
       memoryHint;
+
 
     object.userData.conceptName =
       label;
@@ -698,6 +683,7 @@ createLabel(
     const canvas =
       sceneContainer.querySelector("canvas");
 
+
     if (!(canvas instanceof HTMLCanvasElement)) {
 
       console.warn(
@@ -711,23 +697,30 @@ createLabel(
     const raycaster =
       new THREE.Raycaster();
 
+
     const pointer =
       new THREE.Vector2();
+
 
     const dragPlane =
       new THREE.Plane();
 
+
     const intersection =
       new THREE.Vector3();
+
 
     const dragOffset =
       new THREE.Vector3();
 
+
     let selectedObject =
       null;
 
+
     let isDragging =
       false;
+
 
     let dragDepth =
       0;
@@ -738,11 +731,13 @@ createLabel(
       const rect =
         canvas.getBoundingClientRect();
 
+
       pointer.x =
         (
           (event.clientX - rect.left) /
           rect.width
         ) * 2 - 1;
+
 
       pointer.y =
         -(
@@ -757,21 +752,25 @@ createLabel(
 
       updatePointer(event);
 
+
       raycaster.setFromCamera(
         pointer,
         world.camera
       );
+
 
       const meshes =
         recallObjects.map(
           (item) => item.object
         );
 
+
       const intersections =
         raycaster.intersectObjects(
           meshes,
           true
         );
+
 
       if (
         intersections.length === 0
@@ -827,6 +826,7 @@ createLabel(
       selectedObject =
         object;
 
+
       isDragging =
         true;
 
@@ -838,6 +838,7 @@ createLabel(
 
       const cameraDirection =
         new THREE.Vector3();
+
 
       world.camera.getWorldDirection(
         cameraDirection
@@ -904,6 +905,7 @@ createLabel(
 
       updatePointer(event);
 
+
       raycaster.setFromCamera(
         pointer,
         world.camera
@@ -920,6 +922,7 @@ createLabel(
         selectedObject.position.x =
           intersection.x +
           dragOffset.x;
+
 
         selectedObject.position.y =
           intersection.y +
@@ -1010,6 +1013,7 @@ createLabel(
       selectedObject =
         null;
 
+
       isDragging =
         false;
 
@@ -1032,20 +1036,24 @@ createLabel(
       handlePointerDown
     );
 
+
     canvas.addEventListener(
       "pointermove",
       handlePointerMove
     );
+
 
     canvas.addEventListener(
       "pointerup",
       handlePointerUp
     );
 
+
     canvas.addEventListener(
       "pointercancel",
       handlePointerUp
     );
+
 
     canvas.addEventListener(
       "wheel",
@@ -1084,9 +1092,11 @@ createLabel(
       }
     );
 
+
     requestAnimationFrame(
       updateObjectLabels
     );
+
   }
 
 
@@ -1142,18 +1152,19 @@ createLabel(
       2.2,
       0.28
     );
-  
+
+
   const revisionLabel =
-  createLabel(
-    "AI Revision: Waiting...",
-    [
-      0,
-      1.68,
-      -2.15
-    ],
-    2.4,
-    0.26
-  );
+    createLabel(
+      "AI Revision: Waiting...",
+      [
+        0,
+        1.68,
+        -2.15
+      ],
+      2.4,
+      0.26
+    );
 
 
   // =========================================================
@@ -1307,8 +1318,10 @@ createLabel(
         item.label =
           concept.name;
 
+
         item.correctIndex =
           index;
+
 
         item.memoryHint =
           concept.memory_hint || "";
@@ -1317,8 +1330,10 @@ createLabel(
         item.object.userData.memoryHint =
           concept.memory_hint || "";
 
+
         item.object.userData.description =
           concept.description || "";
+
 
         item.object.userData.conceptName =
           concept.name;
@@ -1482,29 +1497,38 @@ createLabel(
   topicPanel.style.position =
     "fixed";
 
+
   topicPanel.style.top =
     "20px";
+
 
   topicPanel.style.left =
     "50%";
 
+
   topicPanel.style.transform =
     "translateX(-50%)";
+
 
   topicPanel.style.zIndex =
     "9999";
 
+
   topicPanel.style.display =
     "flex";
+
 
   topicPanel.style.gap =
     "8px";
 
+
   topicPanel.style.padding =
     "10px";
 
+
   topicPanel.style.background =
     "rgba(10, 15, 30, 0.94)";
+
 
   topicPanel.style.borderRadius =
     "12px";
@@ -1519,26 +1543,34 @@ createLabel(
   topicInput.type =
     "text";
 
+
   topicInput.placeholder =
     "Enter a learning topic";
+
 
   topicInput.value =
     "Photosynthesis";
 
+
   topicInput.style.width =
     "240px";
+
 
   topicInput.style.padding =
     "10px";
 
+
   topicInput.style.borderRadius =
     "8px";
+
 
   topicInput.style.border =
     "1px solid #6c63ff";
 
+
   topicInput.style.background =
     "#151b2d";
+
 
   topicInput.style.color =
     "#ffffff";
@@ -1557,17 +1589,22 @@ createLabel(
   generateButton.style.padding =
     "10px 14px";
 
+
   generateButton.style.border =
     "none";
+
 
   generateButton.style.borderRadius =
     "8px";
 
+
   generateButton.style.cursor =
     "pointer";
 
+
   generateButton.style.background =
     "#6c63ff";
+
 
   generateButton.style.color =
     "#ffffff";
@@ -1606,6 +1643,7 @@ createLabel(
   topicPanel.appendChild(
     topicInput
   );
+
 
   topicPanel.appendChild(
     generateButton
@@ -1660,8 +1698,10 @@ createLabel(
         item.object.position.x =
           shuffledSlots[index];
 
+
         item.object.position.y =
           1.25;
+
 
         item.object.position.z =
           -2.1;
@@ -1831,10 +1871,11 @@ createLabel(
       `AI Revision: ${weakConcepts.join(", ")}`
     );
 
+
     updateLabel(
-  revisionLabel,
-  `Weak: ${weakConcepts.join(", ")}`
-);
+      revisionLabel,
+      `Weak: ${weakConcepts.join(", ")}`
+    );
 
 
     updateLabel(
@@ -1869,10 +1910,12 @@ createLabel(
           "AI Revision Ready"
         );
 
+
         updateLabel(
           feedbackLabel,
           "Review weak concepts"
         );
+
 
         return;
 
@@ -1899,7 +1942,7 @@ createLabel(
 
       const memoryHint =
         revision.memory_hint ||
-        "Create a strong visual memory."
+        "Create a strong visual memory.";
 
 
       const challenge =
@@ -1924,8 +1967,10 @@ createLabel(
         weakObject.object.userData.revisionExplanation =
           explanation;
 
+
         weakObject.object.userData.memoryHint =
           memoryHint;
+
 
         weakObject.object.userData.challenge =
           challenge;
@@ -1951,35 +1996,28 @@ createLabel(
       // -----------------------------------------------------
 
       updateLabel(
-  aiStatusLabel,
-  `Revise: ${conceptName}`
-);
-
-updateLabel(
-  revisionLabel,
-  `Hint: ${memoryHint}`
-);
-
-updateLabel(
-  feedbackLabel,
-  explanation
-);
-        
-        
+        aiStatusLabel,
+        `Revise: ${conceptName}`
+      );
 
 
-      
-        
-        
-      
+      updateLabel(
+        revisionLabel,
+        `Hint: ${memoryHint}`
+      );
 
-      
+
+      updateLabel(
+        feedbackLabel,
+        explanation
+      );
+
 
       console.log(
-  "VISIBLE REVISION TEST:",
-  conceptName,
-  memoryHint
-);
+        "VISIBLE REVISION TEST:",
+        conceptName,
+        memoryHint
+      );
 
 
       console.log(
@@ -1987,10 +2025,12 @@ updateLabel(
         explanation
       );
 
+
       console.log(
         "Revision memory hint:",
         memoryHint
       );
+
 
       console.log(
         "Revision challenge:",
@@ -2009,13 +2049,16 @@ updateLabel(
             `Revision concept: ${item.concept}`
           );
 
+
           console.log(
             `Explanation: ${item.explanation}`
           );
 
+
           console.log(
             `Memory hint: ${item.memory_hint}`
           );
+
 
           console.log(
             `Challenge: ${item.challenge}`
@@ -2160,8 +2203,10 @@ updateLabel(
   window.startRecall =
     startRecall;
 
+
   window.checkRecall =
     checkRecall;
+
 
   window.generateAIConcepts =
     generateAIConcepts;
@@ -2172,3 +2217,6 @@ updateLabel(
   );
 
 });
+
+Sir, abhi bas is code ko "src/index.js" mein replace karke run kijiye.
+Pehle visual hall + single AI Result Blackboard verify karenge. Uske baad next step mein blackboard ko live AI result, score, weak concept aur revision explanation se connect karenge.

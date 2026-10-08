@@ -58,8 +58,9 @@ World.create(
   // CAMERA
   // =======================================================
 
-  world.camera.position.set(6.8, 3.0, 8.8);
-  world.camera.lookAt(0, 1.45, -1.4);
+  world.camera.position.set(3.8, 2.7, 7.6);
+  world.camera.lookAt(0, 1.45, -1.8);
+  
 
 
   // =======================================================

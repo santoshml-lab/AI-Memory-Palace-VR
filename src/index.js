@@ -363,7 +363,8 @@ World.create(
       "#ffffff";
 
     ctx.font =
-      "bold 30px Arial";
+      ctx.font =
+  "bold 34px Arial";
 
     ctx.textAlign =
       "center";
@@ -454,7 +455,7 @@ World.create(
       "#ffffff";
 
     ctx.font =
-      "bold 30px Arial";
+      "bold 34px Arial";
 
     ctx.textAlign =
       "center";

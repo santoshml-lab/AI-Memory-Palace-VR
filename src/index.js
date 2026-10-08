@@ -184,6 +184,51 @@ World.create(sceneContainer, projectOptions).then((world) => {
     1.5,
     0.26
   );
+  
+// ---------------------------------------------------------
+  
+// MAIN AI RESULT BLACKBOARD
+// ---------------------------------------------------------
+
+const resultBoard =
+  new Mesh(
+    new BoxGeometry(
+      4.8,
+      1.15,
+      0.08
+    ),
+    new MeshBasicMaterial({
+      color: 0x101820
+    })
+  );
+
+resultBoard.position.set(
+  0,
+  1.15,
+  -2.72
+);
+
+world.createTransformEntity(
+  resultBoard
+);
+
+
+createLabel(
+  "AI RESULT",
+  [0, 1.52, -2.66],
+  1.7,
+  0.28
+);
+
+
+createLabel(
+  "Your learning result will appear here",
+  [0, 1.05, -2.66],
+  1.25,
+  0.20
+);
+
+  
 
 
   // ---------------------------------------------------------
@@ -219,6 +264,48 @@ World.create(sceneContainer, projectOptions).then((world) => {
     1.6,
     0.26
   );
+
+  // ---------------------------------------------------------
+// MAIN AI RESULT BLACKBOARD
+// ---------------------------------------------------------
+
+const resultBoard =
+  new Mesh(
+    new BoxGeometry(
+      4.8,
+      1.15,
+      0.08
+    ),
+    new MeshBasicMaterial({
+      color: 0x101820
+    })
+  );
+
+resultBoard.position.set(
+  0,
+  1.15,
+  -2.72
+);
+
+world.createTransformEntity(
+  resultBoard
+);
+
+
+createLabel(
+  "AI RESULT",
+  [0, 1.52, -2.66],
+  1.7,
+  0.28
+);
+
+
+createLabel(
+  "Your learning result will appear here",
+  [0, 1.05, -2.66],
+  1.25,
+  0.20
+);
 
 
   // ---------------------------------------------------------

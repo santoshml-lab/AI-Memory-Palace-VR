@@ -138,6 +138,127 @@ World.create(sceneContainer, projectOptions).then((world) => {
   world.createTransformEntity(
     backWall
   );
+    // =========================================================
+  // PHASE 1 — VISUAL LEARNING HALL
+  // =========================================================
+
+  // Learning Hall title
+  createLabel(
+    "AI LEARNING HALL",
+    [0, 2.75, -2.85],
+    2.4,
+    0.32
+  );
+
+
+  // ---------------------------------------------------------
+  // LEFT LEARNING BOARD
+  // ---------------------------------------------------------
+
+  const learningBoard =
+    new Mesh(
+      new BoxGeometry(
+        2.2,
+        1.35,
+        0.08
+      ),
+      new MeshBasicMaterial({
+        color: 0x263b63
+      })
+    );
+
+  learningBoard.position.set(
+    -1.75,
+    1.65,
+    -2.82
+  );
+
+  world.createTransformEntity(
+    learningBoard
+  );
+
+
+  createLabel(
+    "LEARNING",
+    [-1.75, 2.05, -2.76],
+    1.5,
+    0.26
+  );
+
+
+  // ---------------------------------------------------------
+  // CENTER AI BOARD
+  // ---------------------------------------------------------
+
+  const aiBoard =
+    new Mesh(
+      new BoxGeometry(
+        2.2,
+        1.35,
+        0.08
+      ),
+      new MeshBasicMaterial({
+        color: 0x304a78
+      })
+    );
+
+  aiBoard.position.set(
+    0.65,
+    1.65,
+    -2.82
+  );
+
+  world.createTransformEntity(
+    aiBoard
+  );
+
+
+  createLabel(
+    "AI REVISION",
+    [0.65, 2.05, -2.76],
+    1.6,
+    0.26
+  );
+
+
+  // ---------------------------------------------------------
+  // MEMORY ZONE
+  // ---------------------------------------------------------
+
+  const memoryZone =
+    new Mesh(
+      new BoxGeometry(
+        4.8,
+        0.08,
+        1.0
+      ),
+      new MeshBasicMaterial({
+        color: 0x18233d
+      })
+    );
+
+  memoryZone.position.set(
+    0,
+    0.15,
+    -1.8
+  );
+
+  world.createTransformEntity(
+    memoryZone
+  );
+
+
+  createLabel(
+    "MEMORY ZONE",
+    [0, 0.48, -1.82],
+    1.7,
+    0.25
+  );
+
+
+  console.log(
+    "Phase 1 Visual Learning Hall created"
+  );
 
 
   // =========================================================

@@ -1411,10 +1411,14 @@ createLabel(
       createRecallObject(
         concept.color,
         [
-          recallSlots[index],
-          0.72,
-          2.45
-        ],
+  memoryCenterX + recallSlots[index],
+  0.72,
+  memoryCenterZ
+]
+          
+          
+          
+        
         concept.name,
         index
       );
@@ -2046,10 +2050,14 @@ createLabel(
 
 
         item.object.position.set(
-          recallSlots[index],
-          0.72,
-          2.45
-        );
+  memoryCenterX + recallSlots[index],
+  0.72,
+  memoryCenterZ
+);
+          
+          
+    
+        
 
       }
     );
@@ -2352,10 +2360,14 @@ createLabel(
       (item, index) => {
 
         item.object.position.set(
-          shuffled[index],
-          0.72,
-          2.45
-        );
+  memoryCenterX + shuffled[index],
+  0.72,
+  memoryCenterZ
+);
+          
+          
+          
+        
 
       }
     );

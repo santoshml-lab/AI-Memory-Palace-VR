@@ -58,17 +58,8 @@ World.create(
   // CAMERA
   // =======================================================
 
-  world.camera.position.set(
-    0,
-    2.55,
-    9.8
-  );
-
-  world.camera.lookAt(
-    0,
-    1.55,
-    -1.8
-  );
+  world.camera.position.set(6.8, 3.0, 8.8);
+  world.camera.lookAt(0, 1.45, -1.4);
 
 
   // =======================================================
@@ -980,35 +971,19 @@ World.create(
   // CLASSROOM DESK LAYOUT
   // =======================================================
 
-  createStudentDesk(
-    -2.55,
-    -1.35
-  );
+  createStudentDesk(-2.4, -1.15);
+createStudentDesk(0.0, -1.15);
+createStudentDesk(2.4, -1.15);
 
-  createStudentDesk(
-    0,
-    -1.35
-  );
+createStudentDesk(-2.4, 0.45);
+createStudentDesk(0.0, 0.45);
+createStudentDesk(2.4, 0.45);
+    
 
-  createStudentDesk(
-    2.55,
-    -1.35
-  );
+  
 
-  createStudentDesk(
-    -2.55,
-    0.75
-  );
-
-  createStudentDesk(
-    0,
-    0.75
-  );
-
-  createStudentDesk(
-    2.55,
-    0.75
-  );
+  
+    
 
 
   // =======================================================

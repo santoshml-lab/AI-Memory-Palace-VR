@@ -2218,5 +2218,4 @@ World.create(sceneContainer, projectOptions).then((world) => {
 
 });
 
-Sir, abhi bas is code ko "src/index.js" mein replace karke run kijiye.
-Pehle visual hall + single AI Result Blackboard verify karenge. Uske baad next step mein blackboard ko live AI result, score, weak concept aur revision explanation se connect karenge.
+

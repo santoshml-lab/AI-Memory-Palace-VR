@@ -1081,60 +1081,73 @@ createStudentDesk(1.8, 2.05);
   // PLANTS
   // =======================================================
 
-  function createPlant(
-    x,
-    z
-  ) {
+  function createPlant(x, z) {
 
-    createCylinder(
-      0.25,
-      0.32,
-      0.42,
-      0xb75e43,
-      [x, 0.22, z]
-    );
-
-    createCylinder(
-      0.035,
-      0.035,
-      0.85,
-      0x4d8b50,
-      [x, 0.82, z]
-    );
-
-    [
-      [-0.18, 1.05, 0],
-      [0.18, 1.15, 0],
-      [0, 1.30, 0.08],
-      [0, 0.98, 0.18]
-    ].forEach(
-      ([dx, y, dz]) => {
-
-        createSphere(
-          0.17,
-          0x4d9b5b,
-          [
-            x + dx,
-            y,
-            z + dz
-          ]
-        );
-
-      }
-    );
-
-  }
-
-
-  createPlant(
-    -4.15,
-    -0.15
+  // Pot
+  createCylinder(
+    0.25,
+    0.32,
+    0.42,
+    0xb75e43,
+    [x, 0.22, z]
   );
 
-  createPlant(
-    4.15,
-    0.4
+  // Stem
+  createCylinder(
+    0.035,
+    0.035,
+    0.85,
+    0x4d8b50,
+    [x, 0.82, z]
   );
+
+  // Leaves
+  [
+    [-0.18, 1.05, 0],
+    [0.18, 1.15, 0],
+    [0, 1.30, 0.08],
+    [0, 0.98, 0.18]
+  ].forEach(([dx, y, dz]) => {
+
+    createSphere(
+      0.17,
+      0x4d9b5b,
+      [x + dx, y, z + dz]
+    );
+
+  });
+
+  // Flower petals
+  const petalColor = 0xff6fae;
+
+  [
+    [-0.16, 1.52, 0],
+    [0.16, 1.52, 0],
+    [0, 1.68, 0],
+    [0, 1.36, 0],
+    [0, 1.52, 0.16]
+  ].forEach(([dx, y, dz]) => {
+
+    createSphere(
+      0.14,
+      petalColor,
+      [x + dx, y, z + dz]
+    );
+
+  });
+
+  // Flower center
+  createSphere(
+    0.11,
+    0xffd447,
+    [x, 1.52, z]
+  );
+}
+
+createPlant(-4.15, -0.15);
+createPlant(4.15, 0.4);
+    
+   
 
 
   // =======================================================

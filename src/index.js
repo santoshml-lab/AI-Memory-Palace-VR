@@ -527,6 +527,29 @@ World.create(sceneContainer, projectOptions).then((world) => {
       object.scale.copy(originalScale);
     });
 
+    // CLICK MEMORY OBJECT TO LEARN
+object.addEventListener("click", () => {
+  const conceptName =
+    object.userData.conceptName || label;
+
+  const explanation =
+    object.userData.description ||
+    object.userData.revisionExplanation ||
+    memoryHint ||
+    `Explore ${conceptName} and remember its role in ${currentTopic}.`;
+
+  updateLabel(boardTitle, "LEARN A CONCEPT");
+  updateLabel(resultText, conceptName);
+  updateLabel(boardHint, explanation);
+
+  updateLabel(
+    feedbackLabel,
+    `Selected: ${conceptName}`
+  );
+
+  console.log("📘 Selected concept:", conceptName);
+});
+
     const labelData = createLabel(
       label,
       [position[0], position[1] + 0.62, position[2]],

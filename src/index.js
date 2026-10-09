@@ -988,17 +988,31 @@ dragOffset.set(0, 0, 0);
   
   // AI HOLOGRAM RING ANIMATION
   
-function animateAIRings() {
-  aiRingLeft.rotation.z += 0.02;
-  aiRingRight.rotation.z -= 0.02;
 
-  aiRingLeft.rotation.x = Math.PI / 2;
-  aiRingRight.rotation.x = Math.PI / 2;
+function animateAIRings() {
+  aiRingLeft.rotation.y += 0.04;
+  aiRingRight.rotation.y -= 0.04;
+
+  aiRingLeft.scale.setScalar(
+    1 + 0.25 * Math.sin(Date.now() * 0.005)
+  );
 
   requestAnimationFrame(animateAIRings);
 }
 
 animateAIRings();
+
+  
+  
+  
+
+  
+  
+
+  
+
+
+
 
     
     

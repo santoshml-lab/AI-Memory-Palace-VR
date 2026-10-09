@@ -1401,7 +1401,14 @@ voiceTestButton.addEventListener("click", () => {
     try {
       const result = await generateConcepts(cleanTopic);
 
-      applyAIConcepts(result.concepts);
+      applyAIConcepts(result.concepts)
+      const lessonText = result.concepts
+     .map((concept) => {
+      return `${concept.name}. ${concept.description || ""}`;
+  })
+  .join(". ");
+
+speakTeacherLesson(lessonText);
       teacherIsSpeaking = false;
       updateLabel(teacherStatusLabel, "AI LESSON READY");
 

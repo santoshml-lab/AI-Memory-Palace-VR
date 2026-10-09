@@ -1200,6 +1200,33 @@ animateAIRings();
   }
 
   animateHolographicTeacher();
+  
+ // AI TEACHER SPEAKING ANIMATION
+const teacherMouth = createBox(
+  0.09,
+  0.025,
+  0.025,
+  0x65e8ff,
+  [0, 1.98, -3.42]
+);
+
+teacherMouth.material.emissive.set(0x168cff);
+teacherMouth.material.emissiveIntensity = 2;
+
+let teacherIsSpeaking = false;
+
+function animateTeacherSpeaking() {
+  const time = Date.now() * 0.001;
+
+  teacherMouth.scale.y = teacherIsSpeaking
+    ? 1 + Math.abs(Math.sin(time * 12)) * 5
+    : 1;
+
+  requestAnimationFrame(animateTeacherSpeaking);
+}
+
+animateTeacherSpeaking();
+
 
   console.log("AI HOLOGRAPHIC TEACHER READY");
   
@@ -1300,6 +1327,7 @@ animateAIRings();
 
     updateLabel(boardTitle, "AI IS THINKING...");
     updateLabel(teacherStatusLabel, "AI IS THINKING...");
+    teacherIsSpeaking = true;
     updateLabel(resultText, `Learning: ${cleanTopic}`);
     updateLabel(boardHint, "Generating visual memory concepts...");
 
@@ -1307,11 +1335,13 @@ animateAIRings();
       const result = await generateConcepts(cleanTopic);
 
       applyAIConcepts(result.concepts);
+      teacherIsSpeaking = false;
       updateLabel(teacherStatusLabel, "AI LESSON READY");
 
       console.log("AI concepts:", result);
     } catch (error) {
       console.error(error);
+      teacherIsSpeaking = false;
 
       updateLabel(boardTitle, "AI CONNECTION ERROR");
       updateLabel(teacherStatusLabel, "AI CONNECTION ERROR");

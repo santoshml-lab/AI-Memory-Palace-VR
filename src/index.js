@@ -1002,6 +1002,26 @@ function animateAIRings() {
 
 animateAIRings();
 
+
+  // AI ENERGY ORB FLOATING ANIMATION
+  const orbLeftBaseY = aiOrbLeft.position.y;
+  const orbRightBaseY = aiOrbRight.position.y;
+
+  function animateAIOrbs() {
+    const time = Date.now() * 0.002;
+
+    aiOrbLeft.position.y =
+      orbLeftBaseY + Math.sin(time) * 0.12;
+
+    aiOrbRight.position.y =
+      orbRightBaseY + Math.sin(time + Math.PI) * 0.12;
+
+    requestAnimationFrame(animateAIOrbs);
+  }
+
+  animateAIOrbs();
+  
+
   
   
   

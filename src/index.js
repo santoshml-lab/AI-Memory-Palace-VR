@@ -598,6 +598,9 @@ World.create(sceneContainer, projectOptions).then((world) => {
     let isDragging = false;
     let dragDepth = 0;
 
+    let pointerDownX = 0;
+    let pointerDownY = 0;
+
     function updatePointer(event) {
       const rect = canvas.getBoundingClientRect();
 

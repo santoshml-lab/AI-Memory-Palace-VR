@@ -449,62 +449,17 @@ World.create(
       
 
 
-  // =======================================================
-  // UPDATE LABEL
-  // =======================================================
+  
+  
+  
 
-  function updateLabel(
-    data,
-    text
-  ) {
+  
+    
+    
+  
+      
+    
 
-    const {
-      canvas,
-      ctx,
-      texture
-    } = data;
-
-    ctx.clearRect(
-      0,
-      0,
-      canvas.width,
-      canvas.height
-    );
-
-    ctx.fillStyle =
-      "rgba(0,0,0,0.72)";
-
-    ctx.roundRect(
-      5,
-      5,
-      502,
-      118,
-      18
-    );
-
-    ctx.fill();
-
-    ctx.fillStyle =
-      "#ffffff";
-
-    ctx.font =
-      "bold 34px Arial";
-
-    ctx.textAlign =
-      "center";
-
-    ctx.textBaseline =
-      "middle";
-
-    ctx.fillText(
-      text,
-      256,
-      64
-    );
-
-    texture.needsUpdate = true;
-
-  }
 
 
   // =======================================================

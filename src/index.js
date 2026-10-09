@@ -749,24 +749,24 @@ World.create(
     createLabel(
       "AI LEARNING BOARD",
       [0, 3.15, -4.60],
-      2.8,
-      0.30
+      3.6,0.34
+      
     );
 
   const resultText =
     createLabel(
       "Photosynthesis",
       [0, 2.65, -4.60],
-      3.8,
-      0.36
+      4.4,
+      0.40
     );
 
   const boardHint =
     createLabel(
       "AI is ready to teach",
       [0, 2.15, -4.60],
-      3.2,
-      0.30
+      4.4,
+      0.40
     );
 
 

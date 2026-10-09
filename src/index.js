@@ -1150,28 +1150,26 @@ animateAIRings();
   teacherPointingFinger.rotation.z = -Math.PI / 2;
   
   
-  // AI TEACHER - SMART SPEAKING GESTURE
+  // AI TEACHER - POINTING HAND ANIMATION
 
-  const armBaseY = teacherPointingArm.position.y;
-  const handBaseY = teacherPointingHand.position.y;
-  const fingerBaseY = teacherPointingFinger.position.y;
+const armBaseY = teacherPointingArm.position.y;
+const handBaseY = teacherPointingHand.position.y;
+const fingerBaseY = teacherPointingFinger.position.y;
 
-  function animateTeacherPointingHand() {
-    const time = Date.now() * 0.001;
+function animateTeacherPointingHand() {
+  const time = Date.now() * 0.001;
+  const movement = Math.sin(time * 2.2) * 0.045;
 
-    // Move only while the teacher is speaking
-    const movement = teacherIsSpeaking
-      ? Math.sin(time * 7) * 0.045
-      : 0;
+  teacherPointingArm.position.y = armBaseY + movement;
+  teacherPointingHand.position.y = handBaseY + movement;
+  teacherPointingFinger.position.y = fingerBaseY + movement;
 
-    teacherPointingArm.position.y = armBaseY + movement;
-    teacherPointingHand.position.y = handBaseY + movement;
-    teacherPointingFinger.position.y = fingerBaseY + movement;
+  requestAnimationFrame(animateTeacherPointingHand);
+}
 
-    requestAnimationFrame(animateTeacherPointingHand);
-  }
+animateTeacherPointingHand();
 
-  animateTeacherPointingHand();
+  
 
   
   

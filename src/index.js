@@ -1203,69 +1203,9 @@ animateAIRings();
   animateHolographicTeacher();
 
   
- // 3D AI TEACHER - POINTING HAND
+ 
 
-const teacherRightArm = createCylinder(
-  0.055,
-  0.075,
-  0.42,
-  0x168cff,
-  [0.36, 1.92, -3.62]
-);
 
-const teacherRightHand = createSphere(
-  0.085,
-  0x168cff,
-  [0.52, 2.08, -3.62]
-);
-
-const teacherIndexFinger = createCylinder(
-  0.022,
-  0.022,
-  0.16,
-  0x65e8ff,
-  [0.59, 2.16, -3.62]
-);
-
-const teacherShoulderX = 0.22;
-const teacherShoulderY = 1.78;
-const teacherArmLength = 0.42;
-
-function animateTeacherGesture() {
-  const time = Date.now() * 0.001;
-
-  const angle = teacherIsSpeaking
-    ? -0.85 + Math.sin(time * 2.5) * 0.22
-    : -0.45;
-
-  teacherRightArm.rotation.z = angle;
-  teacherIndexFinger.rotation.z = angle;
-
-  const directionX = -Math.sin(angle);
-  const directionY = Math.cos(angle);
-
-  teacherRightArm.position.set(
-    teacherShoulderX + directionX * teacherArmLength / 2,
-    teacherShoulderY + directionY * teacherArmLength / 2,
-    -3.62
-  );
-
-  teacherRightHand.position.set(
-    teacherShoulderX + directionX * teacherArmLength,
-    teacherShoulderY + directionY * teacherArmLength,
-    -3.62
-  );
-
-  teacherIndexFinger.position.set(
-    teacherShoulderX + directionX * (teacherArmLength + 0.09),
-    teacherShoulderY + directionY * (teacherArmLength + 0.09),
-    -3.62
-  );
-
-  requestAnimationFrame(animateTeacherGesture);
-}
-
-animateTeacherGesture();
 
   
  // AI TEACHER SPEAKING ANIMATION

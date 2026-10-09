@@ -987,14 +987,26 @@ dragOffset.set(0, 0, 0);
 
   
   // AI HOLOGRAM RING ANIMATION
-  function animateAIRings() {
-    aiRingLeft.rotation.z += 0.01;
-    aiRingRight.rotation.z -= 0.01;
+  
+function animateAIRings() {
+  aiRingLeft.rotation.z += 0.02;
+  aiRingRight.rotation.z -= 0.02;
 
-    requestAnimationFrame(animateAIRings);
-  }
+  aiRingLeft.rotation.x = Math.PI / 2;
+  aiRingRight.rotation.x = Math.PI / 2;
 
-  animateAIRings();
+  requestAnimationFrame(animateAIRings);
+}
+
+animateAIRings();
+
+    
+    
+
+    
+  
+
+  
 
 
   // =======================================================

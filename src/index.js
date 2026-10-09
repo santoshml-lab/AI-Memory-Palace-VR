@@ -1202,6 +1202,15 @@ animateAIRings();
   animateHolographicTeacher();
 
   console.log("AI HOLOGRAPHIC TEACHER READY");
+  
+  // HOLOGRAPHIC TEACHER STATUS
+  const teacherStatusLabel = createLabel(
+    "AI TEACHER READY",
+    [0, 2.75, -3.65],
+    2.0,
+    0.28
+  );
+
 
 
   
@@ -1290,6 +1299,7 @@ animateAIRings();
     currentTopic = cleanTopic;
 
     updateLabel(boardTitle, "AI IS THINKING...");
+    updateLabel(teacherStatusLabel, "AI IS THINKING...");
     updateLabel(resultText, `Learning: ${cleanTopic}`);
     updateLabel(boardHint, "Generating visual memory concepts...");
 
@@ -1297,12 +1307,14 @@ animateAIRings();
       const result = await generateConcepts(cleanTopic);
 
       applyAIConcepts(result.concepts);
+      updateLabel(teacherStatusLabel, "AI LESSON READY");
 
       console.log("AI concepts:", result);
     } catch (error) {
       console.error(error);
 
       updateLabel(boardTitle, "AI CONNECTION ERROR");
+      updateLabel(teacherStatusLabel, "AI CONNECTION ERROR");
       updateLabel(boardHint, "Please generate again.");
     }
   }

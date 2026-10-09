@@ -706,8 +706,21 @@ World.create(sceneContainer, projectOptions).then((world) => {
       
 if (selectedObject) {
   selectedObject.userData.desktopDragging = false;
-  showConceptVisual(selectedObject);
+
+  const deltaX = event.clientX - pointerDownX;
+  const deltaY = event.clientY - pointerDownY;
+
+  const movedDistance = Math.sqrt(
+    deltaX * deltaX + deltaY * deltaY
+  );
+
+  if (movedDistance < 8) {
+    showConceptVisual(selectedObject);
+  }
 }
+  
+  
+
 
 selectedObject = null;
 isDragging = false;

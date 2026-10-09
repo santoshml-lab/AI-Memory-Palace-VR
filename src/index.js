@@ -640,6 +640,8 @@ World.create(sceneContainer, projectOptions).then((world) => {
       }
 
       selectedObject = object;
+      pointerDownX = event.clientX;
+      pointerDownY = event.clientY;
       isDragging = true;
 
       if (canvas.setPointerCapture) {

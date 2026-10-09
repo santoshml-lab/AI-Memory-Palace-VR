@@ -708,6 +708,8 @@ selectedObject = null;
 isDragging = false;
 dragOffset.set(0, 0, 0);
 
+      
+    }
         
       
 

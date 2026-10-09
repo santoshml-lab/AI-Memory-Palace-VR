@@ -382,6 +382,35 @@ World.create(sceneContainer, projectOptions).then((world) => {
   aiOrbRight.material.emissive.set(0x0755cc);
   aiOrbRight.material.emissiveIntensity = 1.5;
 
+  
+  // AI HOLOGRAM RINGS
+  const aiRingLeft = new Mesh(
+    new TorusGeometry(0.24, 0.025, 8, 48),
+    new MeshStandardMaterial({
+      color: 0x168cff,
+      emissive: 0x0755cc,
+      emissiveIntensity: 2
+    })
+  );
+
+  aiRingLeft.position.set(-1.35, 1.45, -3.45);
+  aiRingLeft.rotation.x = Math.PI / 2;
+  world.createTransformEntity(aiRingLeft);
+
+  const aiRingRight = new Mesh(
+    new TorusGeometry(0.24, 0.025, 8, 48),
+    new MeshStandardMaterial({
+      color: 0x168cff,
+      emissive: 0x0755cc,
+      emissiveIntensity: 2
+    })
+  );
+
+  aiRingRight.position.set(1.35, 1.45, -3.45);
+  aiRingRight.rotation.x = Math.PI / 2;
+  world.createTransformEntity(aiRingRight);
+
+
 
   // =======================================================
   // STUDENT DESKS

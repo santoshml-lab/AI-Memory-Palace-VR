@@ -308,8 +308,74 @@ World.create(
   }
 
 
+  
   // =======================================================
-  // LABEL
+  // LABEL TEXT DRAWING
+  // =======================================================
+
+  function drawLabelContent(canvas, ctx, text) {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+    ctx.fillStyle = "rgba(0, 0, 0, 0.82)";
+    ctx.roundRect(
+      5,
+      5,
+      canvas.width - 10,
+      canvas.height - 10,
+      18
+    );
+    ctx.fill();
+
+    ctx.fillStyle = "#ffffff";
+    ctx.textAlign = "center";
+    ctx.textBaseline = "middle";
+
+    const words = String(text).split(/\s+/);
+    const lines = [];
+    let line = "";
+
+    ctx.font = "bold 68px Arial";
+
+    for (const word of words) {
+      const testLine = line ? `${line} ${word}` : word;
+
+      if (ctx.measureText(testLine).width > 950 && line) {
+        lines.push(line);
+        line = word;
+      } else {
+        line = testLine;
+      }
+    }
+
+    if (line) {
+      lines.push(line);
+    }
+
+    if (lines.length > 2) {
+      ctx.font = "bold 42px Arial";
+    } else if (lines.length === 2) {
+      ctx.font = "bold 54px Arial";
+    }
+
+    const visibleLines = lines.slice(0, 3);
+    const lineHeight = visibleLines.length > 2 ? 46 : 66;
+
+    const startY =
+      canvas.height / 2 -
+      ((visibleLines.length - 1) * lineHeight) / 2;
+
+    visibleLines.forEach((lineText, index) => {
+      ctx.fillText(
+        lineText,
+        canvas.width / 2,
+        startY + index * lineHeight,
+        970
+      );
+    });
+  }
+
+  // =======================================================
+  // CREATE LABEL
   // =======================================================
 
   function createLabel(
@@ -318,83 +384,28 @@ World.create(
     width = 1.4,
     height = 0.28
   ) {
-
-    const canvas =
-      document.createElement(
-        "canvas"
-      );
-
+    const canvas = document.createElement("canvas");
     canvas.width = 1024;
     canvas.height = 160;
-    
 
-    const ctx =
-      canvas.getContext(
-        "2d"
-      );
+    const ctx = canvas.getContext("2d");
 
     if (!ctx) {
-      throw new Error(
-        "Canvas context unavailable"
-      );
+      throw new Error("Canvas context unavailable");
     }
 
-    ctx.clearRect(
-      0,
-      0,
-      canvas.width,
-      canvas.height
+    drawLabelContent(canvas, ctx, text);
+
+    const texture = new CanvasTexture(canvas);
+
+    const label = new Mesh(
+      new PlaneGeometry(width, height),
+      new MeshStandardMaterial({
+        map: texture,
+        transparent: true,
+        roughness: 1
+      })
     );
-
-    ctx.fillStyle =
-      "rgba(0,0,0,0.72)";
-
-    ctx.roundRect(
-      5,
-      5,
-      502,
-      118,
-      18
-    );
-
-    ctx.fill();
-
-    ctx.fillStyle =
-      "#ffffff";
-
-    ctx.font =
-      ctx.font =
-  "bold 72px Arial";
-
-    ctx.textAlign =
-      "center";
-
-    ctx.textBaseline =
-      "middle";
-
-    ctx.fillText(
-      text,
-      256,
-      64
-    );
-
-    const texture =
-      new CanvasTexture(
-        canvas
-      );
-
-    const label =
-      new Mesh(
-        new PlaneGeometry(
-          width,
-          height
-        ),
-        new MeshStandardMaterial({
-          map: texture,
-          transparent: true,
-          roughness: 1
-        })
-      );
 
     label.position.set(
       position[0],
@@ -402,9 +413,7 @@ World.create(
       position[2]
     );
 
-    world.createTransformEntity(
-      label
-    );
+    world.createTransformEntity(label);
 
     return {
       mesh: label,
@@ -412,8 +421,32 @@ World.create(
       ctx,
       texture
     };
-
   }
+
+  // =======================================================
+  // UPDATE LABEL
+  // =======================================================
+
+  function updateLabel(data, text) {
+    drawLabelContent(data.canvas, data.ctx, text);
+    data.texture.needsUpdate = true;
+  }
+
+  
+  
+
+  
+    
+    
+    
+
+    
+
+    
+
+    
+      
+      
 
 
   // =======================================================

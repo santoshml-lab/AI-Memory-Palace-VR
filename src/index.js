@@ -1020,6 +1020,61 @@ animateAIRings();
   }
 
   animateAIOrbs();
+
+
+  
+  // AI ENERGY WAVES
+  function createEnergyWave(x, z) {
+    const wave = new Mesh(
+      new TorusGeometry(0.20, 0.012, 8, 48),
+      new MeshStandardMaterial({
+        color: 0x168cff,
+        emissive: 0x0755cc,
+        emissiveIntensity: 2,
+        transparent: true,
+        opacity: 0.8,
+        depthWrite: false
+      })
+    );
+
+    wave.position.set(x, 1.45, z);
+    wave.rotation.x = Math.PI / 2;
+
+    world.createTransformEntity(wave);
+
+    return wave;
+  }
+
+  const waveLeft1 = createEnergyWave(-1.35, -3.45);
+  const waveLeft2 = createEnergyWave(-1.35, -3.45);
+  const waveRight1 = createEnergyWave(1.35, -3.45);
+  const waveRight2 = createEnergyWave(1.35, -3.45);
+
+  const energyWaves = [
+    waveLeft1,
+    waveLeft2,
+    waveRight1,
+    waveRight2
+  ];
+
+  function animateAIEnergyWaves() {
+    const time = Date.now() * 0.001;
+
+    energyWaves.forEach((wave, index) => {
+      const cycle =
+        (time * 0.7 + (index % 2) * 0.5) % 1;
+
+      const scale = 0.7 + cycle * 1.5;
+
+      wave.scale.setScalar(scale);
+      wave.material.opacity = 0.8 * (1 - cycle);
+    });
+
+    requestAnimationFrame(animateAIEnergyWaves);
+  }
+
+  animateAIEnergyWaves();
+
   
 
   

@@ -1114,6 +1114,43 @@ animateAIRings();
     [0.22, 1.78, -3.65]
   );
 
+  
+  // AI TEACHER - SAFE 3D POINTING ARM
+
+  const teacherPointingArm = createCylinder(
+    0.055,
+    0.075,
+    0.42,
+    0x168cff,
+    [0.38, 1.92, -3.62]
+  );
+
+  teacherPointingArm.rotation.z = -0.65;
+  teacherPointingArm.material.emissive.set(0x0755cc);
+  teacherPointingArm.material.emissiveIntensity = 1.5;
+
+  const teacherPointingHand = createSphere(
+    0.085,
+    0x168cff,
+    [0.51, 2.10, -3.62]
+  );
+
+  teacherPointingHand.material.emissive.set(0x0755cc);
+  teacherPointingHand.material.emissiveIntensity = 1.5;
+
+  const teacherPointingFinger = createCylinder(
+    0.022,
+    0.022,
+    0.16,
+    0x65e8ff,
+    [0.62, 2.15, -3.62]
+  );
+
+  teacherPointingFinger.rotation.z = -Math.PI / 2;
+  teacherPointingFinger.material.emissive.set(0x168cff);
+  teacherPointingFinger.material.emissiveIntensity = 2;
+
+
   // GLOWING EYES
   const teacherEyeLeft = createSphere(
     0.035,

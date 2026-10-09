@@ -1,9 +1,10 @@
 
 import {
-  BoxGeometry,
+    BoxGeometry,
   CylinderGeometry,
   Mesh,
   MeshBasicMaterial,
+  OctahedronGeometry,
   SphereGeometry,
   TorusGeometry
 } from "@iwsdk/core";

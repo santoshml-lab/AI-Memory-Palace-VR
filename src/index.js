@@ -1382,8 +1382,8 @@ const recallSlots = [
           position[1] + 0.62,
           position[2]
         ],
-        1.15,
-        0.24
+        1.5,
+        0.32
       );
 
 

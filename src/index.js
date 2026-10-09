@@ -67,6 +67,13 @@ World.create(sceneContainer, projectOptions).then((world) => {
   boardLight.position.set(0, 2.5, -4.1);
   world.scene.add(boardLight);
 
+  
+  // FUTURISTIC AI CLASSROOM GLOW
+  const aiGlow = new PointLight(0x168cff, 12, 10);
+  aiGlow.position.set(0, 3.2, -3.8);
+  world.scene.add(aiGlow);
+
+
   // BACKEND
   checkBackendHealth()
     .then((data) => {

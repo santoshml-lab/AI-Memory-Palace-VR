@@ -1276,9 +1276,33 @@ function stopTeacherVoice() {
 
 
 
-speakTeacherLesson(
-  "Hello students! Welcome to our AI Memory Palace. Today we will learn with interactive visual concepts."
-);
+
+const voiceTestButton = document.createElement("button");
+
+voiceTestButton.textContent = "🔊 TEST AI TEACHER VOICE";
+
+voiceTestButton.style.position = "fixed";
+voiceTestButton.style.bottom = "20px";
+voiceTestButton.style.left = "50%";
+voiceTestButton.style.transform = "translateX(-50%)";
+voiceTestButton.style.zIndex = "99999";
+voiceTestButton.style.padding = "14px 18px";
+voiceTestButton.style.background = "#168cff";
+voiceTestButton.style.color = "white";
+voiceTestButton.style.border = "none";
+voiceTestButton.style.borderRadius = "10px";
+
+document.body.appendChild(voiceTestButton);
+
+voiceTestButton.addEventListener("click", () => {
+  speakTeacherLesson(
+    "Hello students! Welcome to our AI Memory Palace."
+  );
+});
+
+  
+  
+
   
 
 

@@ -1075,6 +1075,135 @@ animateAIRings();
 
   animateAIEnergyWaves();
 
+
+
+  
+  // =======================================================
+  // 3D HOLOGRAPHIC AI TEACHER
+  // =======================================================
+
+  const hologramTeacher = [];
+
+  // HEAD
+  const teacherHead = createSphere(
+    0.23,
+    0x168cff,
+    [0, 2.05, -3.65]
+  );
+
+  // HOLOGRAPHIC BODY
+  const teacherBody = createCylinder(
+    0.13,
+    0.23,
+    0.48,
+    0x168cff,
+    [0, 1.65, -3.65]
+  );
+
+  // SHOULDERS
+  const teacherShoulderLeft = createSphere(
+    0.13,
+    0x168cff,
+    [-0.22, 1.78, -3.65]
+  );
+
+  const teacherShoulderRight = createSphere(
+    0.13,
+    0x168cff,
+    [0.22, 1.78, -3.65]
+  );
+
+  // GLOWING EYES
+  const teacherEyeLeft = createSphere(
+    0.035,
+    0x9be7ff,
+    [-0.08, 2.08, -3.44]
+  );
+
+  const teacherEyeRight = createSphere(
+    0.035,
+    0x9be7ff,
+    [0.08, 2.08, -3.44]
+  );
+
+  // ANTENNA
+  const teacherAntenna = createCylinder(
+    0.018,
+    0.018,
+    0.16,
+    0x168cff,
+    [0, 2.32, -3.65]
+  );
+
+  const teacherAntennaLight = createSphere(
+    0.055,
+    0x65e8ff,
+    [0, 2.42, -3.65]
+  );
+
+  // HOLOGRAM HALO
+  const teacherHalo = new Mesh(
+    new TorusGeometry(0.31, 0.018, 8, 48),
+    new MeshStandardMaterial({
+      color: 0x168cff,
+      emissive: 0x0755cc,
+      emissiveIntensity: 2,
+      transparent: true,
+      opacity: 0.9
+    })
+  );
+
+  teacherHalo.position.set(0, 2.05, -3.65);
+  teacherHalo.rotation.x = Math.PI / 2;
+  world.createTransformEntity(teacherHalo);
+
+  // APPLY HOLOGRAM GLOW
+  hologramTeacher.push(
+    teacherHead,
+    teacherBody,
+    teacherShoulderLeft,
+    teacherShoulderRight,
+    teacherEyeLeft,
+    teacherEyeRight,
+    teacherAntenna,
+    teacherAntennaLight,
+    teacherHalo
+  );
+
+  hologramTeacher.forEach((part) => {
+    if (part.material) {
+      part.material.emissive.set(0x0755cc);
+      part.material.emissiveIntensity = 1.5;
+      part.material.transparent = true;
+      part.material.opacity = 0.88;
+    }
+  });
+
+  // SAVE ORIGINAL HEIGHTS
+  const teacherBaseHeights = hologramTeacher.map(
+    (part) => part.position.y
+  );
+
+  // FLOATING + ROTATING HOLOGRAM
+  function animateHolographicTeacher() {
+    const time = Date.now() * 0.001;
+
+    hologramTeacher.forEach((part, index) => {
+      part.position.y =
+        teacherBaseHeights[index] +
+        Math.sin(time * 1.5) * 0.06;
+    });
+
+    teacherHalo.rotation.z += 0.012;
+
+    requestAnimationFrame(animateHolographicTeacher);
+  }
+
+  animateHolographicTeacher();
+
+  console.log("AI HOLOGRAPHIC TEACHER READY");
+
+
   
 
   

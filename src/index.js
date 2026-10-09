@@ -761,6 +761,112 @@ object.addEventListener("click", () => {
     0.25
   );
 
+  
+  // =======================================================
+  // FLOATING CONCEPT VISUAL PANEL
+  // =======================================================
+
+  const visualPanel = document.createElement("div");
+
+  visualPanel.style.cssText = `
+    position: fixed;
+    right: 18px;
+    top: 80px;
+    width: 290px;
+    padding: 18px;
+    box-sizing: border-box;
+    z-index: 10000;
+    display: none;
+    color: white;
+    background: linear-gradient(145deg, #172554, #312e81, #164e63);
+    border: 1px solid rgba(255,255,255,0.25);
+    border-radius: 18px;
+    box-shadow: 0 12px 35px rgba(0,0,0,0.4);
+    font-family: Arial, sans-serif;
+  `;
+
+  const visualClose = document.createElement("button");
+  visualClose.textContent = "✕";
+  visualClose.style.cssText =
+    "float:right;padding:5px 9px;cursor:pointer;border:0;border-radius:6px;";
+
+  visualClose.addEventListener("click", () => {
+    visualPanel.style.display = "none";
+  });
+
+  const visualTitle = document.createElement("h2");
+  visualTitle.style.cssText = "font-size:21px;margin:8px 0 14px;";
+
+  const visualArt = document.createElement("div");
+  visualArt.style.cssText = `
+    min-height:120px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:64px;
+    background:rgba(255,255,255,0.10);
+    border-radius:14px;
+    margin-bottom:14px;
+  `;
+
+  const visualExplanation = document.createElement("p");
+  visualExplanation.style.cssText =
+    "font-size:15px;line-height:1.5;margin:0;";
+
+  visualPanel.append(
+    visualClose,
+    visualTitle,
+    visualArt,
+    visualExplanation
+  );
+
+  document.body.appendChild(visualPanel);
+
+  function showConceptVisual(object) {
+    const name = object.userData.conceptName || "Learning Concept";
+    const hint = object.userData.memoryHint || "";
+    const description =
+      object.userData.description ||
+      object.userData.revisionExplanation ||
+      hint ||
+      `Explore ${name} and its role in ${currentTopic}.`;
+
+    const text = `${name} ${hint}`.toLowerCase();
+
+    let symbol = "🧠";
+
+    if (/photosynthesis|plant|leaf|flower/.test(text)) {
+      symbol = "🌱";
+    } else if (/light|sun|solar|energy/.test(text)) {
+      symbol = "☀️";
+    } else if (/water|rain|ocean|river/.test(text)) {
+      symbol = "💧";
+    } else if (/glucose|sugar|food/.test(text)) {
+      symbol = "🍬";
+    } else if (/oxygen|air|gas|breath/.test(text)) {
+      symbol = "🫧";
+    } else if (/heart|blood|circulation/.test(text)) {
+      symbol = "❤️";
+    } else if (/atom|molecule|chemistry/.test(text)) {
+      symbol = "⚛️";
+    } else if (/earth|planet|geography/.test(text)) {
+      symbol = "🌍";
+    } else if (/math|number|equation/.test(text)) {
+      symbol = "🔢";
+    }
+
+    visualTitle.textContent = name;
+    visualArt.textContent = symbol;
+    visualExplanation.textContent = description;
+    visualPanel.style.display = "block";
+
+    updateLabel(boardTitle, "LEARN A CONCEPT");
+    updateLabel(resultText, name);
+    updateLabel(boardHint, description);
+    updateLabel(feedbackLabel, `Selected: ${name}`);
+  }
+
+
   const revisionLabel = createLabel(
     "AI Revision: Waiting",
     [0, 0.45, 3.55],

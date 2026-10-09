@@ -1148,6 +1148,28 @@ animateAIRings();
   );
 
   teacherPointingFinger.rotation.z = -Math.PI / 2;
+  
+  // AI TEACHER - POINTING HAND ANIMATION
+
+  const armBaseY = teacherPointingArm.position.y;
+  const handBaseY = teacherPointingHand.position.y;
+  const fingerBaseY = teacherPointingFinger.position.y;
+
+  function animateTeacherPointingHand() {
+    const time = Date.now() * 0.001;
+
+    // Gentle teaching gesture
+    const movement = Math.sin(time * 2.2) * 0.045;
+
+    teacherPointingArm.position.y = armBaseY + movement;
+    teacherPointingHand.position.y = handBaseY + movement;
+    teacherPointingFinger.position.y = fingerBaseY + movement;
+
+    requestAnimationFrame(animateTeacherPointingHand);
+  }
+
+  animateTeacherPointingHand();
+
   teacherPointingFinger.material.emissive.set(0x168cff);
   teacherPointingFinger.material.emissiveIntensity = 2;
 

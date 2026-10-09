@@ -316,6 +316,15 @@ World.create(sceneContainer, projectOptions).then((world) => {
   createBox(0.12, 1.98, 0.18, 0x704c2f, [3.0, 2.55, -4.82]);
   createBox(5.5, 0.10, 0.25, 0x62452f, [0, 1.52, -4.91]);
 
+  
+  // FUTURISTIC NEON BOARD FRAME
+  createBox(6.12, 0.045, 0.045, 0x168cff, [0, 3.53, -4.68]);
+  createBox(6.12, 0.045, 0.045, 0x168cff, [0, 1.57, -4.68]);
+
+  createBox(0.045, 1.98, 0.045, 0x168cff, [-3.06, 2.55, -4.68]);
+  createBox(0.045, 1.98, 0.045, 0x168cff, [3.06, 2.55, -4.68]);
+
+
   // =======================================================
   // BOARD LABELS — THIRD TEXT ENLARGED
   // =======================================================

@@ -528,48 +528,17 @@ World.create(sceneContainer, projectOptions).then((world) => {
     });
 
     // CLICK MEMORY OBJECT TO LEARN
-object.addEventListener("click", () => {
-  const conceptName =
-    object.userData.conceptName || label;
 
-  const explanation =
-    object.userData.description ||
-    object.userData.revisionExplanation ||
-    memoryHint ||
-    `Explore ${conceptName} and remember its role in ${currentTopic}.`;
-
-  updateLabel(boardTitle, "LEARN A CONCEPT");
-  updateLabel(resultText, conceptName);
-  updateLabel(boardHint, explanation);
-
-  updateLabel(
-    feedbackLabel,
-    `Selected: ${conceptName}`
-  );
-
-  console.log("📘 Selected concept:", conceptName);
-});
-
-    const labelData = createLabel(
-      label,
-      [position[0], position[1] + 0.62, position[2]],
-      1.5,
-      0.32
-    );
-
-    object.userData.memoryHint = memoryHint;
-    object.userData.conceptName = label;
-
-    recallObjects.push({
-      object,
-      label,
-      correctIndex,
-      labelData,
-      memoryHint
+    // CLICK MEMORY OBJECT TO LEARN
+    object.addEventListener("click", () => {
+      showConceptVisual(object);
     });
 
-    return entity;
-  }
+    
+  
+    
+
+  
 
   // INITIAL CONCEPTS
   const initialConcepts = [

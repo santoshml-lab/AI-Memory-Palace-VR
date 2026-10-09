@@ -682,14 +682,23 @@ World.create(sceneContainer, projectOptions).then((world) => {
         canvas.releasePointerCapture(event.pointerId);
       }
 
-      if (selectedObject) {
-        selectedObject.userData.desktopDragging = false;
-      }
+      
+if (selectedObject) {
+  selectedObject.userData.desktopDragging = false;
+  showConceptVisual(selectedObject);
+}
 
-      selectedObject = null;
-      isDragging = false;
-      dragOffset.set(0, 0, 0);
-    }
+selectedObject = null;
+isDragging = false;
+dragOffset.set(0, 0, 0);
+
+        
+      
+
+      
+      
+      
+    
 
     canvas.style.touchAction = "none";
 

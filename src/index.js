@@ -371,6 +371,18 @@ World.create(sceneContainer, projectOptions).then((world) => {
 
   createLabel("TEACHER", [0, 1.22, -3.92], 1.1, 0.25);
 
+  
+  // FUTURISTIC AI ENERGY ORBS
+  const aiOrbLeft = createSphere(0.16, 0x168cff, [-1.35, 1.45, -3.45]);
+  const aiOrbRight = createSphere(0.16, 0x168cff, [1.35, 1.45, -3.45]);
+
+  aiOrbLeft.material.emissive.set(0x0755cc);
+  aiOrbLeft.material.emissiveIntensity = 1.5;
+
+  aiOrbRight.material.emissive.set(0x0755cc);
+  aiOrbRight.material.emissiveIntensity = 1.5;
+
+
   // =======================================================
   // STUDENT DESKS
   // =======================================================

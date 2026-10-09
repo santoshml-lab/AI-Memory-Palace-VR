@@ -535,6 +535,22 @@ World.create(sceneContainer, projectOptions).then((world) => {
     });
 
     
+    recallObjects.push({
+      object,
+      label,
+      correctIndex,
+      memoryHint,
+      labelData: createLabel(
+        label,
+        [position[0], position[1] + 0.62, position[2]],
+        1.3,
+        0.24
+      )
+    });
+  }
+
+
+    
   
     
 

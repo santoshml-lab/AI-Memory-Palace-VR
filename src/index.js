@@ -19,6 +19,7 @@ import {
   World
 } from "@iwsdk/core";
 
+
 import projectOptions from "virtual:iwsdk-project";
 import { createMemoryVisual } from "./memoryVisuals.js";
 

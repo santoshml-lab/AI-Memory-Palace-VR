@@ -1238,6 +1238,49 @@ animateTeacherSpeaking();
     0.28
   );
 
+  
+ // AI TEACHER VOICE
+function speakTeacherLesson(text) {
+  if (!("speechSynthesis" in window)) {
+    console.error("Speech synthesis is not supported in this browser.");
+    return;
+  }
+
+  window.speechSynthesis.cancel();
+
+  const speech = new SpeechSynthesisUtterance(text);
+  speech.lang = "en-IN";
+  speech.rate = 0.9;
+  speech.pitch = 1.1;
+  speech.volume = 1;
+
+  speech.onstart = () => {
+    teacherIsSpeaking = true;
+  };
+
+  speech.onend = () => {
+    teacherIsSpeaking = false;
+  };
+
+  speech.onerror = () => {
+    teacherIsSpeaking = false;
+  };
+
+  window.speechSynthesis.speak(speech);
+}
+
+function stopTeacherVoice() {
+  window.speechSynthesis.cancel();
+  teacherIsSpeaking = false;
+}
+
+
+
+speakTeacherLesson(
+  "Hello students! Welcome to our AI Memory Palace. Today we will learn with interactive visual concepts."
+);
+  
+
 
 
   

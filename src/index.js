@@ -561,6 +561,24 @@ World.create(sceneContainer, projectOptions).then((world) => {
   
   // AI TEACHING HIGHLIGHT
   let highlightedMemoryObject = null;
+  
+  // SMART FOCUS RING
+  const focusRing = new Mesh(
+    new TorusGeometry(0.48, 0.025, 12, 64),
+    new MeshStandardMaterial({
+      color: 0x168cff,
+      emissive: 0x168cff,
+      emissiveIntensity: 2.5,
+      transparent: true,
+      opacity: 0.95,
+      depthWrite: false
+    })
+  );
+
+  focusRing.rotation.x = Math.PI / 2;
+  focusRing.visible = false;
+  world.scene.add(focusRing);
+
 
   function highlightMemoryObject(targetObject) {
     
@@ -602,6 +620,20 @@ World.create(sceneContainer, projectOptions).then((world) => {
     }
 
     highlightedMemoryObject = targetObject;
+    
+    // Move focus ring to the current concept
+    if (targetObject) {
+      focusRing.position.set(
+        targetObject.position.x,
+        targetObject.position.y - 0.30,
+        targetObject.position.z
+      );
+
+      focusRing.visible = true;
+    } else {
+      focusRing.visible = false;
+    }
+
 
     if (!targetObject) return;
 

@@ -1577,9 +1577,13 @@ let conceptIndex = 0;
 
 function pointToNextConcept() {
   if (conceptIndex >= result.concepts.length) {
-    teacherPointTarget = null;
-    return;
+  teacherPointTarget = null;
+  highlightMemoryObject(null);
+  updateLabel(teacherStatusLabel, "AI LESSON COMPLETE");
+  return;
   }
+    
+  
 
   const concept = result.concepts[conceptIndex];
 

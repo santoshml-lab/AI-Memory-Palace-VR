@@ -1,3 +1,4 @@
+
 {
   "$schema": "./node_modules/@iwsdk/core/dist/schemas/iwsdk-project.v1.schema.json",
   "version": "iwsdk.project.v1",
@@ -22,16 +23,13 @@
       "spatialUI": true
     }
   },
-  
-"dev": {
-  "emulator": {
-    "device": "metaQuest3",
-    "injectOnBuild": true,
-    "activation": {
-      "source": "^(localhost|127\\.0\\.0\\.1|.*\\.vercel\\.app)$"
+  "dev": {
+    "emulator": {
+      "device": "metaQuest3"
     }
   }
 }
+
 
     
       

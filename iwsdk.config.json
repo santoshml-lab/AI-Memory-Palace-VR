@@ -22,9 +22,19 @@
       "spatialUI": true
     }
   },
-  "dev": {
-    "emulator": {
-      "device": "metaQuest3"
+  
+"dev": {
+  "emulator": {
+    "device": "metaQuest3",
+    "injectOnBuild": true,
+    "activation": {
+      "source": "^(localhost|127\\.0\\.0\\.1|.*\\.vercel\\.app)$"
     }
   }
 }
+
+    
+      
+    
+  
+

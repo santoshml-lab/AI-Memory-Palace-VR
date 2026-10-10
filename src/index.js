@@ -566,17 +566,17 @@ const conceptConnectionBeams = [];
 const conceptBeamDirection = new Vector3();
 const conceptBeamUp = new Vector3(0, 1, 0);
 
+  
 function updateConceptConnections() {
-  // Create connection beams only once
   while (conceptConnectionBeams.length < recallObjects.length) {
     const beam = new Mesh(
-      new CylinderGeometry(0.008, 0.008, 1, 8),
+      new CylinderGeometry(0.004, 0.004, 1, 6),
       new MeshStandardMaterial({
         color: 0x168cff,
-        emissive: 0x168cff,
-        emissiveIntensity: 2,
+        emissive: 0x0755cc,
+        emissiveIntensity: 0.8,
         transparent: true,
-        opacity: 0.75,
+        opacity: 0.32,
         depthWrite: false
       })
     );
@@ -593,9 +593,17 @@ function updateConceptConnections() {
     return;
   }
 
-  const connectedObjects = recallObjects.filter(
-    (item) => item.object !== highlightedMemoryObject
-  );
+  const start = highlightedMemoryObject.position;
+
+  const connectedObjects = recallObjects
+    .filter((item) => item.object !== highlightedMemoryObject)
+    .map((item) => ({
+      object: item.object,
+      distance: item.object.position.distanceTo(start)
+    }))
+    .filter((item) => item.distance <= 1.35)
+    .sort((a, b) => a.distance - b.distance)
+    .slice(0, 2);
 
   conceptConnectionBeams.forEach((beam, index) => {
     const item = connectedObjects[index];
@@ -605,7 +613,6 @@ function updateConceptConnections() {
       return;
     }
 
-    const start = highlightedMemoryObject.position;
     const end = item.object.position;
 
     conceptBeamDirection.subVectors(end, start);
@@ -624,11 +631,29 @@ function updateConceptConnections() {
       conceptBeamDirection.normalize()
     );
 
+    beam.material.opacity = 0.25 + 0.06 * Math.sin(Date.now() * 0.003);
     beam.visible = true;
-    beam.material.opacity =
-      0.55 + 0.25 * Math.sin(Date.now() * 0.005);
   });
 }
+
+
+
+  
+  
+    
+      
+        
+        
+        
+        
+      
+    
+
+  
+    
+  
+
+    
 
   
   // SMART FOCUS RING

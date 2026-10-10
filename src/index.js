@@ -563,7 +563,23 @@ World.create(sceneContainer, projectOptions).then((world) => {
   let highlightedMemoryObject = null;
 
   function highlightMemoryObject(targetObject) {
-    // Previous highlight remove karo
+    
+  // SMART FOCUS MODE
+  recallObjects.forEach((item) => {
+    const obj = item.object;
+
+    if (!obj.userData.focusBaseScale) {
+      obj.userData.focusBaseScale = obj.scale.clone();
+    }
+
+    if (obj === targetObject) {
+      obj.scale.copy(obj.userData.focusBaseScale).multiplyScalar(1.2);
+    } else {
+      obj.scale.copy(obj.userData.focusBaseScale);
+    }
+  });
+
+    
     if (highlightedMemoryObject) {
       highlightedMemoryObject.traverse((part) => {
         const materials = Array.isArray(part.material)

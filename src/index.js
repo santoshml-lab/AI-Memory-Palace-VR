@@ -562,6 +562,75 @@ World.create(sceneContainer, projectOptions).then((world) => {
   // AI TEACHING HIGHLIGHT
   let highlightedMemoryObject = null;
   
+const conceptConnectionBeams = [];
+const conceptBeamDirection = new Vector3();
+const conceptBeamUp = new Vector3(0, 1, 0);
+
+function updateConceptConnections() {
+  // Create connection beams only once
+  while (conceptConnectionBeams.length < recallObjects.length) {
+    const beam = new Mesh(
+      new CylinderGeometry(0.008, 0.008, 1, 8),
+      new MeshStandardMaterial({
+        color: 0x168cff,
+        emissive: 0x168cff,
+        emissiveIntensity: 2,
+        transparent: true,
+        opacity: 0.75,
+        depthWrite: false
+      })
+    );
+
+    beam.visible = false;
+    world.scene.add(beam);
+    conceptConnectionBeams.push(beam);
+  }
+
+  if (!highlightedMemoryObject) {
+    conceptConnectionBeams.forEach((beam) => {
+      beam.visible = false;
+    });
+    return;
+  }
+
+  const connectedObjects = recallObjects.filter(
+    (item) => item.object !== highlightedMemoryObject
+  );
+
+  conceptConnectionBeams.forEach((beam, index) => {
+    const item = connectedObjects[index];
+
+    if (!item) {
+      beam.visible = false;
+      return;
+    }
+
+    const start = highlightedMemoryObject.position;
+    const end = item.object.position;
+
+    conceptBeamDirection.subVectors(end, start);
+    const distance = conceptBeamDirection.length();
+
+    if (distance < 0.05) {
+      beam.visible = false;
+      return;
+    }
+
+    beam.position.copy(start).add(end).multiplyScalar(0.5);
+    beam.scale.set(1, distance, 1);
+
+    beam.quaternion.setFromUnitVectors(
+      conceptBeamUp,
+      conceptBeamDirection.normalize()
+    );
+
+    beam.visible = true;
+    beam.material.opacity =
+      0.55 + 0.25 * Math.sin(Date.now() * 0.005);
+  });
+}
+
+  
   // SMART FOCUS RING
   const focusRing = new Mesh(
     new TorusGeometry(0.48, 0.025, 12, 64),
@@ -1128,6 +1197,7 @@ function animateAIRings() {
     const pulse = 1 + 0.08 * Math.sin(Date.now() * 0.006);
     focusRing.scale.setScalar(pulse);
   }
+  updateConceptConnections();
 
     
 

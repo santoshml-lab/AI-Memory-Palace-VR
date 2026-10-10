@@ -1519,7 +1519,7 @@ voiceTestButton.addEventListener("click", () => {
 
     updateLabel(boardTitle, "AI IS THINKING...");
     updateLabel(teacherStatusLabel, "AI IS THINKING...");
-    teacherIsSpeaking = true;
+    teacherIsSpeaking = false;
     updateLabel(resultText, `Learning: ${cleanTopic}`);
     updateLabel(boardHint, "Generating visual memory concepts...");
 

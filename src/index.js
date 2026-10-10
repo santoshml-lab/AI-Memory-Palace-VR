@@ -1397,6 +1397,26 @@ animateAIRings();
   const teacherPointUp = new Vector3(0, 1, 0);
 
   
+const teacherHolographicBeam = new Mesh(
+  new CylinderGeometry(0.012, 0.012, 1, 8),
+  new MeshStandardMaterial({
+    color: 0x168cff,
+    emissive: 0x168cff,
+    emissiveIntensity: 3,
+    transparent: true,
+    opacity: 0.8,
+    depthWrite: false
+  })
+);
+
+teacherHolographicBeam.visible = false;
+world.scene.add(teacherHolographicBeam);
+
+const teacherBeamDirection = new Vector3();
+const teacherBeamUp = new Vector3(0, 1, 0);
+
+
+  
 function animateTeacherPointingHand() {
   const targetPosition = teacherPointTarget
     ? teacherPointTarget.position
@@ -1422,11 +1442,11 @@ const teacherHolographicBeam = new Mesh(
   })
 );
 
-teacherHolographicBeam.visible = false;
-world.scene.add(teacherHolographicBeam);
 
-const teacherBeamDirection = new Vector3();
-const teacherBeamUp = new Vector3(0, 1, 0);
+
+
+
+
 
 
   teacherPointingArm.position

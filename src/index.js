@@ -1314,6 +1314,26 @@ function animateTeacherPointingHand() {
   const armLength = 0.42;
   const handLength = teacherPointTarget ? 0.85 : 0.52;
 
+  
+const teacherHolographicBeam = new Mesh(
+  new CylinderGeometry(0.012, 0.012, 1, 8),
+  new MeshStandardMaterial({
+    color: 0x168cff,
+    emissive: 0x168cff,
+    emissiveIntensity: 3,
+    transparent: true,
+    opacity: 0.8,
+    depthWrite: false
+  })
+);
+
+teacherHolographicBeam.visible = false;
+world.scene.add(teacherHolographicBeam);
+
+const teacherBeamDirection = new Vector3();
+const teacherBeamUp = new Vector3(0, 1, 0);
+
+
   teacherPointingArm.position
     .copy(teacherShoulderAnchor)
     .addScaledVector(teacherPointDirection, armLength / 2);
@@ -1335,6 +1355,37 @@ function animateTeacherPointingHand() {
     teacherPointUp,
     teacherPointDirection
   );
+
+  
+if (teacherPointTarget) {
+  const beamStart = teacherPointingFinger.position;
+  const beamEnd = teacherPointTarget.position;
+
+  teacherBeamDirection.subVectors(beamEnd, beamStart);
+
+  const beamLength = teacherBeamDirection.length();
+
+  if (beamLength > 0.05) {
+    teacherHolographicBeam.position
+      .copy(beamStart)
+      .add(beamEnd)
+      .multiplyScalar(0.5);
+
+    teacherHolographicBeam.scale.set(1, beamLength, 1);
+
+    teacherHolographicBeam.quaternion.setFromUnitVectors(
+      teacherBeamUp,
+      teacherBeamDirection.normalize()
+    );
+
+    teacherHolographicBeam.visible = true;
+  } else {
+    teacherHolographicBeam.visible = false;
+  }
+} else {
+  teacherHolographicBeam.visible = false;
+}
+
 
   requestAnimationFrame(animateTeacherPointingHand);
 }

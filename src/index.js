@@ -1112,12 +1112,27 @@ function animateAIRings() {
   aiRingLeft.scale.setScalar(
     1 + 0.25 * Math.sin(Date.now() * 0.005)
   );
-    if (focusRing.visible) {
+    
+  if (focusRing.visible && highlightedMemoryObject) {
+    // Ring follows the object even while dragging
+    focusRing.position.set(
+      highlightedMemoryObject.position.x,
+      highlightedMemoryObject.position.y - 0.30,
+      highlightedMemoryObject.position.z
+    );
+
+    // Gentle rotating glow
     focusRing.rotation.z += 0.035;
 
+    // Soft pulsing effect
     const pulse = 1 + 0.08 * Math.sin(Date.now() * 0.006);
     focusRing.scale.setScalar(pulse);
-    }
+  }
+
+    
+
+    
+    
 
   requestAnimationFrame(animateAIRings);
 }

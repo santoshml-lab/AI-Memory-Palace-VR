@@ -1,23 +1,37 @@
+
 {
-  "name": "ai-memory-palace-vr",
-  "version": "1.0.0",
-  "private": true,
-  "type": "module",
-  "scripts": {
-    "dev": "vite",
-    "build": "vite build",
-    "preview": "vite preview"
+  "$schema": "./node_modules/@iwsdk/core/dist/schemas/iwsdk-project.v1.schema.json",
+  "version": "iwsdk.project.v1",
+  "scene": "./public/scenes/main.iwsdk.scene.json",
+  "assets": {
+    "module": "./src/assets"
   },
-  "dependencies": {
-    "@iwsdk/core": "1.0.1",
-    "three": "npm:super-three@0.181.0",
-    "vite": "7.3.7"
+  "components": {
+    "module": "./src/components"
   },
-  "devDependencies": {
-    "@iwsdk/vite-plugin-dev": "1.0.0-rc.2"
+  "world": {
+    "xr": {
+      "mode": "vr",
+      "offer": "always",
+      "features": {
+        "handTracking": true,
+        "gazeTracking": true
+      }
+    },
+    "features": {
+      "grabbing": true,
+      "spatialUI": true
+    }
   },
-  "overrides": {
-    "three": "npm:super-three@0.181.0"
+  "dev": {
+    "emulator": {
+      "device": "metaQuest3",
+      "injectOnBuild": true,
+      "activation": {
+        "source": "^(localhost|127\\.0\\.0\\.1|.*\\.vercel\\.app)$"
+      }
+    }
   }
 }
+
 

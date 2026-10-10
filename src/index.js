@@ -558,16 +558,30 @@ World.create(sceneContainer, projectOptions).then((world) => {
 
   
   // AI TEACHING HIGHLIGHT
+  
+  // AI TEACHING HIGHLIGHT
   let highlightedMemoryObject = null;
 
   function highlightMemoryObject(targetObject) {
-    // Previous object ka highlight remove karo
+    // Previous highlight remove karo
     if (highlightedMemoryObject) {
       highlightedMemoryObject.traverse((part) => {
-        if (part.material && "emissive" in part.material) {
-          part.material.emissive.set(0x000000);
-          part.material.emissiveIntensity = 0;
-        }
+        const materials = Array.isArray(part.material)
+          ? part.material
+          : part.material
+            ? [part.material]
+            : [];
+
+        materials.forEach((mat) => {
+          if (mat.emissive) {
+            mat.emissive.set(0x000000);
+            mat.emissiveIntensity = 0;
+          }
+
+          if (mat.color) {
+            mat.color.set(mat.userData.originalColor);
+          }
+        });
       });
     }
 
@@ -575,14 +589,36 @@ World.create(sceneContainer, projectOptions).then((world) => {
 
     if (!targetObject) return;
 
-    // Current concept ko glow karo
+    // Current concept ko blue highlight karo
     targetObject.traverse((part) => {
-      if (part.material && "emissive" in part.material) {
-        part.material.emissive.set(0x168cff);
-        part.material.emissiveIntensity = 1.8;
-      }
+      const materials = Array.isArray(part.material)
+        ? part.material
+        : part.material
+          ? [part.material]
+          : [];
+
+      materials.forEach((mat) => {
+        if (mat.color) {
+          if (mat.userData.originalColor === undefined) {
+            mat.userData.originalColor = mat.color.getHex();
+          }
+
+          mat.color.set(0x168cff);
+        }
+
+        if (mat.emissive) {
+          mat.emissive.set(0x168cff);
+          mat.emissiveIntensity = 2;
+        }
+      });
     });
   }
+
+
+  
+    
+    
+      
 
 
   const recallSlots = [-1.15, -0.575, 0, 0.575, 1.15];

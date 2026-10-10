@@ -1312,7 +1312,7 @@ function animateTeacherPointingHand() {
     .normalize();
 
   const armLength = 0.42;
-  const handLength = 0.52;
+  const handLength = teacherPointTarget ? 0.85 : 0.52;
 
   teacherPointingArm.position
     .copy(teacherShoulderAnchor)

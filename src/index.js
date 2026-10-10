@@ -1430,17 +1430,10 @@ function animateTeacherPointingHand() {
   const handLength = teacherPointTarget ? 0.85 : 0.52;
 
   
-const teacherHolographicBeam = new Mesh(
-  new CylinderGeometry(0.012, 0.012, 1, 8),
-  new MeshStandardMaterial({
-    color: 0x168cff,
-    emissive: 0x168cff,
-    emissiveIntensity: 3,
-    transparent: true,
-    opacity: 0.8,
-    depthWrite: false
-  })
-);
+
+  
+  
+    
 
 
 

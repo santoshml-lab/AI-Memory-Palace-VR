@@ -1151,24 +1151,60 @@ animateAIRings();
   teacherPointingFinger.rotation.z = -Math.PI / 2;
   
   
-  // AI TEACHER - POINTING HAND ANIMATION
+  
+  // AI TEACHER - DIRECTIONAL POINTING ANIMATION
 
-const armBaseY = teacherPointingArm.position.y;
-const handBaseY = teacherPointingHand.position.y;
-const fingerBaseY = teacherPointingFinger.position.y;
+  const teacherShoulderAnchor = new Vector3(
+    0.22, 1.78, -3.65
+  );
 
-function animateTeacherPointingHand() {
-  const time = Date.now() * 0.001;
-  const movement = Math.sin(time * 2.2) * 0.045;
+  const teacherBoardTarget = new Vector3(
+    0, 2.55, -4.7
+  );
 
-  teacherPointingArm.position.y = armBaseY + movement;
-  teacherPointingHand.position.y = handBaseY + movement;
-  teacherPointingFinger.position.y = fingerBaseY + movement;
+  let teacherPointTarget = null;
 
-  requestAnimationFrame(animateTeacherPointingHand);
-}
+  const teacherPointDirection = new Vector3();
+  const teacherPointUp = new Vector3(0, 1, 0);
 
-animateTeacherPointingHand();
+  function animateTeacherPointingHand() {
+    const targetPosition = teacherPointTarget
+      ? teacherPointTarget.position
+      : teacherBoardTarget;
+
+    teacherPointDirection
+      .subVectors(targetPosition, teacherShoulderAnchor)
+      .normalize();
+
+    teacherPointingArm.position
+      .copy(teacherShoulderAnchor)
+      .addScaledVector(teacherPointDirection, 0.21);
+
+    teacherPointingHand.position
+      .copy(teacherShoulderAnchor)
+      .addScaledVector(teacherPointDirection, 0.42);
+
+    teacherPointingFinger.position
+      .copy(teacherPointingHand.position)
+      .addScaledVector(teacherPointDirection, 0.10);
+
+    teacherPointingArm.quaternion.setFromUnitVectors(
+      teacherPointUp,
+      teacherPointDirection
+    );
+
+    teacherPointingFinger.quaternion.setFromUnitVectors(
+      teacherPointUp,
+      teacherPointDirection
+    );
+
+    requestAnimationFrame(animateTeacherPointingHand);
+  }
+
+  animateTeacherPointingHand();
+
+
+
 
   
 

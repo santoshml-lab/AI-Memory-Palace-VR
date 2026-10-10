@@ -1534,8 +1534,8 @@ voiceTestButton.addEventListener("click", () => {
   .join(". ");
 
 speakTeacherLesson(lessonText);
-      teacherIsSpeaking = false;
-      updateLabel(teacherStatusLabel, "AI LESSON READY");
+      
+      
 
       console.log("AI concepts:", result);
     } catch (error) {

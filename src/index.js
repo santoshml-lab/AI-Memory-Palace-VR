@@ -1629,17 +1629,26 @@ function pointToNextConcept() {
       concept.name.toLowerCase()
   );
 
-  if (matchingObject) {
+  
+if (matchingObject) {
   teacherPointTarget = matchingObject.object;
 
   // Highlight the concept being taught
   highlightMemoryObject(matchingObject.object);
 
+  // Update floating visual panel automatically
+  showConceptVisual(matchingObject.object);
+
   updateLabel(
     teacherStatusLabel,
     `TEACHING: ${concept.name}`
   );
-  }
+}
+
+  
+
+  
+  
     
     
     

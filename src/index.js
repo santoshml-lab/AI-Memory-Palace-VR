@@ -1527,13 +1527,49 @@ voiceTestButton.addEventListener("click", () => {
       const result = await generateConcepts(cleanTopic);
 
       applyAIConcepts(result.concepts)
-      const lessonText = result.concepts
-     .map((concept) => {
-      return `${concept.name}. ${concept.description || ""}`;
+      
+const lessonText = result.concepts
+  .map((concept) => {
+    return `${concept.name}. ${concept.description || ""}`;
   })
   .join(". ");
 
+let conceptIndex = 0;
+
+function pointToNextConcept() {
+  if (conceptIndex >= result.concepts.length) {
+    teacherPointTarget = null;
+    return;
+  }
+
+  const concept = result.concepts[conceptIndex];
+
+  const matchingObject = recallObjects.find(
+    (item) =>
+      item.label.toLowerCase() ===
+      concept.name.toLowerCase()
+  );
+
+  if (matchingObject) {
+    teacherPointTarget = matchingObject.object;
+    updateLabel(
+      teacherStatusLabel,
+      `TEACHING: ${concept.name}`
+    );
+  }
+
+  conceptIndex++;
+
+  setTimeout(pointToNextConcept, 3500);
+}
+
+pointToNextConcept();
 speakTeacherLesson(lessonText);
+
+     
+      
+  
+  
       
       
 

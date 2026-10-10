@@ -1590,12 +1590,20 @@ function pointToNextConcept() {
   );
 
   if (matchingObject) {
-    teacherPointTarget = matchingObject.object;
-    updateLabel(
-      teacherStatusLabel,
-      `TEACHING: ${concept.name}`
-    );
+  teacherPointTarget = matchingObject.object;
+
+  // Highlight the concept being taught
+  highlightMemoryObject(matchingObject.object);
+
+  updateLabel(
+    teacherStatusLabel,
+    `TEACHING: ${concept.name}`
+  );
   }
+    
+    
+    
+  
 
   conceptIndex++;
 

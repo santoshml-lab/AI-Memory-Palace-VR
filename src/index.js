@@ -1112,6 +1112,12 @@ function animateAIRings() {
   aiRingLeft.scale.setScalar(
     1 + 0.25 * Math.sin(Date.now() * 0.005)
   );
+    if (focusRing.visible) {
+    focusRing.rotation.z += 0.035;
+
+    const pulse = 1 + 0.08 * Math.sin(Date.now() * 0.006);
+    focusRing.scale.setScalar(pulse);
+    }
 
   requestAnimationFrame(animateAIRings);
 }

@@ -1167,41 +1167,51 @@ animateAIRings();
   const teacherPointDirection = new Vector3();
   const teacherPointUp = new Vector3(0, 1, 0);
 
-  function animateTeacherPointingHand() {
-    const targetPosition = teacherPointTarget
-      ? teacherPointTarget.position
-      : teacherBoardTarget;
+  
+function animateTeacherPointingHand() {
+  const targetPosition = teacherPointTarget
+    ? teacherPointTarget.position
+    : teacherBoardTarget;
 
+  teacherPointDirection
+    .subVectors(targetPosition, teacherShoulderAnchor)
+    .normalize();
+
+  const armLength = 0.42;
+  const handLength = 0.52;
+
+  teacherPointingArm.position
+    .copy(teacherShoulderAnchor)
+    .addScaledVector(teacherPointDirection, armLength / 2);
+
+  teacherPointingHand.position
+    .copy(teacherShoulderAnchor)
+    .addScaledVector(teacherPointDirection, handLength);
+
+  teacherPointingFinger.position
+    .copy(teacherPointingHand.position)
+    .addScaledVector(teacherPointDirection, 0.10);
+
+  teacherPointingArm.quaternion.setFromUnitVectors(
+    teacherPointUp,
     teacherPointDirection
-      .subVectors(targetPosition, teacherShoulderAnchor)
-      .normalize();
+  );
 
-    teacherPointingArm.position
-      .copy(teacherShoulderAnchor)
-      .addScaledVector(teacherPointDirection, 0.21);
+  teacherPointingFinger.quaternion.setFromUnitVectors(
+    teacherPointUp,
+    teacherPointDirection
+  );
 
-    teacherPointingHand.position
-      .copy(teacherShoulderAnchor)
-      .addScaledVector(teacherPointDirection, 0.42);
+  requestAnimationFrame(animateTeacherPointingHand);
+}
 
-    teacherPointingFinger.position
-      .copy(teacherPointingHand.position)
-      .addScaledVector(teacherPointDirection, 0.10);
+animateTeacherPointingHand();
 
-    teacherPointingArm.quaternion.setFromUnitVectors(
-      teacherPointUp,
-      teacherPointDirection
-    );
+    
+      
+      
 
-    teacherPointingFinger.quaternion.setFromUnitVectors(
-      teacherPointUp,
-      teacherPointDirection
-    );
-
-    requestAnimationFrame(animateTeacherPointingHand);
-  }
-
-  animateTeacherPointingHand();
+    
 
 
 

@@ -1329,17 +1329,30 @@ function speakTeacherLesson(text) {
   speech.pitch = 1.1;
   speech.volume = 1;
 
-  speech.onstart = () => {
-    teacherIsSpeaking = true;
-  };
+  
+    
+  
 
-  speech.onend = () => {
-    teacherIsSpeaking = false;
-  };
+  
+speech.onstart = () => {
+  teacherIsSpeaking = true;
+  updateLabel(teacherStatusLabel, "AI TEACHER SPEAKING");
+};
 
-  speech.onerror = () => {
-    teacherIsSpeaking = false;
-  };
+speech.onend = () => {
+  teacherIsSpeaking = false;
+  updateLabel(teacherStatusLabel, "AI LESSON COMPLETE");
+};
+
+speech.onerror = () => {
+  teacherIsSpeaking = false;
+  updateLabel(teacherStatusLabel, "VOICE INTERRUPTED");
+};
+
+    
+  
+
+  
 
   window.speechSynthesis.speak(speech);
 }

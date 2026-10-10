@@ -556,6 +556,35 @@ World.create(sceneContainer, projectOptions).then((world) => {
   const recallObjects = [];
   let correctOrder = [];
 
+  
+  // AI TEACHING HIGHLIGHT
+  let highlightedMemoryObject = null;
+
+  function highlightMemoryObject(targetObject) {
+    // Previous object ka highlight remove karo
+    if (highlightedMemoryObject) {
+      highlightedMemoryObject.traverse((part) => {
+        if (part.material && "emissive" in part.material) {
+          part.material.emissive.set(0x000000);
+          part.material.emissiveIntensity = 0;
+        }
+      });
+    }
+
+    highlightedMemoryObject = targetObject;
+
+    if (!targetObject) return;
+
+    // Current concept ko glow karo
+    targetObject.traverse((part) => {
+      if (part.material && "emissive" in part.material) {
+        part.material.emissive.set(0x168cff);
+        part.material.emissiveIntensity = 1.8;
+      }
+    });
+  }
+
+
   const recallSlots = [-1.15, -0.575, 0, 0.575, 1.15];
   let recallStarted = false;
 

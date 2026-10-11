@@ -17,6 +17,9 @@ xrDevice.stereoEnabled = false;
 
 // Install the emulated WebXR runtime
 xrDevice.installRuntime();
+// Make the emulator accessible for debugging
+  window.xrdevice = xrDevice;
+  
 
 // Show IWER emulator controls
 new DevUI(xrDevice);

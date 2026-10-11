@@ -7,6 +7,7 @@ await navigator.xr
 .catch(() => false);
 
 if (!hasNativeWebXR) {
+  console.log("Native WebXR supported:", hasNativeWebXR);
 const { XRDevice, metaQuest3 } = await import("iwer");
 
 const xrDevice = new XRDevice(metaQuest3);

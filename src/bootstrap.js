@@ -1,28 +1,26 @@
+
 import { DevUI } from "@iwer/devui";
 
+const forceEmulator =
+  new URLSearchParams(window.location.search).get("emulator") === "1";
+
 const hasNativeWebXR =
-typeof navigator.xr !== "undefined" &&
-await navigator.xr
-.isSessionSupported("immersive-vr")
-.catch(() => false);
+  typeof navigator.xr !== "undefined" &&
+  await navigator.xr
+    .isSessionSupported("immersive-vr")
+    .catch(() => false);
 
-if (!hasNativeWebXR) {
-  console.log("Native WebXR supported:", hasNativeWebXR);
-const { XRDevice, metaQuest3 } = await import("iwer");
+if (forceEmulator || !hasNativeWebXR) {
+  const { XRDevice, metaQuest3 } = await import("iwer");
 
-const xrDevice = new XRDevice(metaQuest3);
+  const xrDevice = new XRDevice(metaQuest3);
 
-// Show a single view in the tablet preview
-xrDevice.stereoEnabled = false;
+  xrDevice.stereoEnabled = false;
+  xrDevice.installRuntime();
 
-// Install the emulated WebXR runtime
-xrDevice.installRuntime();
-// Make the emulator accessible for debugging
   window.xrdevice = xrDevice;
-  
-
-// Show IWER emulator controls
-new DevUI(xrDevice);
+  new DevUI(xrDevice);
 }
 
 await import("./index.js");
+

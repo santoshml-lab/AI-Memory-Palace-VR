@@ -8,6 +8,8 @@ if (!hasNativeWebXR) {
   const { XRDevice, metaQuest3 } = await import("iwer");
 
   const xrDevice = new XRDevice(metaQuest3);
+  // Show a single view in the tablet preview
+  xrDevice.stereoEnabled = false;
   xrDevice.installRuntime();
 }
 

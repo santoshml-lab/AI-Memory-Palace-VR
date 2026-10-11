@@ -48,6 +48,36 @@ if (!(sceneContainer instanceof HTMLDivElement)) {
 
 World.create(sceneContainer, projectOptions).then((world) => {
   console.log("🏫 AI MEMORY PALACE 3D CLASSROOM STARTED");
+  
+  // ENTER XR BUTTON
+  const enterXRButton = document.createElement("button");
+  enterXRButton.textContent = "🥽 ENTER XR";
+
+  enterXRButton.style.cssText = `
+    position: fixed;
+    top: 70px;
+    right: 16px;
+    z-index: 100000;
+    padding: 12px 16px;
+    color: white;
+    background: #168cff;
+    border: none;
+    border-radius: 10px;
+    font-weight: bold;
+    cursor: pointer;
+  `;
+
+  enterXRButton.addEventListener("click", () => {
+    try {
+      world.launchXR();
+    } catch (error) {
+      console.error("Unable to launch XR:", error);
+      alert("XR start nahi hua. Browser/IWER support check karna hoga.");
+    }
+  });
+
+  document.body.appendChild(enterXRButton);
+
 
   // CAMERA
   world.camera.position.set(4.2, 2.8, 7.8);

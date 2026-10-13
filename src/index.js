@@ -600,8 +600,22 @@ const xrMemoryBoxTest = createBox(
 
   
 
-  createCylinder(1.45, 1.45, 0.06, 0x283d63, [memoryCenterX, 0.04, memoryCenterZ]);
-  createCylinder(1.15, 1.15, 0.065, 0x344f7d, [memoryCenterX, 0.075, memoryCenterZ]);
+  createBox(
+  2.9,
+  0.12,
+  2.9,
+  0x168cff,
+  [memoryCenterX, 0.12, memoryCenterZ]
+);
+
+createBox(
+  2.3,
+  0.14,
+  2.3,
+  0x344f7d,
+  [memoryCenterX, 0.25, memoryCenterZ]
+);
+  
 
   createLabel("MEMORY ZONE", [memoryCenterX, 0.28, memoryCenterZ], 1.5, 0.25);
 

@@ -46,7 +46,17 @@ if (!(sceneContainer instanceof HTMLDivElement)) {
 // WORLD
 // =========================================================
 
-World.create(sceneContainer, projectOptions).then((world) => {
+
+World.create(sceneContainer, {
+  ...projectOptions,
+  features: {
+    ...projectOptions.features,
+    grabbing: {
+      useHandPinchForGrab: true
+    }
+  }
+}).then((world) => {
+
   console.log("🏫 AI MEMORY PALACE 3D CLASSROOM STARTED");
   
   // ENTER XR BUTTON

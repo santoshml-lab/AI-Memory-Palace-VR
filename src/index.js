@@ -575,17 +575,17 @@ World.create(sceneContainer, projectOptions).then((world) => {
 const memoryCenterX = 0;
 const memoryCenterZ = 3.55;
 
-const xrMemoryTest = new Mesh(
-  new BoxGeometry(0.6, 0.6, 0.6),
-  new MeshStandardMaterial({
-    color: 0xff0000,
-    emissive: 0xff0000,
-    emissiveIntensity: 1
-  })
+
+const xrMemoryTest = createBox(
+  0.6,
+  0.6,
+  0.6,
+  0xff0000,
+  [0, 1.5, -1]
 );
 
-xrMemoryTest.position.set(0, 1.5, 0);
-world.scene.add(xrMemoryTest);  
+  
+    
 
   
 

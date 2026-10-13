@@ -581,7 +581,7 @@ const xrMemoryTest = createCylinder(
 1.45,
 0.12,
 0x168cff,
-[0, 0.10, -1]
+[0, 0.10, 3.55]
 );
 
 

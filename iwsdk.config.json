@@ -18,10 +18,17 @@
         "gazeTracking": true
       }
     },
-    "features": {
-      "grabbing": true,
-      "spatialUI": true
-    }
+    
+"features": {
+  "grabbing": {
+    "useHandPinchForGrab": true
+  },
+  "spatialUI": true
+}
+
+      
+      
+    
   },
   "dev": {
     "emulator": {

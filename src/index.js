@@ -898,6 +898,8 @@ function updateConceptConnections() {
     let pointerDownX = 0;
     let pointerDownY = 0;
 
+    
+
     function updatePointer(event) {
       const rect = canvas.getBoundingClientRect();
 
@@ -1046,6 +1048,14 @@ dragOffset.set(0, 0, 0);
   }
 
   setupDesktop3DDrag();
+  console.log("MEMORY ZONE CHECK", {
+  objectCount: recallObjects.length,
+  objects: recallObjects.map((item) => ({
+    name: item.label,
+    visible: item.object.visible,
+    position: item.object.position.toArray()
+  }))
+});
 
   // =======================================================
   // STATUS

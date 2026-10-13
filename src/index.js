@@ -573,7 +573,7 @@ World.create(sceneContainer, projectOptions).then((world) => {
 
   
 const memoryCenterX = 0;
-const memoryCenterZ = 0;
+const memoryCenterZ = 3.55;
 
   
 
